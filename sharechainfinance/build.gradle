@@ -57,9 +57,10 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //系统状态栏颜色库
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-     //TabLayout
+    //TabLayout
     compile 'com.android.support:design:26.1.0'
     // 轮播图
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
-
+    //base adapter
+    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
 }

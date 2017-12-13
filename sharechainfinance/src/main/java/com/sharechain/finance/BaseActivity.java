@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.andview.refreshview.XRefreshView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.sharechain.finance.view.MyXRefreshViewHeader;
+import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
 
@@ -75,6 +76,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         image_title_right = findViewById(R.id.image_title_right);
         text_title = findViewById(R.id.text_title);
         text_title.setText(titleStr);
+    }
+
+    protected void initXRefreshView(XRefreshView xRefreshView) {
+        xRefreshView.setCustomHeaderView(new MyXRefreshViewHeader(this));
+        xRefreshView.setCustomFooterView(new MyXrefreshViewFooter(this));
+        xRefreshView.setEmptyView(R.layout.layout_empty_view);
     }
 
     protected void requestGet(String url, MyStringCallback callback) {

@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.andview.refreshview.XRefreshView;
+import com.sharechain.finance.view.MyXRefreshViewHeader;
+import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -61,6 +64,12 @@ public abstract class BaseFragment extends LazyFragment {
         image_title_right = (ImageView) findViewById(R.id.image_title_right);
         text_title = (TextView) findViewById(R.id.text_title);
         text_title.setText(titleStr);
+    }
+
+    protected void initXRefreshView(XRefreshView xRefreshView) {
+        xRefreshView.setCustomHeaderView(new MyXRefreshViewHeader(getActivity()));
+        xRefreshView.setCustomFooterView(new MyXrefreshViewFooter(getActivity()));
+        xRefreshView.setEmptyView(R.layout.layout_empty_view);
     }
 
     protected void requestGet(String url, MyStringCallback callback) {
