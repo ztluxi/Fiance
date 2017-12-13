@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
@@ -43,7 +43,7 @@ dependencies {
     //fragment pageindicator
     compile 'com.shizhefei:ViewPagerIndicator:1.1.5'
     //glide
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.1.1'
     //circle imageview
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //ok http+
@@ -57,4 +57,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //系统状态栏颜色库
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+     //TabLayout
+    compile 'com.android.support:design:26.1.0'
+    // 轮播图
+    implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
+
 }

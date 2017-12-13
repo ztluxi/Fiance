@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        getData();
+//        getData();
     }
 
     private void tabHostAddTab() {

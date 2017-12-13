@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:orientation="vertical">
+    <RelativeLayout
+        android:background="@color/list_divider"
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
 
-    <include layout="@layout/base_title" />
+        <include layout="@layout/base_title" />
 
-</LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_below="@+id/top_bar"
+        android:orientation="horizontal"
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
+            android:layout_weight="100"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tabIndicatorColor="@color/white"
+            app:tabBackground="@color/colorGreen"
+            app:tabTextColor="@color/white"
+            app:tabMode="scrollable" />
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/iv_add_channel"
+            android:paddingLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="5dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_channel_manage"
+            android:layout_width="40dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_layout" />
+
+
+</RelativeLayout>

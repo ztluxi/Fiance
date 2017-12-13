@@ -17,4 +17,9 @@ public class MineFragment extends BaseFragment {
     protected void initView() {
         initTitle(getString(R.string.main_tab_mine));
     }
+
+    @Override
+    public void initData() {
+
+    }
 }

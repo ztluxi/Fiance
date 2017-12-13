@@ -12,5 +12,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
-
+    <style name="tablayoutIcon" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

@@ -17,4 +17,9 @@ public class FastMsgFragment extends BaseFragment {
     protected void initView() {
         initTitle(getString(R.string.main_tab_fast_msg));
     }
+
+    @Override
+    public void initData() {
+
+    }
 }

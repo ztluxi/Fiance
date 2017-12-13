@@ -17,4 +17,9 @@ public class FriendCircleFragment extends BaseFragment {
     protected void initView() {
         initTitle(getString(R.string.main_tab_friend_circle));
     }
+
+    @Override
+    public void initData() {
+
+    }
 }

@@ -7,4 +7,7 @@
     <color name="white">#FFFFFF</color>
     <color name="list_divider">#CCCCCC</color>
     <color name="base_title_color">#FF332F20</color>
+    <color name="colorRed">#c22615</color>
+    <color name="colorBlack">#252424</color>
+    <color name="colorGreen">#2daf77</color>
 </resources>

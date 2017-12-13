@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -42,6 +44,7 @@ public abstract class BaseFragment extends LazyFragment {
         setContentView(getLayout());
         unbinder = ButterKnife.bind(this, getContentView());
         initView();
+        initData();
     }
 
     @Override
@@ -88,5 +91,7 @@ public abstract class BaseFragment extends LazyFragment {
     protected abstract int getLayout();
 
     protected abstract void initView();
+
+    public abstract void initData();
 
 }

@@ -1,0 +1,6 @@
+<resources>
+    <!-- News List -->
+<dimen name="news_icon_width">100dp</dimen>
+<dimen name="news_icon_height">75dp</dimen>
+<dimen name="news_ads_height">180dp</dimen>
+</resources>
