@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SahrechainFinance</string>
+
+    <string name="main_tab_home">首页</string>
+    <string name="main_tab_fast_msg">快讯</string>
+    <string name="main_tab_friend_circle">大佬圈</string>
+    <string name="main_tab_mine">我的</string>
+</resources>

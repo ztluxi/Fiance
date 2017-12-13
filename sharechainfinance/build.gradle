@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        applicationId "com.sharechain.finance"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    //刷新库
+    compile 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+    //自动换行layout
+    compile 'cn.lankton:flowlayout:3.1.0'
+    //event bus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //fast json
+    compile 'com.alibaba:fastjson:1.1.60.android'
+    //fragment pageindicator
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.5'
+    //glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //circle imageview
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //ok http+
+    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+    //lite sqlite
+    compile 'org.litepal.android:core:1.6.0'
+    //okhttp utils
+    compile 'com.zhy:okhttputils:2.6.2'
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //系统状态栏颜色库
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+}

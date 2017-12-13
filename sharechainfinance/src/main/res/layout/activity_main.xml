@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.sharechain.finance.view.FragmentTabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/realtabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </com.sharechain.finance.view.FragmentTabHost>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF6F6F6"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_tabhost_home"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="3dp"
+            android:text="@string/main_tab_home"
+            android:textColor="#FFAAAAAA"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_tabhost_fast_msg"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="3dp"
+            android:text="@string/main_tab_fast_msg"
+            android:textColor="#FFAAAAAA"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_tabhost_friend_circle"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="3dp"
+            android:text="@string/main_tab_friend_circle"
+            android:textColor="#FFAAAAAA"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_tabhost_mine"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="3dp"
+            android:text="@string/main_tab_mine"
+            android:textColor="#FFAAAAAA"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
