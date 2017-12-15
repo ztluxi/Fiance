@@ -60,11 +60,12 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = new ViewPagerAdapter(getFragmentManager());
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < typelist.size(); i++) {
-            fragments.add(NewsListFragment.newInstance(typelist.get(i)));
+            fragments.add(NewsFragment.newInstance(typelist.get(i)));
         }
         mPagerAdapter.setItems(fragments, typelist);
         viewpager.setAdapter(mPagerAdapter);
         tab.setupWithViewPager(viewpager);
+        viewpager.setOffscreenPageLimit(typelist.size());
     }
 
     @OnClick(R.id.iv_add_channel)

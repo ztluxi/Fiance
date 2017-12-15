@@ -39,67 +39,79 @@
 
     </com.sharechain.finance.view.FragmentTabHost>
 
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:alpha="0.1"-->
+        <!--android:background="@color/color_7c7c7c" />-->
+
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:background="#FFF6F6F6"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/tv_tabhost_home"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/icon_home_pre"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
             android:text="@string/main_tab_home"
-            android:textColor="#FFAAAAAA"
+            android:textColor="@color/color_base_blue"
             android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tv_tabhost_fast_msg"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/icon_msg_unpre"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
             android:text="@string/main_tab_fast_msg"
-            android:textColor="#FFAAAAAA"
+            android:textColor="@color/color_999999"
             android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tv_tabhost_friend_circle"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/icon_friend_unpre"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
             android:text="@string/main_tab_friend_circle"
-            android:textColor="#FFAAAAAA"
+            android:textColor="@color/color_999999"
             android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tv_tabhost_mine"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/icon_mine_unpre"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
             android:text="@string/main_tab_mine"
-            android:textColor="#FFAAAAAA"
+            android:textColor="@color/color_999999"
             android:textSize="10sp" />
 
     </LinearLayout>

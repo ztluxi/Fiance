@@ -15,4 +15,5 @@
         app:banner_placeholderDrawable="@mipmap/ic_launcher"
         app:banner_tipTextSize="12sp"
         app:banner_transitionEffect="accordion"/>
+
 </LinearLayout>

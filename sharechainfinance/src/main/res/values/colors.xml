@@ -5,10 +5,36 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="list_divider">#CCCCCC</color>
+    <color name="list_divider">#ebebeb</color>
     <color name="mine_background">#e4e4e4</color>
     <color name="base_title_color">#FF332F20</color>
     <color name="colorRed">#c22615</color>
     <color name="colorBlack">#252424</color>
     <color name="colorGreen">#2daf77</color>
+
+    <color name="color_999999">#999999</color>
+    <color name="color_base_blue">#3badfc</color>
+    <color name="color_7c7c7c">#7c7c7c</color>
+
+    <!--87%white-->
+    <color name="primary_text">#de000000</color>
+    <color name="alpha_05_black">#0D000000</color>
+    <!--transparent-->
+    <color name="container_background">#EBEBEB</color>
+    <!--87%black-->
+    <color name="secondary_text">#8a000000</color>
+    <!--54%black-->
+    <color name="tertiary_text">#8a000000</color>
+
+    <integer-array name="gplus_colors">
+        <item>@color/colorAccent</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+
 </resources>
