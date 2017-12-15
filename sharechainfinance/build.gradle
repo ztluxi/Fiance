@@ -9,7 +9,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -33,32 +33,32 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //刷新库
-    compile 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     //自动换行layout
-    compile 'cn.lankton:flowlayout:3.1.0'
+    implementation 'cn.lankton:flowlayout:3.1.0'
     //event bus
-    compile 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     //fast json
     compile 'com.alibaba:fastjson:1.1.60.android'
     //fragment pageindicator
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.5'
+    implementation 'com.shizhefei:ViewPagerIndicator:1.1.5'
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.1.0'
     //circle imageview
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
     //ok http+
-    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.3.0'
     //lite sqlite
-    compile 'org.litepal.android:core:1.6.0'
+    implementation 'org.litepal.android:core:1.6.0'
     //okhttp utils
-    compile 'com.zhy:okhttputils:2.6.2'
+    implementation 'com.zhy:okhttputils:2.6.2'
     //butterknife
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //系统状态栏颜色库
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     //TabLayout
-    compile 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
     // 轮播图
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
     //base adapter

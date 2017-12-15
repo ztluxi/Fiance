@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/white"
+    android:gravity="center"
+    >
+
+    <ImageView
+        android:padding="10dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/my_news_Image_iv"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/user" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/my_news_Image_iv"
+            android:lines="1"
+            android:maxLength="20"
+            android:textSize="16sp"
+            android:id="@+id/my_news_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有大佬回复您的消息"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/my_news_Image_iv"
+            android:layout_below="@+id/my_news_title"
+            android:id="@+id/my_news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2017-07-12"
+            android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        style="@style/user_list_line_horizontal" />
+</RelativeLayout>

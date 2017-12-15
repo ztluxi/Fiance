@@ -35,6 +35,14 @@
         <activity
             android:name=".module.home.AddHomeTagsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sharechain.finance.module.mine.HistoryActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.sharechain.finance.module.mine.MyNewsActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 
