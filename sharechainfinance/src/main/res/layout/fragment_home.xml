@@ -21,23 +21,32 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_below="@+id/top_bar"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingLeft="12dp"
             android:layout_weight="100"
-            app:tabBackground="@color/colorGreen"
+            app:tabBackground="@color/white"
             app:tabIndicatorColor="@color/white"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/white" />
+            app:tabPaddingEnd="10dp"
+            app:tabTextAppearance="@android:style/TextAppearance.Holo.Medium"
+            app:tabPaddingStart="10dp"
+            app:tabSelectedTextColor="@color/color_base_blue"
+            app:tabTextColor="@color/color_7c7c7c" />
 
         <ImageView
             android:id="@+id/iv_add_channel"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:paddingLeft="18dp"
+            android:paddingRight="12dp"
             android:src="@drawable/icon_add" />
 
     </LinearLayout>

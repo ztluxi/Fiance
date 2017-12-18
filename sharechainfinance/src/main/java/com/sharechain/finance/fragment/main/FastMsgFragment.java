@@ -10,7 +10,7 @@ import com.sharechain.finance.R;
 public class FastMsgFragment extends BaseFragment {
     @Override
     protected int getLayout() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_fast_msg;
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.sharechain.finance.R;
 
 import com.sharechain.finance.adapter.ViewPagerAdapter;
 import com.sharechain.finance.module.home.AddHomeTagsActivity;
-import com.sharechain.finance.module.home.NewsListFragment;
 import com.sharechain.finance.utils.BaseUtils;
 
 
