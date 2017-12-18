@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -23,7 +24,7 @@ import okhttp3.OkHttpClient;
  * Created by Administrator on 2017/12/12.
  */
 
-public class SFApplication extends Application {
+public class SFApplication extends MultiDexApplication {
     public static int screen_width = 0;
     public static int screen_height = 0;
     public static float density = 0;
