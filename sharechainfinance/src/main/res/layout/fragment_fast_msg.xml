@@ -7,4 +7,20 @@
 
     <include layout="@layout/base_title" />
 
+    <com.andview.refreshview.XRefreshView
+        android:id="@+id/xrefreshview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.halfbit.pinnedsection.PinnedSectionListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/container_background"
+            android:divider="@null"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false" />
+
+    </com.andview.refreshview.XRefreshView>
+
 </LinearLayout>

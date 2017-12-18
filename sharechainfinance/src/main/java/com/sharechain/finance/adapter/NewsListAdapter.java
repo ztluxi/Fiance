@@ -18,31 +18,31 @@ package com.sharechain.finance.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bingoogolapple.bgabanner.BGABanner;
 
-/**
- * @author 咖枯
- * @version 1.0 2016/5/19
- */
 public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
+    private HeaderViewHolder headerViewHolder;
+    private List<String> imageList;
+    private List<String> tipList;
 
-    public NewsListAdapter(Context context, List<String> list) {
+    public NewsListAdapter(Context context, List<String> list, List<String> imageList, List<String> tipList) {
         super(context, list);
+        this.imageList = imageList;
+        this.tipList = tipList;
+        mIsShowHeader = true;
     }
 
     public interface OnNewsListItemClickListener extends OnItemClickListener {
@@ -53,6 +53,11 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         View view;
         switch (viewType) {
+            case TYPE_HEADER:
+                view = getView(parent, R.layout.layout_header);
+                headerViewHolder = new HeaderViewHolder(view);
+                headerViewHolder.banner.setData(imageList, tipList);
+                return headerViewHolder;
             case TYPE_FOOTER:
                 view = getView(parent, R.layout.item_news_footer);
                 return new FooterViewHolder(view);
@@ -80,7 +85,9 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
 
     @Override
     public int getItemViewType(int position) {
-        if (mIsShowFooter && isFooterPosition(position)) {
+        if (mIsShowHeader && isHeaderPosition(position)) {
+            return TYPE_HEADER;
+        } else if (mIsShowFooter && isFooterPosition(position)) {
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
@@ -89,6 +96,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        setBanner();
         setValues(holder, position);
         setItemAppearAnimation(holder, position, R.anim.anim_bottom_in);
     }
@@ -103,6 +111,34 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
 
     }
 
+    private void setBanner() {
+        if (headerViewHolder != null) {
+            headerViewHolder.banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+                @Override
+                public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
+
+                }
+            });
+            headerViewHolder.banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
+                @Override
+                public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+                    Glide.with(context)
+                            .load(model)
+                            .apply(new RequestOptions().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).dontAnimate().centerCrop())
+                            .into(itemView);
+                }
+            });
+        }
+    }
+
+    public void setBannerData(List<String> imageList, List<String> tipList) {
+        this.imageList = imageList;
+        this.tipList = tipList;
+        if (headerViewHolder != null) {
+            headerViewHolder.banner.setData(imageList, tipList);
+        }
+    }
+
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
@@ -114,6 +150,16 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
     private boolean isShowingAnimation(RecyclerView.ViewHolder holder) {
         return holder.itemView.getAnimation() != null && holder.itemView
                 .getAnimation().hasStarted();
+    }
+
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.banner)
+        BGABanner banner;
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {

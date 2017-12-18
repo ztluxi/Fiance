@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "com.sharechain.finance"
+        applicationId "com.weilai.finance"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
@@ -65,4 +65,6 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
     //base adapter
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    //pinned-section
+    implementation "de.halfbit:pinned-section-listview:1.0.0"
 }

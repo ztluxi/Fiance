@@ -36,8 +36,10 @@ import java.util.List;
 public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_ITEM = 0;
     public static final int TYPE_FOOTER = 1;
+    public static final int TYPE_HEADER = 2;
     protected int mLastPosition = -1;
     protected boolean mIsShowFooter;
+    protected boolean mIsShowHeader;
     protected List<T> mList;
     protected OnItemClickListener mOnItemClickListener;
     protected Context context;
@@ -94,7 +96,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
             return 0;
         }
         int itemSize = mList.size();
-        if (mIsShowFooter) {
+        if (mIsShowHeader || mIsShowFooter) {
             itemSize += 1;
         }
         return itemSize;
@@ -110,6 +112,10 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     protected boolean isFooterPosition(int position) {
         return (getItemCount() - 1) == position;
+    }
+
+    protected boolean isHeaderPosition(int position) {
+        return position == 0;
     }
 
     public void add(int position, T item) {
@@ -134,6 +140,11 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     public void setList(List<T> items) {
         mList = items;
+    }
+
+    public void hideHeader() {
+        mIsShowHeader = false;
+        notifyItemInserted(getItemCount());
     }
 
     public void showFooter() {

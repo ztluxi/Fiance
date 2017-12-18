@@ -1,7 +1,6 @@
 package com.sharechain.finance;
 
 import android.annotation.TargetApi;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         tintManager.setNavigationBarTintEnabled(true);
 
         // 自定义颜色
-        tintManager.setTintColor(Color.parseColor("#24b7a4"));
+        tintManager.setTintColor(getResources().getColor(R.color.color_base_blue));
         ButterKnife.bind(this);
         initView();
         initData();
