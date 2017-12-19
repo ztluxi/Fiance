@@ -1,7 +1,6 @@
 package com.sharechain.finance;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import okhttp3.OkHttpClient;
  */
 
 public class SFApplication extends MultiDexApplication {
+
     public static int screen_width = 0;
     public static int screen_height = 0;
     public static float density = 0;
@@ -33,11 +33,12 @@ public class SFApplication extends MultiDexApplication {
      */
     private static List<Activity> mActivitys = Collections
             .synchronizedList(new LinkedList<Activity>());
+    public static String WX_APPID = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //litePal数据库
         LitePal.initialize(this);
         WindowManager manager = (WindowManager)
                 this.getSystemService(Context.WINDOW_SERVICE);
@@ -46,14 +47,13 @@ public class SFApplication extends MultiDexApplication {
         density = dm.density;
         screen_width = dm.widthPixels;
         screen_height = dm.heightPixels;
-
+        //OkHttpUtils
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS) //链接超时
                 .readTimeout(10000L, TimeUnit.MILLISECONDS) //读取超时
                 .build(); //其他配置
-
         OkHttpUtils.initClient(okHttpClient);
-
+        //ActivityLifeLifeCycle
         registerActivityListener();
     }
 

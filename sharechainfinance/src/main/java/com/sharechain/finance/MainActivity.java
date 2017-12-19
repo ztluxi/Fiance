@@ -12,6 +12,8 @@ import com.sharechain.finance.fragment.main.FriendCircleFragment;
 import com.sharechain.finance.fragment.main.HomeFragment;
 import com.sharechain.finance.fragment.main.MineFragment;
 import com.sharechain.finance.view.FragmentTabHost;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,6 +67,8 @@ public class MainActivity extends BaseActivity {
         setBottom();
     }
 
+    public IWXAPI iwxapi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,7 @@ public class MainActivity extends BaseActivity {
         tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_home_pre), null, null);
         tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
         tabHostAddTab();
+        registerToWX();
     }
 
     @Override
@@ -89,6 +94,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
 //        getData();
+    }
+
+    private void registerToWX() {
+        iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID, true);
+        //将应用注册到微信
+        iwxapi.registerApp(SFApplication.WX_APPID);
     }
 
     private void tabHostAddTab() {

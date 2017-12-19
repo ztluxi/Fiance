@@ -7,9 +7,12 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sharechain.finance.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -19,10 +22,37 @@ import butterknife.OnClick;
 
 public class FastMsgDialog extends Dialog {
     private Context context;
+    @BindView(R.id.text_title)
+    TextView text_title;
+    @BindView(R.id.text_date)
+    TextView text_date;
+    @BindView(R.id.text_content)
+    TextView text_content;
+    @BindView(R.id.text_from)
+    TextView text_from;
+    @BindView(R.id.image_qrcode)
+    ImageView image_qrcode;
+    @BindView(R.id.text_uid)
+    TextView text_uid;
 
     @OnClick(R.id.image_close)
     void closeDialog() {
         dismiss();
+    }
+
+    @OnClick(R.id.image_weixin)
+    void gotoShareWeixin() {
+
+    }
+
+    @OnClick(R.id.image_circle)
+    void gotoShareWeixinCircle() {
+
+    }
+
+    @OnClick(R.id.image_download)
+    void gotoDownload() {
+
     }
 
     public FastMsgDialog(@NonNull Context context) {

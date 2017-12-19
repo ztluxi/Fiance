@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/base_title" />
-
-    <com.andview.refreshview.XRefreshView
-        android:id="@+id/xrefreshview"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-        <de.halfbit.pinnedsection.PinnedSectionListView
-            android:id="@+id/listView"
+        <include layout="@layout/base_title" />
+
+        <com.andview.refreshview.XRefreshView
+            android:id="@+id/xrefreshview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/container_background"
-            android:divider="@null"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false" />
+            android:layout_height="match_parent">
 
-    </com.andview.refreshview.XRefreshView>
+            <de.halfbit.pinnedsection.PinnedSectionListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/container_background"
+                android:divider="@null"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false" />
 
-</LinearLayout>
+        </com.andview.refreshview.XRefreshView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

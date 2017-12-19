@@ -1,10 +1,17 @@
 package com.sharechain.finance.fragment.main;
 
+import android.support.design.widget.Snackbar;
+
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.FastMsgAdapter;
+import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.FastMsgData;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,9 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         initTitle(getString(R.string.main_tab_fast_msg));
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
@@ -69,4 +79,17 @@ public class FastMsgFragment extends BaseFragment {
         adapter.setListData(dataList);
         adapter.notifyDataSetChanged();
     }
+
+    //EventBus回调
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(BaseNotifyBean event) {
+        Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

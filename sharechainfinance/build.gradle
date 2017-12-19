@@ -67,4 +67,6 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
     //pinned-section
     implementation "de.halfbit:pinned-section-listview:1.0.0"
+    //微信分享
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

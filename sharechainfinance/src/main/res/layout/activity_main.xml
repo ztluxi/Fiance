@@ -1,119 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.sharechain.finance.view.FragmentTabHost
-        android:id="@android:id/tabhost"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.sharechain.finance.view.FragmentTabHost
+            android:id="@android:id/tabhost"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <TabWidget
-                android:id="@android:id/tabs"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:visibility="gone" />
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <FrameLayout
-                android:id="@+id/realtabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
 
-        </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/realtabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-    </com.sharechain.finance.view.FragmentTabHost>
+            </LinearLayout>
 
-    <!--<View-->
+        </com.sharechain.finance.view.FragmentTabHost>
+
+        <!--<View-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="1px"-->
         <!--android:alpha="0.1"-->
         <!--android:background="@color/color_7c7c7c" />-->
 
-    <LinearLayout
-        android:id="@+id/ll_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingTop="8dp">
-
-        <TextView
-            android:id="@+id/tv_tabhost_home"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/icon_home_pre"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingTop="3dp"
-            android:text="@string/main_tab_home"
-            android:textColor="@color/color_base_blue"
-            android:textSize="10sp" />
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="8dp">
 
-        <TextView
-            android:id="@+id/tv_tabhost_fast_msg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/icon_msg_unpre"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingTop="3dp"
-            android:text="@string/main_tab_fast_msg"
-            android:textColor="@color/color_999999"
-            android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tv_tabhost_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/icon_home_pre"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="3dp"
+                android:text="@string/main_tab_home"
+                android:textColor="@color/color_base_blue"
+                android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/tv_tabhost_friend_circle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/icon_friend_unpre"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingTop="3dp"
-            android:text="@string/main_tab_friend_circle"
-            android:textColor="@color/color_999999"
-            android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tv_tabhost_fast_msg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/icon_msg_unpre"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="3dp"
+                android:text="@string/main_tab_fast_msg"
+                android:textColor="@color/color_999999"
+                android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/tv_tabhost_mine"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/icon_mine_unpre"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingTop="3dp"
-            android:text="@string/main_tab_mine"
-            android:textColor="@color/color_999999"
-            android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tv_tabhost_friend_circle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/icon_friend_unpre"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="3dp"
+                android:text="@string/main_tab_friend_circle"
+                android:textColor="@color/color_999999"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tv_tabhost_mine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/icon_mine_unpre"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="3dp"
+                android:text="@string/main_tab_mine"
+                android:textColor="@color/color_999999"
+                android:textSize="10sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
