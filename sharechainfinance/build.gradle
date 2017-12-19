@@ -46,9 +46,8 @@ dependencies {
     implementation 'com.shizhefei:ViewPagerIndicator:1.1.5'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     //circle imageview
-    implementation 'de.hdodenhof:circleimageview:2.1.0'
+//    implementation 'de.hdodenhof:circleimageview:2.1.0'
     //ok http+
     implementation 'com.squareup.okhttp3:okhttp:3.3.0'
     //lite sqlite
@@ -65,6 +64,10 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
     //base adapter
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    //photo包含动态权限
+    compile 'com.jph.takephoto:takephoto_library:4.0.3'
+    //logger
+    compile 'com.orhanobut:logger:1.15'
     //pinned-section
     implementation "de.halfbit:pinned-section-listview:1.0.0"
     //微信分享

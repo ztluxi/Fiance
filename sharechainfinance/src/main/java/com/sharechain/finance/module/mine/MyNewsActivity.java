@@ -47,7 +47,7 @@ public class MyNewsActivity extends BaseActivity {
     public void initView() {
         initTitle(getString(R.string.my_news));
         back_Image.setVisibility(View.VISIBLE);
-        back_Image.setImageResource(R.drawable.add_sel);
+        back_Image.setImageResource(R.drawable.back);
         initData();
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);

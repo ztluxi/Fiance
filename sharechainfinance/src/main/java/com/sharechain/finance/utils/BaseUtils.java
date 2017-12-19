@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
 
 import com.sharechain.finance.R;
 
@@ -28,6 +30,8 @@ public class BaseUtils {
     public static boolean isNewsPhotoSet(String skipType) {
         return NEWS_ITEM_PHOTO_SET.equals(skipType);
     }
+
+
 
     /**
      * 带参数的页面跳转

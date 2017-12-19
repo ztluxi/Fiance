@@ -9,8 +9,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.R;
+import com.sharechain.finance.module.mine.AboutFinanceActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
 import com.sharechain.finance.module.mine.MyNewsActivity;
+import com.sharechain.finance.module.mine.PersonalCenterActivity;
+import com.sharechain.finance.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +43,7 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.exit_tv)
     TextView exitTv;
 
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_mine;
@@ -47,7 +51,10 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        Glide.with(getActivity()).load(R.mipmap.ic_launcher).apply(new RequestOptions().circleCrop()).into(userImage);
+        RequestOptions options = new RequestOptions().circleCrop();
+        options.placeholder(R.drawable.history);
+        GlideUtils.loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
+
     }
 
     @Override
@@ -56,10 +63,14 @@ public class MineFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv})
+    @OnClick({R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv,R.id.center_ll,R.id.about_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.center_ll:
+                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+                break;
             case R.id.user_image:
+
                 break;
             case R.id.history_tv:
                 startActivity(new Intent(getActivity(), HistoryActivity.class));
@@ -75,8 +86,16 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.score_tv:
                 break;
+            case R.id.about_tv:
+                startActivity(new Intent(getActivity(), AboutFinanceActivity.class));
+                break;
             case R.id.exit_tv:
                 break;
+
         }
     }
+
+
+
+
 }

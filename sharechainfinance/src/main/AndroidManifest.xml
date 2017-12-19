@@ -54,7 +54,15 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <activity
+            android:name="com.sharechain.finance.module.mine.PersonalCenterActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.sharechain.finance.module.mine.AboutFinanceActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="561cae6ae0f55abd990035bf"/>
