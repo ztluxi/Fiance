@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -14,8 +14,8 @@
         <com.sharechain.finance.view.FragmentTabHost
             android:id="@android:id/tabhost"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="60dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,83 +44,90 @@
 
         </com.sharechain.finance.view.FragmentTabHost>
 
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1px"-->
-        <!--android:alpha="0.1"-->
-        <!--android:background="@color/color_7c7c7c" />-->
-
         <LinearLayout
-            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="8dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_tabhost_home"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/icon_home_pre"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="3dp"
-                android:text="@string/main_tab_home"
-                android:textColor="@color/color_base_blue"
-                android:textSize="10sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/list_divider" />
 
-            <TextView
-                android:id="@+id/tv_tabhost_fast_msg"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/icon_msg_unpre"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="3dp"
-                android:text="@string/main_tab_fast_msg"
-                android:textColor="@color/color_999999"
-                android:textSize="10sp" />
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/tv_tabhost_friend_circle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/icon_friend_unpre"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="3dp"
-                android:text="@string/main_tab_friend_circle"
-                android:textColor="@color/color_999999"
-                android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tv_tabhost_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/icon_home_pre"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/main_tab_home"
+                    android:textColor="@color/color_base_blue"
+                    android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/tv_tabhost_mine"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/icon_mine_unpre"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="3dp"
-                android:text="@string/main_tab_mine"
-                android:textColor="@color/color_999999"
-                android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tv_tabhost_fast_msg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/icon_msg_unpre"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/main_tab_fast_msg"
+                    android:textColor="@color/color_999999"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_tabhost_friend_circle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/icon_friend_unpre"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/main_tab_friend_circle"
+                    android:textColor="@color/color_999999"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_tabhost_mine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/icon_mine_unpre"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/main_tab_mine"
+                    android:textColor="@color/color_999999"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

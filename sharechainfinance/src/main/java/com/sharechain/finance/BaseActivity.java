@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,7 +49,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         tintManager.setNavigationBarTintEnabled(true);
 
         // 自定义颜色
-        tintManager.setTintColor(getResources().getColor(R.color.color_base_blue));
+//        tintManager.setTintColor(getResources().getColor(R.color.color_base_blue));
+        tintManager.setTintDrawable(ContextCompat.getDrawable(this, R.drawable.common_mine_title_bg));
         ButterKnife.bind(this);
         initView();
         initData();

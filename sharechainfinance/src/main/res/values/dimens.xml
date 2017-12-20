@@ -21,4 +21,7 @@
     <dimen name="share_dialog_padding_left">39dp</dimen>
     <dimen name="share_dialog_share_margin_top">33dp</dimen>
 
+    <dimen name="common_navigator_height">45dp</dimen>
+    <dimen name="navigator_margin_top">5dp</dimen>
+
 </resources>

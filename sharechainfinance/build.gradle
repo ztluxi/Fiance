@@ -72,4 +72,6 @@ dependencies {
     implementation "de.halfbit:pinned-section-listview:1.0.0"
     //微信分享
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    //magic indicator
+    compile 'com.github.hackware1993:MagicIndicator:1.5.0'
 }
