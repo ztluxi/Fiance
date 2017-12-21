@@ -1,7 +1,6 @@
 package com.sharechain.finance.fragment.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.ViewPagerAdapter;
-import com.sharechain.finance.module.home.AddHomeTagsActivity;
 import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.ScaleTransitionPagerTitleView;
@@ -53,7 +51,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        immersionBar.statusBarColor(R.color.tint_home_color)
+                .init();
     }
 
     @Override
@@ -130,6 +129,16 @@ public class HomeFragment extends BaseFragment {
         viewpager.setOffscreenPageLimit(typelist.size());
 
         initMagicIndicator();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && immersionBar != null) {
+            immersionBar.statusBarColor(R.color.tint_home_color)
+                    .init();
+        }
+
     }
 
     @OnClick(R.id.iv_add_channel)

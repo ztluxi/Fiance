@@ -9,13 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
+import com.gyf.barlibrary.ImmersionBar;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -35,6 +34,7 @@ public abstract class BaseFragment extends LazyFragment {
     protected TextView text_title;
 
     private Unbinder unbinder;
+    protected ImmersionBar immersionBar;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -45,6 +45,7 @@ public abstract class BaseFragment extends LazyFragment {
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         setContentView(getLayout());
+        immersionBar = ImmersionBar.with(getActivity());
         unbinder = ButterKnife.bind(this, getContentView());
         initView();
         initData();
@@ -54,6 +55,8 @@ public abstract class BaseFragment extends LazyFragment {
     protected void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         unbinder.unbind();
+        if (immersionBar != null)
+            immersionBar.destroy();
     }
 
     protected void initTitle(String titleStr) {

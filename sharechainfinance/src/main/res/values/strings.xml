@@ -19,7 +19,7 @@
 
     <string name="home_title">未来财经</string>
     <string name="loading">加载中…</string>
-     <!--共享过度动画 -->
+    <!--共享过度动画 -->
     <string name="transition_photos">transition_animation_news_photos</string>
 
 
@@ -47,9 +47,14 @@
     <string name="share_failed">分享失败</string>
     <string name="share_cancel">分享取消</string>
 
+    <string name="home_head_news">头条快讯</string>
     <string name="uid">UID</string>
     <string name="login_privilege">登录享特权</string>
     <string name="feedback">意见反馈</string>
     <string name="feedback_one">请输入您宝贵的意见，您的意见与反馈是我们前进的动力</string>
     <string name="feedback_two">请输入您的手机号/邮箱</string>
-    <string name="sumbit">提交</string>    <string name="home_head_news">头条快讯</string></resources>
+    <string name="sumbit">提交</string>
+    <string name="big_msg">重磅快讯</string>
+    <string name="view_detail">查看详情</string>
+
+</resources>

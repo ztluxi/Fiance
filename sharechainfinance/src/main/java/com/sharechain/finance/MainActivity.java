@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTintDrawable(R.drawable.common_home_tint_color_bg);
+//        setTintDrawable(R.drawable.common_home_tint_color_bg);
         tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         tabhost.getTabWidget().setVisibility(View.GONE);
         tabhost.setCurrentTabByTag(TAB_HOME);

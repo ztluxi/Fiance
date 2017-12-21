@@ -1,15 +1,13 @@
 package com.sharechain.finance.module.mine;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
-import com.sharechain.finance.GuideActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SplashActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 
@@ -22,6 +20,8 @@ import butterknife.OnClick;
 
 public class MineActivity extends BaseActivity {
 
+    @BindView(R.id.ll_top_info)
+    LinearLayout ll_top_info;
     @BindView(R.id.user_image)
     ImageView userImage;
     @BindView(R.id.user_name)
@@ -48,6 +48,8 @@ public class MineActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mImmersionBar.statusBarColor(android.R.color.transparent).init();
+        ll_top_info.setPadding(0, getStatusBarHeight(), 0, 0);
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.history);
         GlideUtils.loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);

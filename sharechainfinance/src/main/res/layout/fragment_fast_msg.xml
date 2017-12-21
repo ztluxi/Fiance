@@ -15,7 +15,8 @@
         <com.andview.refreshview.XRefreshView
             android:id="@+id/xrefreshview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/base_bg_color">
 
             <de.halfbit.pinnedsection.PinnedSectionListView
                 android:id="@+id/listView"

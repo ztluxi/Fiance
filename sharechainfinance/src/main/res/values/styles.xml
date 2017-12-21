@@ -13,15 +13,16 @@
         <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
     <!--避免第一次进来白屏或黑屏-->
-    <style name="AppTheme.Splash">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="AppTheme.Splash" parent="@android:style/Theme">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="tablayoutIcon" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">16sp</item>
     </style>
@@ -59,28 +60,26 @@
         <item name="android:windowEnterAnimation">@anim/photo_dialog_in_anim</item>
         <item name="android:windowExitAnimation">@anim/photo_dialog_out_anim</item>
     </style>
+
     <style name="transparentFrameWindowStyle" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/photo_choose_bg</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <!--//闪屏图片-->
+        <item name="android:windowBackground">@drawable/uoko_guide_background_1</item>
+    </style>
 
     <!--dialog style-->
     <style name="base_dialog_style" parent="@android:style/Theme.Dialog">
-        //Dialog��windowFrame��Ϊ��
         <item name="android:windowFrame">@null</item>
-        //�Ƿ�����activity֮��
         <item name="android:windowIsFloating">true</item>
-        //�Ƿ��͸��
         <item name="android:windowIsTranslucent">true</item>
-        //�Ƿ���ʾtitle
         <item name="android:windowNoTitle">true</item>
-        //����dialog�ı���
         <item name="android:background">@android:color/transparent</item>
-        //��ʾ���򱳾��Ƿ�͸��
         <item name="android:windowBackground">@android:color/transparent</item>
-        //�����������ƻҶȵ�ֵ����Ϊ1ʱ������������ǵ�dialog�����Ǹ�����ʾ�ģ�dialog����������Ǻ�ɫ�ģ���ȫ�������������ݣ�ϵͳ��Ĭ��ֵ��0.5
         <item name="android:backgroundDimAmount">0.5</item>
-        //��ʾ���������Ƿ�ʹ�ú�ɫ��͸������
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

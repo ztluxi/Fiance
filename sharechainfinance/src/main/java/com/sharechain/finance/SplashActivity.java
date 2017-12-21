@@ -1,12 +1,7 @@
 package com.sharechain.finance;
 
-import android.content.Intent;
-
-import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.SharedPreferenceManager;
-
-import butterknife.internal.Utils;
 
 /**
  * Created by ${zhoutao} on 2017/12/20 0020.
@@ -20,6 +15,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mImmersionBar.statusBarColor(android.R.color.transparent).init();
         if (SharedPreferenceManager.ifFristOpenSalonAPP(SplashActivity.this)){
             BaseUtils.openActivityBottomAnim(SplashActivity.this, GuideActivity.class, null);
             finish();
