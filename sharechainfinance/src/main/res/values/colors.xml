@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="base_bg_color">#eeeeee</color>
     <color name="white">#FFFFFF</color>
     <color name="list_divider">#ebebeb</color>
     <color name="mine_background">#e4e4e4</color>
@@ -40,5 +41,6 @@
 
     <color name="title_start_color">#1CBBF5</color>
     <color name="title_end_color">#1EB8F4</color>
+    <color name="tint_home_color">#3490e3</color>
 
 </resources>

@@ -15,7 +15,7 @@
             android:id="@android:id/tabhost"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="60dp">
+            android:layout_marginBottom="49dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,88 +45,63 @@
         </com.sharechain.finance.view.FragmentTabHost>
 
         <LinearLayout
+            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingTop="8dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/list_divider" />
+            <TextView
+                android:id="@+id/tv_tabhost_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="3dp"
+                android:drawableTop="@drawable/icon_tab_home"
+                android:gravity="center"
+                android:text="@string/main_tab_home"
+                android:textColor="@color/color_base_blue"
+                android:textSize="10sp" />
 
-            <LinearLayout
-                android:id="@+id/ll_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center" />
 
-                <TextView
-                    android:id="@+id/tv_tabhost_home"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:drawablePadding="4dp"
-                    android:drawableTop="@drawable/icon_home_pre"
-                    android:gravity="center"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/main_tab_home"
-                    android:textColor="@color/color_base_blue"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/tv_tabhost_fast_msg"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:drawablePadding="4dp"
-                    android:drawableTop="@drawable/icon_msg_unpre"
-                    android:gravity="center"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/main_tab_fast_msg"
-                    android:textColor="@color/color_999999"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/tv_tabhost_friend_circle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:drawablePadding="4dp"
-                    android:drawableTop="@drawable/icon_friend_unpre"
-                    android:gravity="center"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/main_tab_friend_circle"
-                    android:textColor="@color/color_999999"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/tv_tabhost_mine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:drawablePadding="4dp"
-                    android:drawableTop="@drawable/icon_mine_unpre"
-                    android:gravity="center"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/main_tab_mine"
-                    android:textColor="@color/color_999999"
-                    android:textSize="10sp" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_tabhost_friend_circle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/icon_tab_big_brother"
+                android:gravity="center"
+                android:text="@string/main_tab_friend_circle"
+                android:textColor="@color/color_999999"
+                android:textSize="10sp" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/tv_tabhost_fast_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/icon_tab_fastmsg"
+            android:gravity="center" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/icon_tab_line" />
 
     </RelativeLayout>
 
