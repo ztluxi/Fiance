@@ -3,6 +3,7 @@ package com.sharechain.finance;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class MainActivity extends BaseActivity {
     private static final String TAB_MINE = "TAB_MINE";
 
     private enum BOTTOM_ITEM {
-        HOME, FAST_MSG, FRIEND_CIRCLE, MINE
+        HOME, FAST_MSG, FRIEND_CIRCLE
     }
 
     private BOTTOM_ITEM curItem = BOTTOM_ITEM.HOME;
@@ -37,11 +38,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_tabhost_home)
     TextView tv_tabhost_home;
     @BindView(R.id.tv_tabhost_fast_msg)
-    TextView tv_tabhost_fast_msg;
+    ImageView tv_tabhost_fast_msg;
     @BindView(R.id.tv_tabhost_friend_circle)
     TextView tv_tabhost_friend_circle;
-    @BindView(R.id.tv_tabhost_mine)
-    TextView tv_tabhost_mine;
 
     @OnClick(R.id.tv_tabhost_home)
     void clickHome() {
@@ -61,21 +60,16 @@ public class MainActivity extends BaseActivity {
         setBottom();
     }
 
-    @OnClick(R.id.tv_tabhost_mine)
-    void clickMine() {
-        curItem = BOTTOM_ITEM.MINE;
-        setBottom();
-    }
-
     public IWXAPI iwxapi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTintDrawable(R.drawable.common_home_tint_color_bg);
         tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         tabhost.getTabWidget().setVisibility(View.GONE);
         tabhost.setCurrentTabByTag(TAB_HOME);
-        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_home_pre), null, null);
+        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
         tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
         tabHostAddTab();
         registerToWX();
@@ -114,36 +108,25 @@ public class MainActivity extends BaseActivity {
         switch (curItem) {
             case HOME:
                 tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
-                tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_home_pre), null, null);
+                tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
                 tabhost.setCurrentTabByTag(TAB_HOME);
                 break;
             case FAST_MSG:
-                tv_tabhost_fast_msg.setTextColor(getResources().getColor(R.color.color_999999));
-                tv_tabhost_fast_msg.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_msg_unpre), null, null);
                 tabhost.setCurrentTabByTag(TAB_FAST_MSG);
                 break;
             case FRIEND_CIRCLE:
                 tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_999999));
-                tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_friend_unpre), null, null);
+                tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother), null, null);
                 tabhost.setCurrentTabByTag(TAB_FRIEND_CIRCLE);
-                break;
-            case MINE:
-                tv_tabhost_mine.setTextColor(getResources().getColor(R.color.color_999999));
-                tv_tabhost_mine.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_mine_unpre), null, null);
-                tabhost.setCurrentTabByTag(TAB_MINE);
                 break;
         }
     }
 
     private void unCheckAllBottom() {
         tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
-        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_home_pre), null, null);
-        tv_tabhost_fast_msg.setTextColor(getResources().getColor(R.color.color_999999));
-        tv_tabhost_fast_msg.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_msg_unpre), null, null);
+        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
         tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_999999));
-        tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_friend_unpre), null, null);
-        tv_tabhost_mine.setTextColor(getResources().getColor(R.color.color_999999));
-        tv_tabhost_mine.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_mine_unpre), null, null);
+        tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother), null, null);
     }
 
     private void getData() {

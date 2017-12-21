@@ -51,7 +51,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        initTitle(getString(R.string.main_tab_home));
+
     }
 
     @Override
@@ -71,7 +71,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initMagicIndicator() {
-        magic_indicator.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        magic_indicator.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.tint_home_color));
         CommonNavigator commonNavigator = new CommonNavigator(getActivity());
         commonNavigator.setScrollPivotX(0.8f);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -101,16 +101,17 @@ public class HomeFragment extends BaseFragment {
                 return null;
             }
 
-//            @Override
-//            public float getTitleWeight(Context context, int index) {
-//                if (index == 0) {
-//                    return 2.0f;
-//                } else if (index == 1) {
-//                    return 1.2f;
-//                } else {
-//                    return 1.0f;
-//                }
-//            }
+            @Override
+            public float getTitleWeight(Context context, int index) {
+                if (index == 0) {
+                    return 2.0f;
+                } else if (index == 1) {
+                    return 1.2f;
+                } else {
+                    return 1.0f;
+                }
+            }
+
         });
         magic_indicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magic_indicator, viewpager);

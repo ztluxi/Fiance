@@ -1,19 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/base_bg_color"
+    android:orientation="vertical">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner"
+    <LinearLayout
+        android:id="@+id/ll_banner"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="fitXY"
-        app:banner_indicatorGravity="bottom|right"
-        app:banner_pageChangeDuration="1500"
-        app:banner_placeholderDrawable="@mipmap/ic_launcher"
-        app:banner_tipTextSize="12sp"
-        app:banner_transitionEffect="accordion"/>
+        android:layout_height="245dp"
+        android:background="@drawable/icon_home_top_bg"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="172dp"
+            android:scaleType="fitXY"
+            app:banner_indicatorGravity="bottom|right"
+            app:banner_pageChangeDuration="1500"
+            app:banner_placeholderDrawable="@mipmap/ic_launcher"
+            app:banner_tipTextSize="12sp"
+            app:banner_transitionEffect="accordion" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/ll_banner" />
+
+    <RelativeLayout
+        android:layout_marginTop="-45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_banner"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/common_home_search_bg"
+        android:paddingBottom="19dp"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
+        android:paddingTop="19dp">
+
+        <TextView
+            android:id="@+id/text_head_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_head_news"
+            android:textColor="@color/primary_text"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_head_line"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/icon_home_red_circle"
+            android:gravity="center"
+            android:text="09:30" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="2dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/text_head_line"
+            android:alpha="0.2"
+            android:background="@color/color_999999" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/view_line"
+            android:ellipsize="end"
+            android:lines="2"
+            android:text="比特币比特币比特币比特币比特币比特币比特币比特币比特币比特币"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

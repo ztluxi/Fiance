@@ -44,13 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setTranslucentStatus(true);
         }
 
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setNavigationBarTintEnabled(true);
-
-        // 自定义颜色
-//        tintManager.setTintColor(getResources().getColor(R.color.color_base_blue));
-        tintManager.setTintDrawable(ContextCompat.getDrawable(this, R.drawable.common_mine_title_bg));
+        setTintDrawable(R.drawable.common_mine_title_bg);
         ButterKnife.bind(this);
         initView();
         initData();
@@ -108,6 +102,18 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .mediaType(JSON)
                 .build()
                 .execute(callback);
+    }
+
+    /**
+     * 设置状态栏背景
+     *
+     * @param res
+     */
+    protected void setTintDrawable(int res) {
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setNavigationBarTintEnabled(true);
+        tintManager.setTintDrawable(ContextCompat.getDrawable(this, res));
     }
 
     public abstract int getLayout();

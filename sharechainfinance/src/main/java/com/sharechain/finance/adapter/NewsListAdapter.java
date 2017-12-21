@@ -121,8 +121,9 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
             });
             headerViewHolder.banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
                 @Override
-                public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+                public void fillBannerItem(BGABanner banner, final ImageView itemView, String model, int position) {
                     Glide.with(context)
+                            .asBitmap()
                             .load(model)
                             .apply(new RequestOptions().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).dontAnimate().centerCrop())
                             .into(itemView);
@@ -135,7 +136,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
         this.imageList = imageList;
         this.tipList = tipList;
         if (headerViewHolder != null) {
-            headerViewHolder.banner.setData(imageList, tipList);
+            headerViewHolder.banner.setData(R.layout.bga_banner_item_image_pro, imageList, tipList);
         }
     }
 
@@ -163,14 +164,12 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.news_summary_photo_iv)
-        ImageView mNewsSummaryPhotoIv;
-        @BindView(R.id.news_summary_title_tv)
-        TextView mNewsSummaryTitleTv;
-        @BindView(R.id.news_summary_digest_tv)
-        TextView mNewsSummaryDigestTv;
-        @BindView(R.id.news_summary_ptime_tv)
-        TextView mNewsSummaryPtimeTv;
+        @BindView(R.id.image_pic)
+        ImageView image_pic;
+        @BindView(R.id.text_content)
+        TextView text_content;
+        @BindView(R.id.text_time)
+        TextView text_time;
 
         public ItemViewHolder(View view) {
             super(view);
