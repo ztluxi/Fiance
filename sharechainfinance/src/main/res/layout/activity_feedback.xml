@@ -2,22 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_bg_color"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="@color/mine_background"
     android:orientation="vertical">
 
 
-        <include layout="@layout/base_title" />
+    <include layout="@layout/base_title" />
 
 
     <LinearLayout
-        android:paddingTop="44dp"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="15dp"
         android:orientation="vertical"
-        >
+        android:paddingTop="44dp">
 
         <EditText
             android:id="@+id/write_feedback_et"
@@ -33,29 +32,28 @@
             android:textSize="15sp" />
 
 
-    <EditText
-        android:paddingLeft="10dp"
-        android:textColorHint="@color/about_font"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/write_feedback_et"
-        android:id="@+id/phone_et"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/mine_center_bg"
-        android:hint="@string/feedback_two"
-        android:textColor="@color/about_font"
-        android:textSize="15sp"
-        />
-
-        <Button
-            android:layout_marginTop="30dp"
-            android:background="@drawable/feedback_sumbit_bg"
-            android:id="@+id/sumbit"
+        <EditText
+            android:id="@+id/phone_et"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:text="@string/sumbit"
+            android:layout_below="@+id/write_feedback_et"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mine_center_bg"
+            android:hint="@string/feedback_two"
+            android:paddingLeft="10dp"
+            android:textColor="@color/about_font"
+            android:textColorHint="@color/about_font"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/submit_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/feedback_sumbit_bg"
             android:onClick="sendMessage"
-            style="?android:attr/borderlessButtonStyle" />
+            android:text="@string/submit" />
 
     </LinearLayout>
 

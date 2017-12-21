@@ -1,14 +1,11 @@
 package com.sharechain.finance.module.mine;
 
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.andview.refreshview.XRefreshView;
-import com.andview.refreshview.utils.LogUtils;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.HistoryAdapter;
@@ -21,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
+import cn.bingoogolapple.baseadapter.BGAOnItemChildLongClickListener;
 
 /**
  * Created by ${zhoutao} on 2017/12/13 0013.
@@ -29,6 +27,8 @@ import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 public class HistoryActivity extends BaseActivity {
     @BindView(R.id.image_title_left)
     ImageView back_Image;
+    @BindView(R.id.image_title_right)
+    ImageView clearHistoryIv;
     @BindView(R.id.history_lv)
     ListView historylv;
     @BindView(R.id.xrefreshview_content)
@@ -45,9 +45,11 @@ public class HistoryActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        initData();
+
         initTitle(getString(R.string.history));
         back_Image.setVisibility(View.VISIBLE);
+        clearHistoryIv.setVisibility(View.VISIBLE);
+        clearHistoryIv.setImageResource(R.drawable.follow);
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
         refreshView.setPullLoadEnable(false);
@@ -59,15 +61,24 @@ public class HistoryActivity extends BaseActivity {
             }
         });
         adapter = new HistoryAdapter(this, R.layout.fragment_home_item);
+
+        adapter.setOnItemChildLongClickListener(new BGAOnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+                ToastManager.showShort(HistoryActivity.this,"您要删除"+position);
+                return true;
+            }
+        });
         adapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
             @Override
             public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                ToastManager.showShort(HistoryActivity.this,"您店里"+position);
+                ToastManager.showShort(HistoryActivity.this,"您点击了"+position);
             }
         });
         adapter.setData(homeDataList);
         historylv.setAdapter(adapter);
     }
+
     @Override
     public void initData() {
         for (int i = 0; i < 10; i++) {
@@ -79,14 +90,16 @@ public class HistoryActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.image_title_left})
+    @OnClick({R.id.image_title_left, R.id.image_title_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
                 finish();
                 break;
+            case R.id.image_title_right:
+                homeDataList.clear();
+                break;
         }
     }
-
 
 }

@@ -1,15 +1,13 @@
 package com.sharechain.finance.module.mine;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
-import com.sharechain.finance.GuideActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SplashActivity;
+import com.sharechain.finance.adapter.MyFollowAdapter;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 
@@ -49,7 +47,7 @@ public class MineActivity extends BaseActivity {
     @Override
     public void initView() {
         RequestOptions options = new RequestOptions().circleCrop();
-        options.placeholder(R.drawable.history);
+        options.placeholder(R.drawable.icon_share_weixin);
         GlideUtils.loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
     }
 
@@ -66,25 +64,26 @@ public class MineActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.user_image:
-                BaseUtils.openActivityBottomAnim(this, PersonalCenterActivity.class, null);
+                BaseUtils.openActivity(this, PersonalCenterActivity.class, null);
                 break;
             case R.id.history_tv:
-                BaseUtils.openActivityBottomAnim(this, HistoryActivity.class, null);
+                BaseUtils.openActivity(this, HistoryActivity.class, null);
                 break;
             case R.id.my_news_tv:
-                BaseUtils.openActivityBottomAnim(this, MyNewsActivity.class, null);
+                BaseUtils.openActivity(this, MyNewsActivity.class, null);
                 break;
             case R.id.my_follow_tv:
+                BaseUtils.openActivity(this, MyFollowActivity.class, null);
                 break;
             case R.id.suggest_tv:
-                BaseUtils.openActivityBottomAnim(this, FeedbackActivity.class, null);
+                BaseUtils.openActivity(this, FeedbackActivity.class, null);
                 break;
             case R.id.clear_cache_tv:
                 break;
             case R.id.score_tv:
                 break;
             case R.id.about_tv:
-                BaseUtils.openActivityBottomAnim(this, AboutFinanceActivity.class, null);
+                BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
                 break;

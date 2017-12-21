@@ -63,7 +63,7 @@ public class MineFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv,R.id.about_tv})
+    @OnClick({R.id.user_image, R.id.history_tv, R.id.my_news_rl, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv,R.id.about_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_image:
@@ -72,7 +72,7 @@ public class MineFragment extends BaseFragment {
             case R.id.history_tv:
                 startActivity(new Intent(getActivity(), HistoryActivity.class));
                 break;
-            case R.id.my_news_tv:
+            case R.id.my_news_rl:
                 startActivity(new Intent(getActivity(), MyNewsActivity.class));
                 break;
             case R.id.my_follow_tv:

@@ -48,8 +48,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setTintDrawable(R.drawable.common_mine_title_bg);
         ButterKnife.bind(this);
-        initView();
         initData();
+        initView();
+
     }
 
     @TargetApi(19)

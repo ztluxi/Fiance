@@ -1,38 +1,31 @@
 package com.sharechain.finance.module.mine;
 
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.adapter.HistoryAdapter;
+import com.sharechain.finance.adapter.MyFollowAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
-import com.sharechain.finance.bean.HomeData;
+import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.NewsData;
-import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.utils.ToastManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
 /**
- * Created by ${zhoutao} on 2017/12/13 0013.
+ * Created by ${zhoutao} on 2017/12/21 0013.
  */
 
-public class MyNewsActivity extends BaseActivity {
+public class MyFollowActivity extends BaseActivity {
 
     @BindView(R.id.image_title_left)
     ImageView back_Image;
@@ -40,18 +33,18 @@ public class MyNewsActivity extends BaseActivity {
     ListView myNewslv;
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
-    private List<NewsData> newsDataList = new ArrayList<>();
+    private List<FollowData> followDataList = new ArrayList<>();
 
 
-    private MyNewsAdapter newsAdapter;
+    private MyFollowAdapter followAdapter;
     @Override
     public int getLayout() {
-        return R.layout.activity_my_news;
+        return R.layout.activity_my_follow;
     }
 
     @Override
     public void initView() {
-        initTitle(getString(R.string.my_news));
+        initTitle(getString(R.string.my_follow));
         back_Image.setVisibility(View.VISIBLE);
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
@@ -63,27 +56,29 @@ public class MyNewsActivity extends BaseActivity {
                 refreshView.stopRefresh();
             }
         });
-        newsAdapter = new MyNewsAdapter(this, R.layout.adapter_my_news_item);
-        newsAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
+        followAdapter = new MyFollowAdapter(this, R.layout.adapter_my_follow_item);
+        followAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
             @Override
             public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                ToastManager.showShort(MyNewsActivity.this,"您点了"+position);
+                ToastManager.showShort(MyFollowActivity.this,"您取消了"+followDataList.get(position).getName()+"的关注");
+                followAdapter.removeItem(position);
             }
         });
 
-        newsAdapter.setData(newsDataList);
-        myNewslv.setAdapter(newsAdapter);
+        followAdapter.setData(followDataList);
+        myNewslv.setAdapter(followAdapter);
 
     }
 
     @Override
     public void initData() {
         for (int i = 0; i < 10; i++) {
-            NewsData newsData = new NewsData();
-            newsData.setTime("2017-07-12");
-            newsData.setTitle("大佬回复了你的评论");
-            newsData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-            newsDataList.add(newsData);
+            FollowData followData = new FollowData();
+            followData.setPosition("比特币分析师"+i);
+            followData.setFans(i+1+"万");
+            followData.setName("我是大佬"+i);
+            followData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
+            followDataList.add(followData);
         }
 
     }
