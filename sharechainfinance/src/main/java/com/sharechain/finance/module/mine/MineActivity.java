@@ -1,4 +1,4 @@
-package com.sharechain.finance.fragment.main;
+package com.sharechain.finance.module.mine;
 
 import android.content.Intent;
 import android.view.View;
@@ -6,13 +6,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.sharechain.finance.BaseFragment;
+import com.sharechain.finance.BaseActivity;
+import com.sharechain.finance.GuideActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.module.mine.AboutFinanceActivity;
-import com.sharechain.finance.module.mine.FeedbackActivity;
-import com.sharechain.finance.module.mine.HistoryActivity;
-import com.sharechain.finance.module.mine.MyNewsActivity;
-import com.sharechain.finance.module.mine.PersonalCenterActivity;
+import com.sharechain.finance.SplashActivity;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 
 import butterknife.BindView;
@@ -22,7 +20,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/12/13.
  */
 
-public class MineFragment extends BaseFragment {
+public class MineActivity extends BaseActivity {
 
     @BindView(R.id.user_image)
     ImageView userImage;
@@ -43,18 +41,16 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.exit_tv)
     TextView exitTv;
 
-
     @Override
-    protected int getLayout() {
+    public int getLayout() {
         return R.layout.activity_mine;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.history);
-        GlideUtils.loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
-
+        GlideUtils.loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
     }
 
     @Override
@@ -63,37 +59,38 @@ public class MineFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv,R.id.about_tv})
+    @OnClick({R.id.back_iv, R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.back_iv:
+                finish();
+                break;
             case R.id.user_image:
-                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+                BaseUtils.openActivityBottomAnim(this, PersonalCenterActivity.class, null);
                 break;
             case R.id.history_tv:
-                startActivity(new Intent(getActivity(), HistoryActivity.class));
+                BaseUtils.openActivityBottomAnim(this, HistoryActivity.class, null);
                 break;
             case R.id.my_news_tv:
-                startActivity(new Intent(getActivity(), MyNewsActivity.class));
+                BaseUtils.openActivityBottomAnim(this, MyNewsActivity.class, null);
                 break;
             case R.id.my_follow_tv:
                 break;
             case R.id.suggest_tv:
-                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                BaseUtils.openActivityBottomAnim(this, FeedbackActivity.class, null);
                 break;
             case R.id.clear_cache_tv:
                 break;
             case R.id.score_tv:
                 break;
             case R.id.about_tv:
-                startActivity(new Intent(getActivity(), AboutFinanceActivity.class));
+                BaseUtils.openActivityBottomAnim(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
                 break;
 
         }
     }
-
-
 
 
 }

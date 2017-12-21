@@ -32,7 +32,7 @@ public class MyNewsAdapter extends BGAAdapterViewAdapter<NewsData>{
     protected void fillData(BGAViewHolderHelper helper, int position, NewsData model) {
         helper.setText(R.id.my_news_time, model.getTime());
         helper.setText(R.id.my_news_title, model.getTitle());
-        Glide.with(mContext).load(model.getImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)).into(helper.getImageView(R.id.my_news_Image_iv));
+//        Glide.with(mContext).load(model.getImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)).into(helper.getImageView(R.id.my_news_Image_iv));
 
     }
 

@@ -128,7 +128,6 @@ public class PersonalCenterActivity extends BaseActivity implements TakePhoto.Ta
     public void initView() {
         initTitle(getString(R.string.personal_center));
         back_Image.setVisibility(View.VISIBLE);
-        back_Image.setImageResource(R.drawable.back);
         createPickPicDialog();
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.history);

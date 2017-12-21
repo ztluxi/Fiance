@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ndroid="http://schemas.android.com/tools"
     package="com.sharechain.finance">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,13 +29,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppCompatNotitleTheme">
+
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            >
         </activity>
         <activity
             android:name="com.sharechain.finance.module.home.HomeDetailsActivity"
@@ -57,10 +70,18 @@
         <activity
             android:name="com.sharechain.finance.module.mine.PersonalCenterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.sharechain.finance.module.mine.FeedbackActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.sharechain.finance.module.mine.AboutFinanceActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.sharechain.finance.module.mine.MineActivity"
             android:screenOrientation="portrait">
         </activity>
         <meta-data

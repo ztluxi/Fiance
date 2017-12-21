@@ -1,6 +1,7 @@
 package com.sharechain.finance.fragment.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.ViewPagerAdapter;
 import com.sharechain.finance.module.home.AddHomeTagsActivity;
+import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.ScaleTransitionPagerTitleView;
 
@@ -132,7 +134,8 @@ public class HomeFragment extends BaseFragment {
 
     @OnClick(R.id.iv_add_channel)
     public void onViewClicked() {
-        BaseUtils.openActivityBottomAnim(getActivity(), AddHomeTagsActivity.class, null);
+//        getActivity().startActivity(new Intent());
+        BaseUtils.openActivityBottomAnim(getActivity(), MineActivity.class, null);
     }
 
 }

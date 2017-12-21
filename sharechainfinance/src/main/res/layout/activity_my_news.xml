@@ -7,18 +7,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:background="@color/list_divider"
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-
         <include layout="@layout/base_title" />
 
-    </RelativeLayout>
-
     <com.andview.refreshview.XRefreshView
-        android:paddingTop="15dp"
         android:id="@+id/xrefreshview_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

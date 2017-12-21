@@ -21,24 +21,26 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="28dp">
 
             <ImageView
+                android:layout_marginTop="66dp"
                 android:id="@+id/logo_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/history" />
+                android:src="@drawable/logo" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/app_name"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <TextView
+                android:textSize="12sp"
+                android:layout_marginTop="33dp"
                 android:id="@+id/introduce_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,9 +49,10 @@
                 android:textColor="@color/about_font" />
 
             <TextView
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="13dp"
                 android:src="@drawable/history"
                 android:text="@string/about_introduce_two"
                 android:textColor="@color/about_font" />

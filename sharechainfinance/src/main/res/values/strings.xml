@@ -7,10 +7,11 @@
     <string name="main_tab_mine">我的</string>
 
     <!--user_center-->
-    <string name="history">浏览历史</string>
+    <string name="history">历史</string>
+    <string name="news">消息</string>
     <string name="my_news">我的消息</string>
-    <string name="my_follow">我的关注</string>
-    <string name="suggest">意见反馈</string>d
+    <string name="follow">关注</string>
+    <string name="suggest">意见反馈</string>
     <string name="clear_cache">清除缓存</string>
     <string name="score">给未来财经评分</string>
     <string name="about_app">关于未来财经</string>
@@ -46,5 +47,9 @@
     <string name="share_failed">分享失败</string>
     <string name="share_cancel">分享取消</string>
 
-    <string name="home_head_news">头条快讯</string>
-</resources>
+    <string name="uid">UID</string>
+    <string name="login_privilege">登录享特权</string>
+    <string name="feedback">意见反馈</string>
+    <string name="feedback_one">请输入您宝贵的意见，您的意见与反馈是我们前进的动力</string>
+    <string name="feedback_two">请输入您的手机号/邮箱</string>
+    <string name="sumbit">提交</string>    <string name="home_head_news">头条快讯</string></resources>

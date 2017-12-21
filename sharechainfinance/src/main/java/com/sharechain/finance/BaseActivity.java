@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -21,6 +22,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 import okhttp3.MediaType;
 
 /**

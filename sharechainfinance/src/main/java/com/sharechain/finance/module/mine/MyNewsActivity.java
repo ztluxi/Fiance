@@ -14,9 +14,13 @@ import com.sharechain.finance.adapter.HistoryAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.HomeData;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.utils.ToastManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,6 +41,8 @@ public class MyNewsActivity extends BaseActivity {
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
     private List<NewsData> newsDataList = new ArrayList<>();
+
+
     private MyNewsAdapter newsAdapter;
     @Override
     public int getLayout() {
@@ -47,7 +53,6 @@ public class MyNewsActivity extends BaseActivity {
     public void initView() {
         initTitle(getString(R.string.my_news));
         back_Image.setVisibility(View.VISIBLE);
-        back_Image.setImageResource(R.drawable.back);
         initData();
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
