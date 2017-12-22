@@ -125,7 +125,11 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = new ViewPagerAdapter(getFragmentManager());
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < typelist.size(); i++) {
-            fragments.add(NewsFragment.newInstance(typelist.get(i)));
+            if (i == 0) {
+                fragments.add(NewsFragment.newInstance(typelist.get(i)));
+            } else {
+                fragments.add(AnswerFragment.newInstance(typelist.get(i)));
+            }
         }
         mPagerAdapter.setItems(fragments, typelist);
         viewpager.setAdapter(mPagerAdapter);

@@ -11,6 +11,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorT
  */
 public class ScaleTransitionPagerTitleView extends ColorTransitionPagerTitleView {
     private float mMinScale = 0.85f;
+    private float mMinAlpha = 0.6f;
 
     public ScaleTransitionPagerTitleView(Context context) {
         super(context);
@@ -21,6 +22,7 @@ public class ScaleTransitionPagerTitleView extends ColorTransitionPagerTitleView
         super.onEnter(index, totalCount, enterPercent, leftToRight);    // 实现颜色渐变
         setScaleX(mMinScale + (1.0f - mMinScale) * enterPercent);
         setScaleY(mMinScale + (1.0f - mMinScale) * enterPercent);
+        setAlpha(mMinAlpha + (1.0f - mMinAlpha) * enterPercent);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class ScaleTransitionPagerTitleView extends ColorTransitionPagerTitleView
         super.onLeave(index, totalCount, leavePercent, leftToRight);    // 实现颜色渐变
         setScaleX(1.0f + (mMinScale - 1.0f) * leavePercent);
         setScaleY(1.0f + (mMinScale - 1.0f) * leavePercent);
+        setAlpha(1.0f + (mMinAlpha - 1.0f) * leavePercent);
     }
 
     public float getMinScale() {

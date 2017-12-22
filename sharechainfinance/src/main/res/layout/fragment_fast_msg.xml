@@ -7,6 +7,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include layout="@layout/base_title" />
@@ -14,8 +15,7 @@
         <com.andview.refreshview.XRefreshView
             android:id="@+id/xrefreshview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/base_bg_color">
+            android:layout_height="match_parent">
 
             <de.halfbit.pinnedsection.PinnedSectionListView
                 android:id="@+id/listView"
