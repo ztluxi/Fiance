@@ -49,7 +49,7 @@ public class MineActivity extends BaseActivity {
     @Override
     public void initView() {
         mImmersionBar.statusBarColor(android.R.color.transparent).init();
-        ll_top_info.setPadding(0, getStatusBarHeight(), 0, 0);
+        setTitlePadding(ll_top_info);
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.history);
         GlideUtils.loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);

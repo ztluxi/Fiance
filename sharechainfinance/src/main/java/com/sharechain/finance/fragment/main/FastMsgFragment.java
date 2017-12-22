@@ -43,8 +43,7 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        immersionBar.statusBarColor(R.color.title_start_color)
-                .init();
+        immersionBar.statusBarColor(android.R.color.transparent).init();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -93,8 +92,7 @@ public class FastMsgFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(R.color.title_start_color)
-                    .init();
+            immersionBar.statusBarColor(android.R.color.transparent).init();
         }
 
     }

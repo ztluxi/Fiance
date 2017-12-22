@@ -45,7 +45,8 @@
             android:theme="@style/AppTheme.Splash" />
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.home.HomeDetailsActivity"
             android:screenOrientation="portrait" />
@@ -71,13 +72,13 @@
         <activity
             android:name="com.sharechain.finance.module.mine.FeedbackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.AboutFinanceActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.MineActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="UMENG_APPKEY"

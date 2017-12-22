@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ import okhttp3.MediaType;
 
 public abstract class BaseFragment extends LazyFragment {
     protected RelativeLayout rl_base_layout;
+    protected View view_status_bar;
     protected TextView tv_title_left;
     protected ImageView image_title_left;
     protected TextView tv_title_right;
@@ -51,6 +54,16 @@ public abstract class BaseFragment extends LazyFragment {
         initData();
     }
 
+    /**
+     * 动态设置状态栏的高度
+     *
+     * @param viewGroup
+     * @param paddinfBottom 底部距离
+     */
+    protected void setTitlePadding(ViewGroup viewGroup, int paddinfBottom) {
+        viewGroup.setPadding(0, getStatusBarHeight(), 0, paddinfBottom);
+    }
+
     @Override
     protected void onDestroyViewLazy() {
         super.onDestroyViewLazy();
@@ -61,6 +74,9 @@ public abstract class BaseFragment extends LazyFragment {
 
     protected void initTitle(String titleStr) {
         rl_base_layout = (RelativeLayout) findViewById(R.id.rl_base_layout);
+        view_status_bar = findViewById(R.id.view_status_bar);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight());
+        view_status_bar.setLayoutParams(params);
         tv_title_left = (TextView) findViewById(R.id.tv_title_left);
         image_title_left = (ImageView) findViewById(R.id.image_title_left);
         tv_title_right = (TextView) findViewById(R.id.tv_title_right);
@@ -73,6 +89,24 @@ public abstract class BaseFragment extends LazyFragment {
         xRefreshView.setCustomHeaderView(new MyXRefreshViewHeader(getActivity()));
         xRefreshView.setCustomFooterView(new MyXrefreshViewFooter(getActivity()));
         xRefreshView.setEmptyView(R.layout.layout_empty_view);
+    }
+
+    // 通过反射机制获取手机状态栏高度
+    protected int getStatusBarHeight() {
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
     }
 
     protected void requestGet(String url, MyStringCallback callback) {

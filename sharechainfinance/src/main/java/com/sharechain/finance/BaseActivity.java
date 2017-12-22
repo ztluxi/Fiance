@@ -3,7 +3,10 @@ package com.sharechain.finance;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import okhttp3.MediaType;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected RelativeLayout rl_base_layout;
+    protected View view_status_bar;
     protected TextView tv_title_left;
     protected ImageView image_title_left;
     protected TextView tv_title_right;
@@ -37,11 +41,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
         mImmersionBar = ImmersionBar.with(this);
-        mImmersionBar.statusBarColor(R.color.title_start_color).init();   //所有子类都将继承这些相同的属性
+        mImmersionBar.statusBarColor(android.R.color.transparent).init();   //所有子类都将继承这些相同的属性
 
         ButterKnife.bind(this);
         initView();
         initData();
+    }
+
+    /**
+     * 动态设置状态栏的高度
+     *
+     * @param viewGroup
+     */
+    protected void setTitlePadding(ViewGroup viewGroup) {
+        viewGroup.setPadding(0, getStatusBarHeight(), 0, 0);
     }
 
     @Override
@@ -53,6 +66,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void initTitle(String titleStr) {
         rl_base_layout = findViewById(R.id.rl_base_layout);
+        view_status_bar = findViewById(R.id.view_status_bar);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight());
+        view_status_bar.setLayoutParams(params);
         tv_title_left = findViewById(R.id.tv_title_left);
         image_title_left = findViewById(R.id.image_title_left);
         tv_title_right = findViewById(R.id.tv_title_right);
