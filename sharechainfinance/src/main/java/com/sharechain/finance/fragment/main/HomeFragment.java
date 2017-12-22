@@ -54,8 +54,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        immersionBar.statusBarColor(R.color.tint_home_color)
-                .init();
+        immersionBar.statusBarColor(R.color.tint_home_color).statusBarDarkFont(true).init();
         setTitlePadding(rl_top, BaseUtils.dip2px(getActivity(), 10));
     }
 
@@ -139,8 +138,7 @@ public class HomeFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(R.color.tint_home_color)
-                    .init();
+            immersionBar.statusBarColor(R.color.tint_home_color).statusBarDarkFont(true).init();
         }
 
     }

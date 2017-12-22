@@ -43,12 +43,13 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        immersionBar.statusBarColor(android.R.color.transparent).init();
+        immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         initTitle(getString(R.string.main_tab_fast_msg));
         rl_base_layout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        view_status_bar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         text_title.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
@@ -92,7 +93,7 @@ public class FastMsgFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(android.R.color.transparent).init();
+            immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         }
 
     }

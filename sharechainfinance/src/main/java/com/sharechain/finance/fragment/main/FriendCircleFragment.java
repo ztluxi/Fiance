@@ -16,14 +16,14 @@ public class FriendCircleFragment extends BaseFragment {
     @Override
     protected void initView() {
         initTitle(getString(R.string.main_tab_friend_circle));
-        immersionBar.statusBarColor(android.R.color.transparent).init();
+        immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(android.R.color.transparent).init();
+            immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         }
 
     }
