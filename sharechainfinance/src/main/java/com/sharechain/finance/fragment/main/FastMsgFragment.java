@@ -89,22 +89,17 @@ public class FastMsgFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
+@Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && immersionBar != null) {
             immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         }
 
-    }
-
-    private void initHeaderView() {
+    }private void initHeaderView() {
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_fastmsg_header, null);
         listView.addHeaderView(headerView);
-    }
-
-    //EventBus回调
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    }    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(BaseNotifyBean event) {
         Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
     }

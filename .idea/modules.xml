@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Finance.iml" filepath="$PROJECT_DIR$/Finance.iml" />
+      <module fileurl="file://D:\Android\Git\Finance\ShareChainFinance_Android\Finance.iml" filepath="D:\Android\Git\Finance\ShareChainFinance_Android\Finance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ShareChainFinance_Android.iml" filepath="$PROJECT_DIR$/ShareChainFinance_Android.iml" />
       <module fileurl="file://D:\Finance\ShareChainFinance_Android.iml" filepath="D:\Finance\ShareChainFinance_Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharechainfinance/sharechainfinance.iml" filepath="$PROJECT_DIR$/sharechainfinance/sharechainfinance.iml" />
     </modules>

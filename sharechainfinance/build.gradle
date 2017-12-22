@@ -77,4 +77,5 @@ dependencies {
     //glide transforms
     compile 'jp.wasabeef:glide-transformations:3.0.1'
 
-    compile 'com.zhy:flowlayout-lib:1.0.3'}
+    compile 'com.zhy:flowlayout-lib:1.0.3'
+}
