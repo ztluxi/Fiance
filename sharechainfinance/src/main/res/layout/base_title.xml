@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_base_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
-    android:background="@color/title_start_color"
-    android:fitsSystemWindows="true"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_title_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="17dp"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/image_title_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:src="@drawable/back"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:lines="1"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tv_title_right"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp"
-        android:visibility="gone" />
-
-    <ImageView
-        android:src="@drawable/history"
-        android:id="@+id/image_title_right"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
-        android:visibility="gone" />
-
+    <!--状态栏背景-->
     <View
+        android:id="@+id/view_status_bar"
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_alignParentBottom="true"
-        android:background="@color/list_divider" />
+        android:layout_height="20dp"
+        android:background="@drawable/common_mine_title_bg" />
 
-</RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_base_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/common_mine_title_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image_title_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:src="@drawable/back"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/list_divider" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+

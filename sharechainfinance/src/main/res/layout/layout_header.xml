@@ -13,16 +13,28 @@
         android:background="@drawable/icon_home_top_bg"
         android:orientation="vertical">
 
-        <cn.bingoogolapple.bgabanner.BGABanner
-            android:id="@+id/banner"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="172dp"
-            android:scaleType="fitXY"
-            app:banner_indicatorGravity="bottom|right"
-            app:banner_pageChangeDuration="1500"
-            app:banner_placeholderDrawable="@mipmap/ic_launcher"
-            app:banner_tipTextSize="12sp"
-            app:banner_transitionEffect="accordion" />
+            android:layout_height="wrap_content">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="172dp"
+                android:layout_gravity="center"
+                android:clipToPadding="false"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="7dp"
+            android:orientation="horizontal" />
 
     </LinearLayout>
 
@@ -32,12 +44,12 @@
         android:layout_below="@id/ll_banner" />
 
     <RelativeLayout
-        android:layout_marginTop="-45dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_banner"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="-45dp"
         android:background="@drawable/common_home_search_bg"
         android:paddingBottom="19dp"
         android:paddingLeft="17dp"

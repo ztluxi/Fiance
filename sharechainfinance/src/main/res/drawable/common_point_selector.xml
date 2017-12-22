@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 被选中时 -->
+    <item android:drawable="@drawable/common_white_point" android:state_selected="true" />
+    <!-- 被激活时 -->
+    <item android:drawable="@drawable/common_white_point" android:state_activated="true" />
+    <!-- 默认时 -->
+    <item android:drawable="@drawable/common_white_transparent_point" />
+</selector>

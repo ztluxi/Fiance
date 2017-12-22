@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.R;
@@ -41,6 +42,8 @@ public class HomeFragment extends BaseFragment {
     ViewPager viewpager;
     @BindView(R.id.iv_add_channel)
     ImageView add_channel;
+    @BindView(R.id.rl_top)
+    RelativeLayout rl_top;
     private ViewPagerAdapter mPagerAdapter;
     private int needShowPosition = -1;
 
@@ -53,6 +56,7 @@ public class HomeFragment extends BaseFragment {
     protected void initView() {
         immersionBar.statusBarColor(R.color.tint_home_color)
                 .init();
+        setTitlePadding(rl_top, BaseUtils.dip2px(getActivity(), 10));
     }
 
     @Override
@@ -107,9 +111,9 @@ public class HomeFragment extends BaseFragment {
                 if (index == 0) {
                     return 2.0f;
                 } else if (index == 1) {
-                    return 1.2f;
+                    return 1.5f;
                 } else {
-                    return 1.0f;
+                    return 1.5f;
                 }
             }
 
