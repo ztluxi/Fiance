@@ -54,10 +54,18 @@
     <string name="feedback_one">请输入您宝贵的意见，您的意见与反馈是我们前进的动力</string>
     <string name="feedback_two">请输入您的手机号/邮箱</string>
     <string name="submit">提交</string>
+
+    <string name="big_msg">重磅快讯</string>
+    <string name="view_detail">查看详情</string>
     <string name="home_head_news">头条快讯</string>
     <string name="fans">粉丝</string>
     <string name="has_follow">已关注</string>
     <string name="please_write_your_suggest">请填写您反馈的建议</string>
     <string name="please_write_your_phone_number">请填写您的手机号或者邮箱</string>
     <string name="please_check_network">请检查您的网络</string>
+    <string name="hot_search">热门搜索</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search">搜索</string>
+    <string name="aite_weibo">我是大佬</string>
+
 </resources>

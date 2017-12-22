@@ -1,15 +1,12 @@
 package com.sharechain.finance.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.sharechain.finance.R;
 
@@ -23,6 +20,7 @@ public class BaseUtils {
 
     private static final String NEWS_ITEM_SPECIAL = "special";
     private static final String NEWS_ITEM_PHOTO_SET = "photoset";
+
     /**
      * @param skipType
      * @return
@@ -121,6 +119,44 @@ public class BaseUtils {
         }
 
         return result;
+    }
+
+    /**
+     * dip单位转换成像素单位
+     *
+     * @param context  上下文对象
+     * @param dipValue 需要转换的值
+     * @return
+     * @author Jeff
+     */
+    public static int dip2px(Context context, float dipValue) {
+        if (context == null) {
+            return 1;
+        }
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    /**
+     * 创建控件半园形效果
+     *
+     * @param strokeWidth 边框宽
+     * @param storkeColor 边框辨色
+     * @param roundRadius 圆角半径
+     * @param fillColor   填充颜色
+     * @return
+     * @author Aaron
+     */
+    public static Drawable createGradientDrawable(int strokeWidth, int storkeColor, int roundRadius, int fillColor) {
+        GradientDrawable drawable = new GradientDrawable();//创建drawable
+        drawable.setColor(fillColor);
+        drawable.setCornerRadius(roundRadius);
+        drawable.setStroke(strokeWidth, storkeColor);
+        return drawable;
+    }
+
+    public static Drawable createRectDrawable(int fillColor, int roundRadius) {
+        return createGradientDrawable(0, fillColor, roundRadius, fillColor);
     }
 
 }

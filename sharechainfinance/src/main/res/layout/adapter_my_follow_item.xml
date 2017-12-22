@@ -9,14 +9,14 @@
 
     <LinearLayout
         android:id="@+id/my_follow_Image_ll"
-        android:layout_width="40dp"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/my_follow_Image_iv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:paddingLeft="15dp"
             android:src="@drawable/follow" />

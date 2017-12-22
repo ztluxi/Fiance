@@ -1,28 +1,22 @@
 package com.sharechain.finance;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
-import com.sharechain.finance.utils.BaseUtils;
+import com.gyf.barlibrary.ImmersionBar;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import butterknife.ButterKnife;
-import butterknife.internal.Utils;
 import okhttp3.MediaType;
 
 /**
@@ -36,34 +30,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected TextView tv_title_right;
     protected ImageView image_title_right;
     protected TextView text_title;
+    protected ImmersionBar mImmersionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-        // 4.4及以上版本开启
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-        }
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.title_start_color).init();   //所有子类都将继承这些相同的属性
 
-        setTintDrawable(R.drawable.common_mine_title_bg);
         ButterKnife.bind(this);
         initData();
         initView();
 
     }
 
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mImmersionBar != null)
+            mImmersionBar.destroy();  //必须调用该方法，防止内存泄漏，不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
     }
 
     protected void initTitle(String titleStr) {
@@ -80,6 +66,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         xRefreshView.setCustomHeaderView(new MyXRefreshViewHeader(this));
         xRefreshView.setCustomFooterView(new MyXrefreshViewFooter(this));
         xRefreshView.setEmptyView(R.layout.layout_empty_view);
+    }
+
+    // 通过反射机制获取手机状态栏高度
+    protected int getStatusBarHeight() {
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
     }
 
     protected void requestGet(String url, MyStringCallback callback) {
@@ -105,18 +109,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .mediaType(JSON)
                 .build()
                 .execute(callback);
-    }
-
-    /**
-     * 设置状态栏背景
-     *
-     * @param res
-     */
-    protected void setTintDrawable(int res) {
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setNavigationBarTintEnabled(true);
-        tintManager.setTintDrawable(ContextCompat.getDrawable(this, res));
     }
 
     public abstract int getLayout();

@@ -49,7 +49,7 @@ public class HistoryActivity extends BaseActivity {
         initTitle(getString(R.string.history));
         back_Image.setVisibility(View.VISIBLE);
         clearHistoryIv.setVisibility(View.VISIBLE);
-        clearHistoryIv.setImageResource(R.drawable.follow);
+        clearHistoryIv.setImageResource(R.drawable.clear);
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
         refreshView.setPullLoadEnable(false);

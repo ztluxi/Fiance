@@ -1,6 +1,9 @@
 package com.sharechain.finance.fragment.main;
 
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
@@ -28,6 +31,7 @@ public class FastMsgFragment extends BaseFragment {
     XRefreshView xRefreshView;
     @BindView(R.id.listView)
     PinnedSectionListView listView;
+    private View headerView;
 
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
@@ -39,10 +43,14 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        immersionBar.statusBarColor(R.color.title_start_color)
+                .init();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         initTitle(getString(R.string.main_tab_fast_msg));
+        rl_base_layout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        text_title.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(false);
@@ -56,6 +64,7 @@ public class FastMsgFragment extends BaseFragment {
 
         });
 
+        initHeaderView();
         adapter = new FastMsgAdapter(getActivity(), dataList);
         listView.setAdapter(adapter);
     }
@@ -78,6 +87,21 @@ public class FastMsgFragment extends BaseFragment {
         }
         adapter.setListData(dataList);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && immersionBar != null) {
+            immersionBar.statusBarColor(R.color.title_start_color)
+                    .init();
+        }
+
+    }
+
+    private void initHeaderView() {
+        headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_fastmsg_header, null);
+        listView.addHeaderView(headerView);
     }
 
     //EventBus回调

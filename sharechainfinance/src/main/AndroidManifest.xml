@@ -33,22 +33,19 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash">
+            android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash">
-        </activity>
+            android:theme="@style/AppTheme.Splash" />
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            >
-        </activity>
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name="com.sharechain.finance.module.home.HomeDetailsActivity"
             android:screenOrientation="portrait" />
@@ -70,27 +67,28 @@
         <activity
             android:name="com.sharechain.finance.module.mine.PersonalCenterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.FeedbackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.sharechain.finance.module.mine.AboutFinanceActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.sharechain.finance.module.mine.MineActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.sharechain.finance.module.mine.MyFollowActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="com.sharechain.finance.module.mine.SearchActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="561cae6ae0f55abd990035bf"/>
+            android:value="561cae6ae0f55abd990035bf" />
 
     </application>
 

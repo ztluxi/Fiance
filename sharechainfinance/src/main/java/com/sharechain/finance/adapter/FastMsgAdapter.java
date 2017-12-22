@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sharechain.finance.R;
@@ -72,7 +73,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
             }
             childViewHolder = new ChildViewHolder(view);
             childViewHolder.text_content.setText(listData.get(i).getDataText());
-            childViewHolder.card_fast_msg.setOnClickListener(new View.OnClickListener() {
+            childViewHolder.image_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new FastMsgDialog(context).show();
@@ -102,8 +103,18 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
     }
 
     class ChildViewHolder {
+        @BindView(R.id.text_title)
+        TextView text_title;
+        @BindView(R.id.text_msg_type)
+        TextView text_msg_type;
+        @BindView(R.id.text_time)
+        TextView text_time;
         @BindView(R.id.text_content)
         TextView text_content;
+        @BindView(R.id.text_view_article)
+        TextView text_view_article;
+        @BindView(R.id.image_share)
+        ImageView image_share;
         @BindView(R.id.card_fast_msg)
         CardView card_fast_msg;
 

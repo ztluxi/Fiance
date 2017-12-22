@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/white"
+    android:layout_height="wrap_content"
+    android:background="@color/base_bg_color"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingLeft="10dp">
+    android:paddingBottom="13dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="13dp">
 
     <TextView
         android:id="@+id/text_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack" />
+        android:drawableLeft="@drawable/icon_fastmsg_calendar"
+        android:drawablePadding="8dp"
+        android:text="2017-12-12"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp" />
 
 </LinearLayout>

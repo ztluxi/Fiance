@@ -15,6 +15,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mImmersionBar.statusBarColor(android.R.color.transparent).init();
         if (SharedPreferenceManager.ifFristOpenSalonAPP(SplashActivity.this)){
             BaseUtils.openActivityBottomAnim(SplashActivity.this, GuideActivity.class, null);
             finish();
