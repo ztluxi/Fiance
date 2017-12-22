@@ -87,6 +87,10 @@
             android:name="com.sharechain.finance.module.mine.SearchActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="com.sharechain.finance.module.mogul.MogulCircleActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="561cae6ae0f55abd990035bf" />

@@ -66,6 +66,7 @@ public class FastMsgFragment extends BaseFragment {
 
         initHeaderView();
         adapter = new FastMsgAdapter(getActivity(), dataList);
+        adapter.setListData(dataList);
         listView.setAdapter(adapter);
     }
 
@@ -85,8 +86,6 @@ public class FastMsgFragment extends BaseFragment {
                 dataList.add(childData);
             }
         }
-        adapter.setListData(dataList);
-        adapter.notifyDataSetChanged();
     }
 
 @Override

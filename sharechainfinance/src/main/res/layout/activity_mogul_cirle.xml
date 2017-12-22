@@ -2,11 +2,90 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/base_bg_color"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/base_title" />
+
+        <RelativeLayout
+            android:id="@+id/center_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:id="@+id/mogul_bg_iv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/mogul_center_bg" />
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/back" />
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginLeft="150dp"
+                android:layout_alignParentTop="true"
+                android:text="大哥大"
+                android:id="@+id/mogul_name"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="20dp"
+                />
+
+
+
+            <LinearLayout
+
+                android:paddingTop="135dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/user" />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/mogul_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="王者"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/mogul_position_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="比特币分析师"
+                    android:textColor="@color/about_font" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/mogul_follow_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/feedback_sumbit_bg"
+                    android:gravity="center"
+                    android:text="比特币分析师"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    <View
+        android:layout_height="10dp"
+        android:layout_width="match_parent"
+        android:background="@color/base_bg_color"/>
 
     <com.andview.refreshview.XRefreshView
         android:id="@+id/xrefreshview_content"

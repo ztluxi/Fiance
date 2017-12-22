@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="horizontal"
-    android:paddingRight="15dp"
-    android:paddingLeft="15dp"
-    android:paddingBottom="10dp"
+    android:orientation="vertical"
     android:id="@+id/my_mogul_item_rl">
 
+    <RelativeLayout
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        >
 
     <ImageView
         android:layout_marginTop="16dp"
         android:layout_alignParentLeft="true"
-        android:id="@+id/mogul_image_iv"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:id="@+id/mogul_head_iv"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/follow"
          />
         <TextView
             android:layout_marginLeft="14dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/mogul_image_iv"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/mogul_head_iv"
             android:lines="1"
-            android:maxLength="20"
+            android:maxLength="15"
             android:textSize="14sp"
-            android:id="@+id/my_mogul_name"
+            android:id="@+id/mogul_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="大佬"
@@ -34,38 +40,35 @@
             />
 
         <TextView
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/mogul_image_iv"
-            android:layout_below="@+id/my_mogul_name"
-            android:layout_marginTop="10dp"
-            android:textSize="11sp"
-            android:id="@+id/my_mogul_time"
+            android:id="@+id/mogul_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/mogul_content_tv"
+            android:layout_alignLeft="@+id/mogul_name"
+            android:layout_alignStart="@+id/mogul_name"
             android:text="2017-07-12"
             android:textColor="@color/about_font"
-             />
+            android:textSize="11sp" />
 
     <TextView
+        android:layout_marginTop="15dp"
         android:maxLength="15"
         android:maxLines="1"
         android:id="@+id/mogul_weibo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/my_mogul_name"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
-        android:layout_toEndOf="@+id/my_mogul_name"
-        android:layout_toRightOf="@+id/my_mogul_name"
+        android:layout_toRightOf="@+id/mogul_name"
         android:text="@string/aite_weibo"
         android:textColor="@color/about_font"
-        android:textSize="11sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:maxLength="35"
         android:maxLines="2"
-        android:layout_below="@+id/mogul_image_iv"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/mogul_head_iv"
+        android:layout_marginTop="10dp"
         android:textSize="14sp"
         android:id="@+id/mogul_content_tv"
         android:layout_width="wrap_content"
@@ -75,29 +78,30 @@
         />
 
 
+        <TextView
+            android:id="@+id/mogul_position_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_alignLeft="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_alignTop="@+id/mogul_weibo"
+            android:background="@drawable/mogul_follow_bg"
+            android:gravity="center"
+            android:text="未来财经ceo"
+            android:textColor="@color/tint_home_color"
+            android:textSize="11sp" />
     <TextView
-        android:background="@drawable/feedback_bg"
-        android:layout_marginRight="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
-        android:textSize="11sp"
-        android:id="@+id/mogul_position_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="未来财经ceo"
-        android:textColor="@color/tint_home_color"
-        />
-    <TextView
+        android:visibility="gone"
         android:padding="5dp"
         android:background="@color/base_bg_color"
         android:layout_below="@+id/mogul_content_tv"
         android:layout_marginRight="15dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="11sp"
         android:id="@+id/mogul_content_translate_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="继续前进"
         android:textColor="@color/colorBlack"
         />
@@ -111,8 +115,8 @@
         android:layout_marginTop="13dp"
         android:textSize="11sp"
         android:id="@+id/mogul_content_Image_tv"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:text="继续前进"
         android:textColor="@color/colorBlack"
         android:layout_marginBottom="13dp"
@@ -125,11 +129,9 @@
         />
 
     <ImageView
-        android:padding="5dp"
         android:background="@drawable/fabulous_sel"
         android:layout_below="@+id/line_tv"
-        android:layout_marginTop="15dp"
-        android:textSize="11sp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="35dp"
         android:id="@+id/mogul_fabulous_tv"
         android:layout_width="wrap_content"
@@ -142,7 +144,7 @@
         android:layout_toRightOf="@+id/mogul_fabulous_tv"
         android:padding="5dp"
         android:layout_below="@+id/line_tv"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:textSize="11sp"
         android:id="@+id/mogul_fabulous_number_tv"
         android:layout_width="wrap_content"
@@ -151,8 +153,8 @@
         />
 
     <ImageView
+        android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/mogul_share_tv"
-        android:padding="5dp"
         android:src="@drawable/share"
         android:layout_below="@+id/line_tv"
         android:layout_marginTop="15dp"
@@ -160,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
-        />
+        android:id="@+id/imageView" />
 
     <TextView
         android:layout_marginTop="15dp"
@@ -168,11 +170,16 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="35dp"
         android:text="分享"
-        android:padding="5dp"
         android:layout_below="@+id/line_tv"
         android:textSize="11sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/about_font"
         />
-</RelativeLayout>
+    </RelativeLayout>
+    <View
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/base_bg_color"/>
+</LinearLayout>

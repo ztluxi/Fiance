@@ -6,9 +6,17 @@ package com.sharechain.finance.bean;
 
 public class FollowData {
     private String name;
-    private String fans;
+    private String weibo;
     private String position;
     private String image;
+
+    public String getWeibo() {
+        return weibo;
+    }
+
+    public void setWeibo(String weibo) {
+        this.weibo = weibo;
+    }
 
     public String getName() {
         return name;
@@ -18,13 +26,7 @@ public class FollowData {
         this.name = name;
     }
 
-    public String getFans() {
-        return fans;
-    }
 
-    public void setFans(String fans) {
-        this.fans = fans;
-    }
 
     public String getPosition() {
         return position;

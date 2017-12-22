@@ -75,7 +75,7 @@ public class MyFollowActivity extends BaseActivity {
         for (int i = 0; i < 10; i++) {
             FollowData followData = new FollowData();
             followData.setPosition("比特币分析师"+i);
-            followData.setFans(i+1+"万");
+            followData.setWeibo(i+1+"微博");
             followData.setName("我是大佬"+i);
             followData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
             followDataList.add(followData);

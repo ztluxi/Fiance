@@ -50,8 +50,9 @@ public abstract class BaseFragment extends LazyFragment {
         setContentView(getLayout());
         immersionBar = ImmersionBar.with(getActivity());
         unbinder = ButterKnife.bind(this, getContentView());
-        initView();
         initData();
+        initView();
+
     }
 
     /**
