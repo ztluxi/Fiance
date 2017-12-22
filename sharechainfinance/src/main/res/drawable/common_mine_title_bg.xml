@@ -5,5 +5,4 @@
         android:angle="0"
         android:endColor="@color/tint_home_color"
         android:startColor="@color/title_start_color"
-        android:type="linear" />
-</shape>
+        android:type="linear" /></shape>

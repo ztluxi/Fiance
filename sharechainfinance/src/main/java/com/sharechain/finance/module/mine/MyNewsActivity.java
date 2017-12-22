@@ -53,7 +53,6 @@ public class MyNewsActivity extends BaseActivity {
     public void initView() {
         initTitle(getString(R.string.my_news));
         back_Image.setVisibility(View.VISIBLE);
-        initData();
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
         refreshView.setPullLoadEnable(false);
@@ -71,6 +70,7 @@ public class MyNewsActivity extends BaseActivity {
                 ToastManager.showShort(MyNewsActivity.this,"您点了"+position);
             }
         });
+
         newsAdapter.setData(newsDataList);
         myNewslv.setAdapter(newsAdapter);
 

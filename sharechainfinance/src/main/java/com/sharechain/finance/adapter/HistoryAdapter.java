@@ -32,8 +32,8 @@ public class HistoryAdapter extends BGAAdapterViewAdapter<HomeData>{
 
     @Override
     protected void setItemChildListener(BGAViewHolderHelper helper) {
-        helper.setItemChildClickListener(R.id.author_tv);
-
+        helper.setItemChildClickListener(R.id.history_item_rl);
+        helper.setItemChildLongClickListener(R.id.history_item_rl);
     }
 
     @Override

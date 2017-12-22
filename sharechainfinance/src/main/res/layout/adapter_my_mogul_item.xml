@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:id="@+id/my_mogul_item_rl">
+
+
+    <ImageView
+        android:layout_marginTop="16dp"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="15dp"
+        android:id="@+id/mogul_image_iv"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/follow"
+         />
+        <TextView
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/mogul_image_iv"
+            android:lines="1"
+            android:maxLength="20"
+            android:textSize="14sp"
+            android:id="@+id/my_mogul_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="大佬"
+            android:textColor="@color/tint_home_color"
+            />
+
+        <TextView
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/mogul_image_iv"
+            android:layout_below="@+id/my_mogul_name"
+            android:layout_marginTop="10dp"
+            android:textSize="11sp"
+            android:id="@+id/my_mogul_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2017-07-12"
+            android:textColor="@color/about_font"
+             />
+
+    <TextView
+        android:maxLength="15"
+        android:maxLines="1"
+        android:id="@+id/mogul_weibo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/my_mogul_name"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_toEndOf="@+id/my_mogul_name"
+        android:layout_toRightOf="@+id/my_mogul_name"
+        android:text="@string/aite_weibo"
+        android:textColor="@color/about_font"
+        android:textSize="11sp" />
+
+    <TextView
+        android:maxLength="35"
+        android:maxLines="2"
+        android:layout_below="@+id/mogul_image_iv"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/mogul_content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="比特币这东西，早买晚买都是买的！"
+        android:textColor="@color/colorBlack"
+        />
+
+
+    <TextView
+        android:background="@drawable/feedback_bg"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:textSize="11sp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/mogul_position_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未来财经ceo"
+        android:textColor="@color/tint_home_color"
+        />
+</RelativeLayout>

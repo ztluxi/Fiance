@@ -44,4 +44,6 @@
     <color name="title_end_color">#1EB8F4</color>
     <color name="tint_home_color">#3490e3</color>
 
+    <color name="has_follow">#bfe9572f</color>
+
 </resources>

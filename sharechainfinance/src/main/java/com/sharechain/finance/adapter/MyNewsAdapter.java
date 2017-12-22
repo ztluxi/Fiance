@@ -24,8 +24,7 @@ public class MyNewsAdapter extends BGAAdapterViewAdapter<NewsData>{
 
     @Override
     protected void setItemChildListener(BGAViewHolderHelper helper) {
-        helper.setItemChildClickListener(R.id.my_news_Image_iv);
-
+        helper.setItemChildClickListener(R.id.my_news_item_rl);
     }
 
     @Override

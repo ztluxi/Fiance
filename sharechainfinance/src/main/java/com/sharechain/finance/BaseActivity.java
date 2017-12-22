@@ -44,8 +44,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mImmersionBar.statusBarColor(android.R.color.transparent).init();   //所有子类都将继承这些相同的属性
 
         ButterKnife.bind(this);
-        initView();
         initData();
+        initView();
+
     }
 
     /**

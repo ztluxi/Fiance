@@ -5,7 +5,7 @@
     android:layout_height="82dp"
     android:background="@color/white"
     android:orientation="horizontal"
-    android:id="@+id/relativeLayout2">
+    android:id="@+id/my_news_item_rl">
 
     <ImageView
         android:layout_alignParentLeft="true"
@@ -48,7 +48,4 @@
              />
     </LinearLayout>
 
-    <TextView
-        style="@style/user_list_line_horizontal"
-        />
 </RelativeLayout>
