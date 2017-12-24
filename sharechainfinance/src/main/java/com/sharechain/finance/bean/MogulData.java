@@ -1,5 +1,8 @@
 package com.sharechain.finance.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ${zhoutao} on 2017/12/22 0013.
  */
@@ -12,7 +15,15 @@ public class MogulData {
     private String time;
     private String fabulous;//点赞
     private String head;
-    private String image;
+    public List<String> urlList = new ArrayList<>();
+
+    public List<String> getUrlList() {
+        return urlList;
+    }
+
+    public void setUrlList(List<String> urlList) {
+        this.urlList = urlList;
+    }
 
     public String getHead() {
         return head;
@@ -70,11 +81,5 @@ public class MogulData {
         this.fabulous = fabulous;
     }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

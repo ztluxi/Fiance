@@ -84,7 +84,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         historyAdapter = new SearchHistoryAdapter(SearchActivity.this, list);
         searchPageLv.setAdapter(historyAdapter);
 
-
         Search();
     }
 

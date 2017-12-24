@@ -81,9 +81,9 @@
         <TextView
             android:id="@+id/mogul_position_tv"
             android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:layout_alignLeft="@+id/imageView"
-            android:layout_alignStart="@+id/imageView"
+            android:layout_height="19dp"
+            android:layout_alignLeft="@+id/share_image_iv"
+            android:layout_alignStart="@+id/share_image_iv"
             android:layout_alignTop="@+id/mogul_weibo"
             android:background="@drawable/mogul_follow_bg"
             android:gravity="center"
@@ -106,20 +106,20 @@
         android:textColor="@color/colorBlack"
         />
 
-    <ImageView
+    <com.jaeger.ninegridimageview.NineGridImageView
         android:src="@drawable/mogul_center_bg"
         android:padding="5dp"
-        android:background="@color/base_bg_color"
         android:layout_below="@+id/mogul_content_translate_tv"
         android:layout_marginRight="15dp"
         android:layout_marginTop="13dp"
         android:textSize="11sp"
         android:id="@+id/mogul_content_Image_tv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:text="继续前进"
-        android:textColor="@color/colorBlack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="13dp"
+        app:imgGap="3dp"
+        app:showStyle="grid"
+        app:singleImgSize="500dp"
         />
 
     <TextView
@@ -162,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
-        android:id="@+id/imageView" />
+        android:id="@+id/share_image_iv" />
 
     <TextView
         android:layout_marginTop="15dp"

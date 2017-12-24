@@ -33,7 +33,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
     //刷新库
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     //自动换行layout
@@ -78,4 +77,6 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:3.0.1'
 
     compile 'com.zhy:flowlayout-lib:1.0.3'
+    //9宫图
+    compile 'com.jaeger.ninegridimageview:library:1.1.1'
 }

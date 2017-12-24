@@ -7,17 +7,19 @@
 
 
         <RelativeLayout
+            android:visibility="visible"
             android:id="@+id/center_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
             android:paddingBottom="10dp">
+
             <ImageView
                 android:id="@+id/mogul_bg_iv"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/mogul_center_bg" />
+                android:background="@drawable/mogul_center_bg" />
+
             <ImageView
                 android:id="@+id/back_iv"
                 android:layout_width="wrap_content"
@@ -26,21 +28,27 @@
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/back" />
             <TextView
+                android:paddingRight="40dp"
+                android:gravity="center"
+                android:layout_toRightOf="@+id/back_iv"
                 android:textColor="@color/white"
-                android:layout_marginLeft="150dp"
-                android:layout_alignParentTop="true"
                 android:text="大哥大"
                 android:id="@+id/mogul_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="22dp"
                 android:layout_marginTop="20dp"
                 />
 
-
-
+            <View
+                android:layout_marginTop="110dp"
+                android:layout_below="@+id/mogul_name"
+                android:id="@+id/white_tv"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#00000000"
+                />
             <LinearLayout
-
-                android:paddingTop="135dp"
+                android:layout_below="@+id/white_tv"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +58,7 @@
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/icon_tab_fastmsg" />
 
                 <TextView
                     android:layout_marginTop="5dp"
@@ -59,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="王者"
                     android:textColor="@color/colorBlack"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_marginTop="5dp"
@@ -70,6 +78,7 @@
                     android:textColor="@color/about_font" />
 
                 <TextView
+                    android:padding="5dp"
                     android:layout_marginTop="10dp"
                     android:id="@+id/mogul_follow_tv"
                     android:layout_width="wrap_content"
@@ -86,13 +95,11 @@
         android:layout_height="10dp"
         android:layout_width="match_parent"
         android:background="@color/base_bg_color"/>
-
     <com.andview.refreshview.XRefreshView
         android:id="@+id/xrefreshview_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <ListView
             android:id="@+id/mogul_lv"
             android:layout_width="match_parent"
