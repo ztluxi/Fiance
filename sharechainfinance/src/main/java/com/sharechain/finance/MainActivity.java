@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setTintDrawable(R.drawable.common_home_tint_color_bg);
         tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         tabhost.getTabWidget().setVisibility(View.GONE);
         tabhost.setCurrentTabByTag(TAB_HOME);
@@ -133,12 +132,12 @@ public class MainActivity extends BaseActivity {
         requestGet("https://www.baidu.com", new MyStringCallback(this) {
 
             @Override
-            void onSuccess(String result) {
+            protected void onSuccess(String result) {
                 Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
             }
 
             @Override
-            void onFailed(String errStr) {
+            protected void onFailed(String errStr) {
 
             }
         });

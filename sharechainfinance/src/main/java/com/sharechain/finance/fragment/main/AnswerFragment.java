@@ -94,9 +94,4 @@ public class AnswerFragment extends BaseFragment implements NewsListAdapter.OnNe
 
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
 }

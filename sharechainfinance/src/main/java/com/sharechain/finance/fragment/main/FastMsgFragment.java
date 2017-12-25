@@ -2,7 +2,6 @@ package com.sharechain.finance.fragment.main;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.andview.refreshview.XRefreshView;
@@ -31,7 +30,6 @@ public class FastMsgFragment extends BaseFragment {
     XRefreshView xRefreshView;
     @BindView(R.id.listView)
     PinnedSectionListView listView;
-    private View headerView;
 
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
@@ -43,14 +41,14 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         initTitle(getString(R.string.main_tab_fast_msg));
-        rl_base_layout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-        view_status_bar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-        text_title.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
+        rl_base_layout.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+        view_status_bar.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+        text_title.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+        view_line.setVisibility(View.GONE);
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(false);
@@ -64,7 +62,6 @@ public class FastMsgFragment extends BaseFragment {
 
         });
 
-        initHeaderView();
         adapter = new FastMsgAdapter(getActivity(), dataList);
         adapter.setListData(dataList);
         listView.setAdapter(adapter);
@@ -88,19 +85,11 @@ public class FastMsgFragment extends BaseFragment {
         }
     }
 
-@Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
-        }
-
-    }private void initHeaderView() {
-        headerView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_fastmsg_header, null);
-        listView.addHeaderView(headerView);
-    }    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(BaseNotifyBean event) {
-        Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
+        if (event.getType() == BaseNotifyBean.TYPE.TYPE_SHARE_RESULT) {
+            Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override

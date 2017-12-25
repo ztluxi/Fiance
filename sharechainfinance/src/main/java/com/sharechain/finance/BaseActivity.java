@@ -1,10 +1,13 @@
 package com.sharechain.finance;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,10 +38,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView image_title_right;
     protected TextView text_title;
     protected ImmersionBar mImmersionBar;
+    protected InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         setContentView(getLayout());
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.statusBarColor(android.R.color.transparent).init();   //所有子类都将继承这些相同的属性
@@ -46,7 +51,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
         initView();
+    }
 
+    protected void hideSoftKeyboard(EditText editText) {
+        if (inputMethodManager != null) {
+            // 隐藏软键盘
+            inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0); //强制隐藏键盘
+        }
     }
 
     /**

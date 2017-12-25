@@ -105,6 +105,8 @@ dependencies {
 
     //9宫图
     compile 'com.jaeger.ninegridimageview:library:1.1.1'
+
+    compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
+
     implementation files('libs/YoudaoBase.jar')
-    implementation files('libs/YoudaoTranslateOnline.jar')
-}
+    implementation files('libs/YoudaoTranslateOnline.jar')}

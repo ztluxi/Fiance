@@ -70,4 +70,9 @@
     <string name="aite_weibo">我是大佬</string>
     <string name="mogul_circle">大佬圈</string>
 
+    <string name="search_tag_selected">已选频道</string>
+    <string name="search_tag_other">点击可添加更多频道</string>
+    <string name="search_tag_click">点击进入频道</string>
+    <string name="search_tag_bianji">编辑</string>
+
 </resources>

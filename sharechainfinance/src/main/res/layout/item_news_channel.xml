@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/news_channel_tv"
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:layout_margin="@dimen/item_margin"
-    android:background="@drawable/bg_item_news_channel"
-    android:gravity="center"
-    android:textColor="@color/primary_text"
-    android:textSize="@dimen/big_small"
-    tools:text="头条" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/search_bg"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/about_font" />
+
+    <ImageView
+        android:id="@+id/image_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/error"
+        android:visibility="gone" />
+
+</RelativeLayout>

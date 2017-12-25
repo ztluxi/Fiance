@@ -1,0 +1,12 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flowlayout_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/search_bg"
+    android:paddingBottom="9dp"
+    android:paddingLeft="19dp"
+    android:paddingRight="19dp"
+    android:paddingTop="9dp"
+    android:text="Helloworld"
+    android:textColor="@color/about_font" />
