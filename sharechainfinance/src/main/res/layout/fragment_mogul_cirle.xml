@@ -8,17 +8,26 @@
 
     <include layout="@layout/base_title" />
 
-    <com.andview.refreshview.XRefreshView
-        android:id="@+id/xrefreshview_content"
+
+
+
+    <!--<com.andview.refreshview.XRefreshView-->
+        <!--android:id="@+id/xrefreshview_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/mogul_lv"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"></ListView>-->
+    <!--</com.andview.refreshview.XRefreshView>-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_post_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/mogul_lv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
-    </com.andview.refreshview.XRefreshView>
+        android:background="#e4e4e4"
+        android:visibility="visible"/>
 
 
 </LinearLayout>

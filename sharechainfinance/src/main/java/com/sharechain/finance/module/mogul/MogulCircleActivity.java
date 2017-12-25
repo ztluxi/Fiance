@@ -1,16 +1,15 @@
 package com.sharechain.finance.module.mogul;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.MogulAdapter;
 import com.sharechain.finance.bean.MogulData;
-import com.sharechain.finance.utils.ToastManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
 /**
  * Created by ${zhoutao} on 2017/12/22 0022.
@@ -28,14 +26,17 @@ public class MogulCircleActivity extends BaseActivity {
 
     @BindView(R.id.back_iv)
     ImageView back_Image;
-    @BindView(R.id.mogul_lv)
-    ListView mogulLv;
-    @BindView(R.id.xrefreshview_content)
-    XRefreshView refreshView;
+    @BindView(R.id.mogul_circle_rl)
+    RecyclerView mogulCircleRl;
     private List<MogulData> mogulDataList = new ArrayList<>();
-
-
     private MogulAdapter mogulAdapter;
+    private String[] IMG_URL_LIST = {
+            "http://ac-QYgvX1CC.clouddn.com/36f0523ee1888a57.jpg", "http://ac-QYgvX1CC.clouddn.com/07915a0154ac4a64.jpg",
+            "http://ac-QYgvX1CC.clouddn.com/9ec4bc44bfaf07ed.jpg", "http://ac-QYgvX1CC.clouddn.com/fa85037f97e8191f.jpg",
+            "http://ac-QYgvX1CC.clouddn.com/de13315600ba1cff.jpg", "http://ac-QYgvX1CC.clouddn.com/15c5c50e941ba6b0.jpg",
+            "http://ac-QYgvX1CC.clouddn.com/10762c593798466a.jpg", "http://ac-QYgvX1CC.clouddn.com/eaf1c9d55c5f9afd.jpg",
+            "http://ac-QYgvX1CC.clouddn.com/ad99de83e1e3f7d4.jpg", "http://ac-QYgvX1CC.clouddn.com/233a5f70512befcc.jpg",
+    };
 
     @Override
     public int getLayout() {
@@ -44,50 +45,28 @@ public class MogulCircleActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        initXRefreshView(refreshView);
-        refreshView.setPullRefreshEnable(true);
-        refreshView.setPullLoadEnable(false);
-        refreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                super.onRefresh(isPullDown);
-                refreshView.stopRefresh();
-            }
-        });
-        mogulAdapter = new MogulAdapter(this, R.layout.adapter_my_mogul_item);
-        mogulAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                ToastManager.showShort(MogulCircleActivity.this, "您点了" + position);
-            }
-        });
 
-        mogulAdapter.setData(mogulDataList);
-        mogulLv.setAdapter(mogulAdapter);
+        final LinearLayoutManager manager = new LinearLayoutManager(this);
+        mogulCircleRl.setLayoutManager(manager);
+
+        mogulAdapter = new MogulAdapter(this, mogulDataList,null);
+        mogulCircleRl.setAdapter(mogulAdapter);
 
     }
-
-    private String[] IMG_URL_LIST = {
-            "http://ac-QYgvX1CC.clouddn.com/36f0523ee1888a57.jpg", "http://ac-QYgvX1CC.clouddn.com/07915a0154ac4a64.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/9ec4bc44bfaf07ed.jpg", "http://ac-QYgvX1CC.clouddn.com/fa85037f97e8191f.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/de13315600ba1cff.jpg", "http://ac-QYgvX1CC.clouddn.com/15c5c50e941ba6b0.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/10762c593798466a.jpg", "http://ac-QYgvX1CC.clouddn.com/eaf1c9d55c5f9afd.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/ad99de83e1e3f7d4.jpg", "http://ac-QYgvX1CC.clouddn.com/233a5f70512befcc.jpg",
-    };
-    List<String> imgUrls = new ArrayList<>();
 
     @Override
     public void initData() {
         for (int i = 0; i < 10; i++) {
-            MogulData newsData = new MogulData();
+            MogulData newsData = new MogulData(null);
             newsData.setHead("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-            newsData.setContent("Never give up");
-            newsData.setFabulous("20090");
-            newsData.setName("大哥大");
+            newsData.setContent("Never give up" + i);
+            newsData.setFabulous("20090" + i);
+            newsData.setName("大哥大" + i);
             newsData.setPosition("未来财经ceo");
             newsData.setTime("2017-12-22");
             newsData.setWeibo("黑猫警长");
-            imgUrls.add(IMG_URL_LIST[2]);
+            List<String> imgUrls = new ArrayList<>();
+            imgUrls.addAll(Arrays.asList(IMG_URL_LIST).subList(0, i % 9));
             newsData.setUrlList(imgUrls);
             mogulDataList.add(newsData);
         }

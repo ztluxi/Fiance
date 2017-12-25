@@ -8,6 +8,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.youdao.sdk.app.YouDaoApplication;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.litepal.LitePal;
@@ -55,6 +56,8 @@ public class SFApplication extends MultiDexApplication {
         OkHttpUtils.initClient(okHttpClient);
         //ActivityLifeLifeCycle
         registerActivityListener();
+        YouDaoApplication.init(this,"3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.sharechain.finance.bean;
 
+import com.youdao.sdk.ydtranslate.Translate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,21 @@ public class MogulData {
     private String time;
     private String fabulous;//点赞
     private String head;
+
+    private Translate translate;
+
+    public Translate getTranslate() {
+        return translate;
+    }
+
+    public void setTranslate(Translate translate) {
+        this.translate = translate;
+    }
+
+    public MogulData(Translate translate) {
+        super();
+        this.translate = translate;
+    }
     public List<String> urlList = new ArrayList<>();
 
     public List<String> getUrlList() {
