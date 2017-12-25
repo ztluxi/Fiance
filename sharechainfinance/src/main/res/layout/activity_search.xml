@@ -3,8 +3,8 @@
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/base_bg_color"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,16 +13,13 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="6dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="7dp">
-
 
         <EditText
             android:id="@+id/search_et"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:background="@drawable/search_bg"
             android:drawableLeft="@drawable/search"
@@ -35,28 +32,27 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/search_tv"
+            android:id="@+id/text_cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:onClick="onClick"
+            android:paddingLeft="12dp"
+            android:paddingRight="13dp"
             android:text="@string/cancel"
             android:textColor="@color/colorBlack"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <TextView style="@style/user_list_line_horizontal" />
 
-    <LinearLayout
-        android:id="@+id/search_bg_ll"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/base_bg_color"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/search_bg_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -72,7 +68,7 @@
                 android:textSize="18sp" />
 
             <com.zhy.view.flowlayout.TagFlowLayout
-                android:id="@+id/search_page_flowlayout"
+                android:id="@+id/flow_hot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -112,33 +108,29 @@
                         android:src="@drawable/clear" />
                 </LinearLayout>
 
-                <TextView
-                    style="@style/user_list_line_horizontal"
-                    android:layout_marginTop="15dp" />
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/flow_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    zhy:max_select="-1" />
+
             </LinearLayout>
 
-
-            <ListView
-                android:id="@+id/search_page_lv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:divider="@null"
-                android:dividerHeight="5dp"
-                android:paddingTop="15dp" />
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 
     <ListView
         android:id="@+id/search_result_lv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:divider="@null"
         android:dividerHeight="5dp"
         android:paddingTop="15dp"
         android:visibility="gone" />
-
 
     <RelativeLayout
         android:id="@+id/no_result_rl"
@@ -167,7 +159,7 @@
             android:layout_marginTop="12dp"
             android:text="要不换个试试?"
             android:textColor="@color/about_font" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 
 </LinearLayout>

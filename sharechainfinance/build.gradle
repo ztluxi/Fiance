@@ -79,4 +79,6 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     //9宫图
     compile 'com.jaeger.ninegridimageview:library:1.1.1'
+    //keyboard listener
+    compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
 }

@@ -26,7 +26,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppCompatNotitleTheme">
 
@@ -42,11 +41,13 @@
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash" />
+            android:theme="@style/AppTheme.Splash"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.sharechain.finance.module.home.HomeDetailsActivity"
             android:screenOrientation="portrait" />
@@ -81,19 +82,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.MyFollowActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.SearchActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mogul.MogulCircleActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="561cae6ae0f55abd990035bf" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.home.ManageTagActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

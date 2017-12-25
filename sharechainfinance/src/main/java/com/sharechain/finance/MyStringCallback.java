@@ -27,8 +27,8 @@ public abstract class MyStringCallback extends StringCallback {
         onSuccess(response);
     }
 
-    abstract void onSuccess(String result);
+    protected abstract void onSuccess(String result);
 
-    abstract void onFailed(String errStr);
+    protected abstract void onFailed(String errStr);
 
 }

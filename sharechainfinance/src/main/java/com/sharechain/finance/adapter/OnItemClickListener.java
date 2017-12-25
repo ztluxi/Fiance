@@ -23,5 +23,5 @@ import android.view.View;
  * @version 1.0 2016/6/4
  */
 public interface OnItemClickListener {
-    void onItemClick(View view, int position);
+    void onItemClick(View view, int position, boolean isItem);
 }

@@ -38,8 +38,8 @@ public class FriendCircleFragment extends BaseFragment {
     XRefreshView refreshView;
     private List<MogulData> mogulDataList = new ArrayList<>();
 
-
     private MogulAdapter mogulAdapter;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_mogul_cirle;
@@ -48,7 +48,6 @@ public class FriendCircleFragment extends BaseFragment {
     @Override
     protected void initView() {
         initTitle(getString(R.string.main_tab_friend_circle));
-        immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         back_Image.setVisibility(View.VISIBLE);
         back_Image.setImageResource(R.drawable.my_follow);
         searchImage.setVisibility(View.VISIBLE);
@@ -67,14 +66,14 @@ public class FriendCircleFragment extends BaseFragment {
         mogulAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
             @Override
             public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                BaseUtils.openActivity(getActivity(), MogulCircleActivity.class,null);
-//                ToastManager.showShort(getActivity(), "您点了" + position);
+                BaseUtils.openActivity(getActivity(), MogulCircleActivity.class, null);
             }
         });
         mogulAdapter.setData(mogulDataList);
         mogulLv.setAdapter(mogulAdapter);
 
     }
+
     private String[] IMG_URL_LIST = {
             "http://ac-QYgvX1CC.clouddn.com/36f0523ee1888a57.jpg", "http://ac-QYgvX1CC.clouddn.com/07915a0154ac4a64.jpg",
             "http://ac-QYgvX1CC.clouddn.com/9ec4bc44bfaf07ed.jpg", "http://ac-QYgvX1CC.clouddn.com/fa85037f97e8191f.jpg",
@@ -83,15 +82,6 @@ public class FriendCircleFragment extends BaseFragment {
             "http://ac-QYgvX1CC.clouddn.com/ad99de83e1e3f7d4.jpg", "http://ac-QYgvX1CC.clouddn.com/233a5f70512befcc.jpg",
     };
     List<String> imgUrls = new ArrayList<>();
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
-        }
-
-    }
-
 
     @Override
     public void initData() {
@@ -104,21 +94,22 @@ public class FriendCircleFragment extends BaseFragment {
             newsData.setPosition("未来财经ceo");
             newsData.setTime("2017-12-22");
             newsData.setWeibo("黑猫警长");
-             imgUrls.add(IMG_URL_LIST[2]);
-             imgUrls.add(IMG_URL_LIST[4]);
+            imgUrls.add(IMG_URL_LIST[2]);
+            imgUrls.add(IMG_URL_LIST[4]);
             newsData.setUrlList(imgUrls);
             mogulDataList.add(newsData);
         }
 
     }
-    @OnClick({R.id.image_title_left,R.id.image_title_right})
+
+    @OnClick({R.id.image_title_left, R.id.image_title_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                BaseUtils.openActivity(getActivity(), MyFollowActivity.class,null);
+                BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
                 break;
             case R.id.image_title_right:
-                BaseUtils.openActivity(getActivity(), SearchActivity.class,null);
+                BaseUtils.openActivity(getActivity(), SearchActivity.class, null);
                 break;
         }
     }

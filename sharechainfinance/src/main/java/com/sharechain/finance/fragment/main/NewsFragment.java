@@ -114,9 +114,4 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
 }

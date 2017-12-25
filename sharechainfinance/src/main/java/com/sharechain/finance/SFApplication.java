@@ -34,6 +34,8 @@ public class SFApplication extends MultiDexApplication {
     private static List<Activity> mActivitys = Collections
             .synchronizedList(new LinkedList<Activity>());
     public static String WX_APPID = "";
+    public static String WX_APPSECRET = "";
+    public static String WX_LOGIN_STATE = "wx_login_state";
 
     @Override
     public void onCreate() {

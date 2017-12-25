@@ -10,6 +10,7 @@ import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -43,22 +44,43 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        String result;
-        switch (baseResp.errCode) {
-            case BaseResp.ErrCode.ERR_OK:
-                result = getString(R.string.share_success);
-                break;
-            case BaseResp.ErrCode.ERR_USER_CANCEL:
-                result = getString(R.string.share_cancel);
-                break;
-            default:
-                result = getString(R.string.share_failed);
-                break;
+        String result = "";
+        if (baseResp instanceof SendAuth.Resp) {
+            //登录
+            String code;
+            switch (baseResp.errCode) {
+                case BaseResp.ErrCode.ERR_OK:
+                    code = ((SendAuth.Resp) baseResp).code;
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    code="";
+                    break;
+                default:
+                    code="";
+                    break;
+            }
+            BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
+            baseNotifyBean.setType(BaseNotifyBean.TYPE.TYPE_LOGIN_WEIXIN);
+            baseNotifyBean.setMessage(code);
+            EventBus.getDefault().post(baseNotifyBean);
+        } else {
+            //分享
+            switch (baseResp.errCode) {
+                case BaseResp.ErrCode.ERR_OK:
+                    result = getString(R.string.share_success);
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    result = getString(R.string.share_cancel);
+                    break;
+                default:
+                    result = getString(R.string.share_failed);
+                    break;
+            }
+            BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
+            baseNotifyBean.setType(BaseNotifyBean.TYPE.TYPE_SHARE_RESULT);
+            baseNotifyBean.setMessage(result);
+            EventBus.getDefault().post(baseNotifyBean);
         }
-        BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
-        baseNotifyBean.setType(BaseNotifyBean.TYPE.TYPE_SHARE_RESULT);
-        baseNotifyBean.setMessage(result);
-        EventBus.getDefault().post(baseNotifyBean);
     }
 
 }

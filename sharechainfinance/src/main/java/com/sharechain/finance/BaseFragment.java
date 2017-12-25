@@ -35,6 +35,7 @@ public abstract class BaseFragment extends LazyFragment {
     protected TextView tv_title_right;
     protected ImageView image_title_right;
     protected TextView text_title;
+    protected View view_line;
 
     private Unbinder unbinder;
     protected ImmersionBar immersionBar;
@@ -84,6 +85,7 @@ public abstract class BaseFragment extends LazyFragment {
         image_title_right = (ImageView) findViewById(R.id.image_title_right);
         text_title = (TextView) findViewById(R.id.text_title);
         text_title.setText(titleStr);
+        view_line = findViewById(R.id.view_line);
     }
 
     protected void initXRefreshView(XRefreshView xRefreshView) {

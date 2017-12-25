@@ -16,19 +16,20 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initView() {
         mImmersionBar.statusBarColor(android.R.color.transparent).init();
-        if (SharedPreferenceManager.ifFristOpenSalonAPP(SplashActivity.this)){
-            BaseUtils.openActivityBottomAnim(SplashActivity.this, GuideActivity.class, null);
+        if (SharedPreferenceManager.ifFristOpenSalonAPP(SplashActivity.this)) {
+            BaseUtils.openActivity(SplashActivity.this, GuideActivity.class, null);
             finish();
-        }else {
+        } else {
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    BaseUtils.openActivityBottomAnim(SplashActivity.this, MainActivity.class, null);
+                    BaseUtils.openActivity(SplashActivity.this, MainActivity.class, null);
                     finish();
                 }
             }, 2000);
         }
     }
+
     @Override
     public void initData() {
 
