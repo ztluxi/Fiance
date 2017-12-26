@@ -39,6 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected TextView text_title;
     protected ImmersionBar mImmersionBar;
     protected InputMethodManager inputMethodManager;
+    protected int page = 1;//分页页码
+    protected String pageParam = "page";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +118,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void requestGet(String url, MyStringCallback callback) {
         OkHttpUtils.get()
                 .url(url)
+                .build()
+                .execute(callback);
+    }
+
+    protected void requestGet(String url, Map<String, String> params, MyStringCallback callback) {
+        OkHttpUtils.get()
+                .url(url)
+                .params(params)
                 .build()
                 .execute(callback);
     }

@@ -3,20 +3,27 @@ package com.sharechain.finance.fragment.main;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.AdapterView;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
+import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.FastMsgAdapter;
 import com.sharechain.finance.bean.BaseNotifyBean;
+import com.sharechain.finance.bean.FastMsgBean;
 import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.bean.UrlList;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import de.halfbit.pinnedsection.PinnedSectionListView;
@@ -51,13 +58,21 @@ public class FastMsgFragment extends BaseFragment {
         view_line.setVisibility(View.GONE);
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
-        xRefreshView.setPullLoadEnable(false);
+        xRefreshView.setPullLoadEnable(true);
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
 
             @Override
             public void onRefresh(boolean isPullDown) {
                 super.onRefresh(isPullDown);
-                xRefreshView.stopRefresh();
+                page = 1;
+                getDetail();
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page++;
+                getDetail();
             }
 
         });
@@ -65,24 +80,19 @@ public class FastMsgFragment extends BaseFragment {
         adapter = new FastMsgAdapter(getActivity(), dataList);
         adapter.setListData(dataList);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE) {
+
+                }
+            }
+        });
     }
 
     @Override
     public void initData() {
-        for (int i = 0; i < 5; i++) {
-            String sectionText = "2017-12-18";
-            FastMsgData groupData = new FastMsgData();
-            groupData.setType(FastMsgData.PARENT_TYPE);
-            groupData.setSectionText(sectionText);
-            dataList.add(groupData);
-            for (int j = 0; j < 10; j++) {
-                String content = "比特币价格突破19000美元，最高刷新至19500美元....................";
-                FastMsgData childData = new FastMsgData();
-                childData.setType(FastMsgData.CHILD_TYPE);
-                childData.setDataText(content);
-                dataList.add(childData);
-            }
-        }
+        getDetail();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -90,6 +100,51 @@ public class FastMsgFragment extends BaseFragment {
         if (event.getType() == BaseNotifyBean.TYPE.TYPE_SHARE_RESULT) {
             Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    private void getDetail() {
+        final Map<String, String> params = new HashMap<>();
+        params.put(pageParam, String.valueOf(page));
+        requestGet(UrlList.MSG_GET_LIST, params, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                xRefreshView.stopRefresh();
+                xRefreshView.stopLoadMore();
+                FastMsgBean bean = JSON.parseObject(result, FastMsgBean.class);
+                if (bean.isSuccess()) {
+                    if (page == 1) {
+                        dataList.clear();
+                    }
+                    for (int i = 0; i < bean.getData().size(); i++) {
+                        FastMsgBean.DataBean parentBean = bean.getData().get(i);
+                        String sectionText = parentBean.getTime();
+                        FastMsgData groupData = new FastMsgData();
+                        groupData.setType(FastMsgData.PARENT_TYPE);
+                        groupData.setSectionText(sectionText);
+                        dataList.add(groupData);
+                        for (int j = 0; j < parentBean.getList().size(); j++) {
+                            String content = parentBean.getList().get(j).getText();
+                            FastMsgData childData = new FastMsgData();
+                            childData.setSectionText(sectionText);//日期
+                            childData.setType(FastMsgData.CHILD_TYPE);//子item
+                            childData.setDataText(content);//内容
+                            childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
+                            childData.setTitle(parentBean.getList().get(j).getTitle());//标题
+                            childData.setHour(parentBean.getList().get(j).getHour());//时间
+                            childData.setUrl(parentBean.getList().get(j).getUrl());//url
+                            dataList.add(childData);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+                xRefreshView.stopRefresh();
+                xRefreshView.stopLoadMore();
+            }
+        });
     }
 
     @Override

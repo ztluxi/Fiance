@@ -22,7 +22,6 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:lines="2"
-            android:text="比特币比特币比特币比特币比特币比特币比特币比特币比特币比特币"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -37,7 +36,6 @@
                 android:id="@+id/text_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="800评论"
                 android:textColor="@color/color_7c7c7c"
                 android:textSize="11sp" />
 
@@ -46,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="40赞同"
                 android:textColor="@color/color_7c7c7c"
                 android:textSize="11sp" />
 

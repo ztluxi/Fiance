@@ -1,12 +1,13 @@
 package com.sharechain.finance.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Chu on 2017/12/25.
  */
 
-public class HomeIndexBean {
+public class HomeIndexBean implements Serializable {
 
     /**
      * success : 1
@@ -42,7 +43,7 @@ public class HomeIndexBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         private List<BannerBean> banner;
         private List<TopNewsBean> top_news;
         private List<ArticleTitleListsBean> article_title_lists;
@@ -71,7 +72,7 @@ public class HomeIndexBean {
             this.article_title_lists = article_title_lists;
         }
 
-        public static class BannerBean {
+        public static class BannerBean implements Serializable {
             /**
              * url : http://www.weilaicaijing.com/wp-content/uploads/2017/11/20171114163444044404.jpg
              * pid : 736
@@ -97,7 +98,7 @@ public class HomeIndexBean {
             }
         }
 
-        public static class TopNewsBean {
+        public static class TopNewsBean implements Serializable {
             /**
              * id : 3
              * dc_news_id : 3496
@@ -193,7 +194,7 @@ public class HomeIndexBean {
             }
         }
 
-        public static class ArticleTitleListsBean {
+        public static class ArticleTitleListsBean implements Serializable {
             /**
              * term_taxonomy_id : 1
              * name : 金融科技

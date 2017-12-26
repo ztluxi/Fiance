@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sharechain.finance.R;
+import com.sharechain.finance.bean.FastMsgData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +56,11 @@ public class FastMsgDialog extends Dialog {
 
     }
 
-    public FastMsgDialog(@NonNull Context context) {
+    private FastMsgData fastMsgData;
+
+    public FastMsgDialog(@NonNull Context context, FastMsgData fastMsgData) {
         super(context, R.style.base_dialog_style);
+        this.fastMsgData = fastMsgData;
     }
 
     @Override
@@ -64,6 +68,25 @@ public class FastMsgDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_fast_msg_dialog);
         ButterKnife.bind(this);
+        initViews();
+    }
+
+    private void initViews() {
+        if (fastMsgData.getMsgType() == 1) {
+            //一般消息
+            text_title.setBackgroundResource(R.drawable.icon_share_blue_bg);
+            text_title.setText(context.getString(R.string.fastmsg_normal));
+        } else if (fastMsgData.getMsgType() == 2) {
+            //重要
+            text_title.setBackgroundResource(R.drawable.icon_share_orange_bg);
+            text_title.setText(context.getString(R.string.fastmsg_important));
+        } else if (fastMsgData.getMsgType() == 3) {
+            //非常重要
+            text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
+            text_title.setText(context.getString(R.string.fastmsg_important));
+        }
+        text_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
+        text_content.setText(fastMsgData.getDataText());
     }
 
     @Override

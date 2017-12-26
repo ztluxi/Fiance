@@ -65,13 +65,13 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/text_header_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_head_line"
             android:layout_marginTop="4dp"
             android:background="@drawable/icon_home_red_circle"
-            android:gravity="center"
-            android:text="09:30" />
+            android:gravity="center" />
 
         <View
             android:id="@+id/view_line"
@@ -84,12 +84,12 @@
             android:background="@color/color_999999" />
 
         <TextView
+            android:id="@+id/text_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/view_line"
             android:ellipsize="end"
             android:lines="2"
-            android:text="比特币比特币比特币比特币比特币比特币比特币比特币比特币比特币"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 

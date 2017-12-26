@@ -39,6 +39,8 @@ public abstract class BaseFragment extends LazyFragment {
 
     private Unbinder unbinder;
     protected ImmersionBar immersionBar;
+    protected int page = 1;//分页页码
+    protected String pageParam = "page";
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -51,9 +53,8 @@ public abstract class BaseFragment extends LazyFragment {
         setContentView(getLayout());
         immersionBar = ImmersionBar.with(getActivity());
         unbinder = ButterKnife.bind(this, getContentView());
-        initData();
         initView();
-
+        initData();
     }
 
     /**
@@ -115,6 +116,14 @@ public abstract class BaseFragment extends LazyFragment {
     protected void requestGet(String url, MyStringCallback callback) {
         OkHttpUtils.get()
                 .url(url)
+                .build()
+                .execute(callback);
+    }
+
+    protected void requestGet(String url, Map<String, String> params, MyStringCallback callback) {
+        OkHttpUtils.get()
+                .url(url)
+                .params(params)
                 .build()
                 .execute(callback);
     }

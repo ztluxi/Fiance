@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,7 +21,6 @@
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="比特币比特币比特币比特币"
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp" />
 
@@ -42,7 +39,6 @@
                     android:gravity="center"
                     android:paddingLeft="7dp"
                     android:paddingRight="7dp"
-                    android:text="最新资讯"
                     android:textColor="@color/white"
                     android:textSize="11sp" />
 
@@ -53,7 +49,6 @@
                     android:layout_marginLeft="20dp"
                     android:drawableLeft="@drawable/icon_fastmsg_history"
                     android:drawablePadding="6dp"
-                    android:text="15:30"
                     android:textColor="@color/colorBlack"
                     android:textSize="11sp" />
 
@@ -65,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:alpha="0.8"
-                android:text="大约一个小时时间。。。。。。。。"
                 android:textColor="@color/colorBlack"
                 android:textSize="11sp" />
 

@@ -59,7 +59,10 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.rl_top)
     RelativeLayout rl_top;
     private ViewPagerAdapter mPagerAdapter;
+    //频道列表
     private List<String> titleList = new ArrayList<>();
+    //首页数据
+    private HomeIndexBean homeIndexBean;
 
     @Override
     protected int getLayout() {
@@ -128,19 +131,21 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void loadData() {
-        mPagerAdapter = new ViewPagerAdapter(getFragmentManager());
-        List<Fragment> fragments = new ArrayList<>();
-        for (int i = 0; i < typeList.size(); i++) {
-            if (i == 0) {
-                fragments.add(NewsFragment.newInstance(typeList.get(i).getNewsChannelId()));
-            } else {
-                fragments.add(AnswerFragment.newInstance(typeList.get(i).getNewsChannelId()));
+        if (homeIndexBean != null) {
+            mPagerAdapter = new ViewPagerAdapter(getFragmentManager());
+            List<Fragment> fragments = new ArrayList<>();
+            for (int i = 0; i < typeList.size(); i++) {
+                if (i == 0) {
+                    fragments.add(NewsFragment.newInstance(homeIndexBean, i));
+                } else {
+                    fragments.add(AnswerFragment.newInstance(homeIndexBean, i));
+                }
             }
+            mPagerAdapter.setItems(fragments, titleList);
+            viewpager.setAdapter(mPagerAdapter);
+            viewpager.setOffscreenPageLimit(typeList.size());
+            initMagicIndicator();
         }
-        mPagerAdapter.setItems(fragments, titleList);
-        viewpager.setAdapter(mPagerAdapter);
-        viewpager.setOffscreenPageLimit(typeList.size());
-        initMagicIndicator();
     }
 
     @OnClick(R.id.iv_add_channel)
@@ -173,12 +178,14 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    //获取频道列表，banner列表，快讯数据
     private void getHomeIndexData() {
         requestGet(UrlList.HOME_INDEX, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
                 HomeIndexBean bean = JSON.parseObject(result, HomeIndexBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
+                    homeIndexBean = bean;
                     //返回成功
                     for (int i = 0; i < bean.getData().getArticle_title_lists().size(); i++) {
                         HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean = bean.getData().getArticle_title_lists().get(i);
@@ -194,8 +201,8 @@ public class HomeFragment extends BaseFragment {
                         }
                         typeList.add(table);
                         titleList.add(titleListsBean.getName());
-                        loadData();
                     }
+                    loadData();
                 }
             }
 

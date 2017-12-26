@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.FastMsgDialog;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         int itemType = getItemViewType(i);
         if (itemType == FastMsgData.PARENT_TYPE) {
             ParentViewHolder parentViewHolder;
@@ -72,11 +73,31 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
                 view = LayoutInflater.from(context).inflate(R.layout.item_fastmsg_child, viewGroup, false);
             }
             childViewHolder = new ChildViewHolder(view);
+            childViewHolder.text_title.setText(listData.get(i).getTitle());
+            childViewHolder.text_time.setText(listData.get(i).getHour());
             childViewHolder.text_content.setText(listData.get(i).getDataText());
+            if (listData.get(i).getMsgType() == 1) {
+                //一般消息
+                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_blue_msg_bg);
+                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_normal));
+            } else if (listData.get(i).getMsgType() == 2) {
+                //重要
+                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_orange_msg_bg);
+                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_important));
+            } else if (listData.get(i).getMsgType() == 3) {
+                //非常重要
+                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_red_msg_bg);
+                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_important));
+            }
+            if (BaseUtils.isEmpty(listData.get(i).getUrl())) {
+                childViewHolder.text_view_article.setVisibility(View.GONE);
+            } else {
+                childViewHolder.text_view_article.setVisibility(View.VISIBLE);
+            }
             childViewHolder.image_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new FastMsgDialog(context).show();
+                    new FastMsgDialog(context, listData.get(i)).show();
                 }
             });
         }

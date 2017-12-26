@@ -30,26 +30,27 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
+import com.sharechain.finance.bean.HomeArticleListBean;
+import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.AlphaPageTransformer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
+public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean.DataBean.ArticleListsBean> {
     private HeaderViewHolder headerViewHolder;
-    private List<String> imageList;
     private List<String> tipList;
     private PagerAdapter pagerAdapter;
-    private List<ImageView> pointViews = new ArrayList<>();
+    private HomeIndexBean.DataBean headerBean;
 
-    public NewsListAdapter(Context context, List<String> list, List<String> imageList, List<String> tipList) {
+    public NewsListAdapter(Context context, List<HomeArticleListBean.DataBean.ArticleListsBean> list,
+                           HomeIndexBean.DataBean headerBean, List<String> tipList) {
         super(context, list);
-        this.imageList = imageList;
+        this.headerBean = headerBean;
         this.tipList = tipList;
         mIsShowHeader = true;
     }
@@ -67,6 +68,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
                 headerViewHolder = new HeaderViewHolder(view);
                 initViewPager();
                 initPoints();
+                setHeaderHotData();
                 return headerViewHolder;
             case TYPE_FOOTER:
                 view = getView(parent, R.layout.item_news_footer);
@@ -117,7 +119,11 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
     }
 
     private void setItemValues(ItemViewHolder holder, int position) {
-
+        if (position > 0) {
+            HomeArticleListBean.DataBean.ArticleListsBean bean = mList.get(position - 1);
+            holder.text_content.setText(bean.getPost_title());
+            holder.text_time.setText(bean.getPost_date_gmt() + "  " + bean.getName());
+        }
     }
 
     private void initViewPager() {
@@ -129,7 +135,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
                     ImageView view = new ImageView(context);
                     view.setScaleType(ImageView.ScaleType.FIT_XY);
                     final int realPosition = getRealPosition(position);
-                    Glide.with(context).load(imageList.get(realPosition)).
+                    Glide.with(context).load(headerBean.getBanner().get(realPosition).getUrl()).
                             apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
                                     .placeholder(R.drawable.ic_launcher_background)).into(view);
                     container.addView(view);
@@ -177,7 +183,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
                 }
 
                 private int getRealCount() {
-                    return imageList.size();
+                    return headerBean.getBanner().size();
                 }
 
                 private int getRealPosition(int position) {
@@ -203,7 +209,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
 
                 @Override
                 public void onPageSelected(int position) {
-                    switchToPoint(position % imageList.size());
+                    switchToPoint(position % headerBean.getBanner().size());
                 }
 
                 @Override
@@ -229,7 +235,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
 
     private void initPoints() {
         if (headerViewHolder != null) {
-            for (int i = 0; i < imageList.size(); i++) {
+            for (int i = 0; i < headerBean.getBanner().size(); i++) {
                 ImageView imageView = new ImageView(context);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(BaseUtils.dip2px(context, 7),
                         BaseUtils.dip2px(context, 7));
@@ -254,11 +260,24 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<String> {
         }
     }
 
+    private void setHeaderHotData() {
+        if (headerViewHolder != null) {
+            if (headerBean.getTop_news().size() > 0) {
+                headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(0).getTime());
+                headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(0).getSite_content());
+            }
+        }
+    }
+
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.viewpager)
         ViewPager viewpager;
         @BindView(R.id.ll_point)
         LinearLayout ll_point;
+        @BindView(R.id.text_header_time)
+        TextView text_header_time;
+        @BindView(R.id.text_header_title)
+        TextView text_header_title;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);

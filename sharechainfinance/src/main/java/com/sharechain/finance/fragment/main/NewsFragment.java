@@ -7,13 +7,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
+import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.NewsListAdapter;
+import com.sharechain.finance.bean.HomeArticleListBean;
+import com.sharechain.finance.bean.HomeIndexBean;
+import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.module.home.ArticleDetailActivity;
+import com.sharechain.finance.utils.BaseUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -24,6 +33,7 @@ import butterknife.BindView;
 public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNewsListItemClickListener {
 
     private static final String NEWS_TYPE_KEY = "NewsTypeKey";
+    private static final String NEWS_TYPE_POSITION = "NewsTypePosition";
 
     @BindView(R.id.news_rv)
     RecyclerView mNewsRV;
@@ -31,16 +41,17 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     XRefreshView xRefreshView;
 
     private NewsListAdapter mNewsListAdapter;
-    private String mNewsId;
-    private List<String> dataList = new ArrayList<>();
-    private List<String> imageList = new ArrayList<>();
+    private HomeIndexBean homeIndexBean;
+    private List<HomeArticleListBean.DataBean.ArticleListsBean> dataList = new ArrayList<>();
+    private List<HomeIndexBean.DataBean.BannerBean> imageList = new ArrayList<>();
     private List<String> tipList = new ArrayList<>();
-    private boolean mIsAllLoaded = false;
+    private int curPosition;
 
-    public static NewsFragment newInstance(String newsId) {
+    public static NewsFragment newInstance(HomeIndexBean homeIndexBean, int pos) {
         NewsFragment fragment = new NewsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(NEWS_TYPE_KEY, newsId);
+        bundle.putSerializable(NEWS_TYPE_KEY, homeIndexBean);
+        bundle.putInt(NEWS_TYPE_POSITION, pos);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -49,7 +60,10 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mNewsId = getArguments().getString(NEWS_TYPE_KEY);
+            homeIndexBean = (HomeIndexBean) getArguments().getSerializable(NEWS_TYPE_KEY);
+            curPosition = getArguments().getInt(NEWS_TYPE_POSITION);
+            imageList.clear();
+            imageList.addAll(homeIndexBean.getData().getBanner());
         }
     }
 
@@ -61,18 +75,25 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     @Override
     protected void initView() {
         initHeaderData();
-        initListData();
-
-        mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, imageList, tipList);
+        mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData(), tipList);
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
-        xRefreshView.setPullLoadEnable(false);
+        xRefreshView.setPullLoadEnable(true);
+        xRefreshView.setAutoRefresh(false);
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
 
             @Override
             public void onRefresh(boolean isPullDown) {
                 super.onRefresh(isPullDown);
-                xRefreshView.stopRefresh();
+                page = 1;
+                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page++;
+                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
             }
 
         });
@@ -83,19 +104,15 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         mNewsRV.setItemAnimator(new DefaultItemAnimator());
         mNewsListAdapter.setOnItemClickListener(this);
         mNewsRV.setAdapter(mNewsListAdapter);
+
     }
 
     @Override
     public void initData() {
-
+        getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
     }
 
     private void initHeaderData() {
-        imageList.add("http://7xk9dj.com1.z0.glb.clouddn.com/banner/imgs/7.png");
-        imageList.add("http://7xk9dj.com1.z0.glb.clouddn.com/banner/imgs/8.png");
-        imageList.add("http://7xk9dj.com1.z0.glb.clouddn.com/banner/imgs/9.png");
-        imageList.add("http://7xk9dj.com1.z0.glb.clouddn.com/banner/imgs/10.png");
-        imageList.add("http://7xk9dj.com1.z0.glb.clouddn.com/banner/imgs/11.png");
         tipList.add("第一个Binner");
         tipList.add("第二个Binner");
         tipList.add("第三个Binner");
@@ -103,15 +120,41 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         tipList.add("第五个Binner");
     }
 
-    private void initListData() {
-        for (int i = 0; i < 10; i++) {
-            dataList.add("item_" + i);
+    //根据id获取列表
+    private void getListData(int term_taxonomy_id) {
+        Map<String, String> params = new HashMap<>();
+        if (term_taxonomy_id > 0) {
+            params.put("term_taxonomy_id", String.valueOf(term_taxonomy_id));
+            params.put(pageParam, String.valueOf(page));
         }
+        requestGet(UrlList.HOME_ARTICLE_LIST, params, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                xRefreshView.stopRefresh();
+                xRefreshView.stopLoadMore();
+                HomeArticleListBean bean = JSON.parseObject(result, HomeArticleListBean.class);
+                if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
+                    if (page == 1) {
+                        dataList.clear();
+                    }
+                    dataList.addAll(bean.getData().getArticle_lists());
+                    mNewsListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+                xRefreshView.stopRefresh();
+                xRefreshView.stopLoadMore();
+            }
+        });
     }
 
     @Override
     public void onItemClick(View view, int position, boolean isPhoto) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("article_id", dataList.get(position).getID());
+        BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
     }
 
 }

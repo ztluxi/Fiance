@@ -92,6 +92,9 @@
         <activity
             android:name=".module.home.ManageTagActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.home.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

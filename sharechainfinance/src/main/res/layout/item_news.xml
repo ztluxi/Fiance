@@ -25,7 +25,6 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:lines="2"
-            android:text="比特币比特币比特币比特币比特币比特币比特币比特币比特币比特币"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -35,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_content"
             android:layout_marginTop="18dp"
-            android:text="2017-44-33"
             android:textColor="@color/color_7c7c7c"
             android:textSize="11sp" />
 

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sharechain.finance.fragment.main.FastMsgFragment;
 import com.sharechain.finance.fragment.main.FriendCircleFragment;
@@ -114,33 +113,18 @@ public class MainActivity extends BaseActivity {
                 tabhost.setCurrentTabByTag(TAB_FAST_MSG);
                 break;
             case FRIEND_CIRCLE:
-                tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_999999));
-                tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother), null, null);
+                tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_base_blue));
+                tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother_un), null, null);
                 tabhost.setCurrentTabByTag(TAB_FRIEND_CIRCLE);
                 break;
         }
     }
 
     private void unCheckAllBottom() {
-        tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
-        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
+        tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_999999));
+        tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home_un), null, null);
         tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_999999));
         tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother), null, null);
-    }
-
-    private void getData() {
-        requestGet("https://www.baidu.com", new MyStringCallback(this) {
-
-            @Override
-            protected void onSuccess(String result) {
-                Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected void onFailed(String errStr) {
-
-            }
-        });
     }
 
 }
