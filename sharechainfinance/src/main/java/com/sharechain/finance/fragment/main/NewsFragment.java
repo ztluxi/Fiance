@@ -157,8 +157,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     public void onDestroy() {
         super.onDestroy();
         if (mNewsListAdapter != null) {
-            mNewsListAdapter.stopHeadLineAutoPlay();
-            mNewsListAdapter.stopBannerAutoPlay();
+            mNewsListAdapter.stopAll();
         }
     }
 

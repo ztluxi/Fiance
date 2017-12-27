@@ -37,17 +37,14 @@ import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sharechain.finance.BaseLog;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.HomeArticleListBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.ScaleInTransformer;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,11 +55,6 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
     private PagerAdapter pagerAdapter;
     private HomeIndexBean.DataBean headerBean;
     private volatile int switchIndex = 0;
-    private volatile int switchBannerIndex = 0;
-    private int oldPosition = 0;//记录上一次点的位置
-    private int currentItem; //当前页面
-    private ScheduledExecutorService scheduledExecutorService;
-    private List<View> bannerViews = new ArrayList<>();
 
     public NewsListAdapter(Context context, List<HomeArticleListBean.DataBean.ArticleListsBean> list,
                            HomeIndexBean.DataBean headerBean) {
@@ -82,7 +74,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
             case TYPE_HEADER:
                 view = getView(parent, R.layout.layout_header);
                 headerViewHolder = new HeaderViewHolder(view);
-//                initViewPager();
+                initViewPager();
                 initPoints();
                 setHeaderHotData();
                 return headerViewHolder;
@@ -142,87 +134,79 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         }
     }
 
-//    private void initViewPager() {
-//        if (headerViewHolder != null) {
-//            headerViewHolder.viewpager.setPageMargin(BaseUtils.dip2px(context, 7));
-//            headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
-//                @Override
-//                public Object instantiateItem(final ViewGroup container, int position) {
-//                    return bannerViews.get(position);
-//                }
-//
-//                @Override
-//                public int getItemPosition(Object object) {
-//                    return POSITION_NONE;
-//                }
-//
-//                @Override
-//                public void destroyItem(ViewGroup container, int position, Object object) {
-//                    container.removeView((View) object);
-//                }
-//
-//                @Override
-//                public int getCount() {
-//                    return headerBean.getBanner().size() + 2;
-//                }
-//
-//                @Override
-//                public boolean isViewFromObject(View view, Object o) {
-//                    return view == o;
-//                }
-//
-////                @Override
-////                public void startUpdate(ViewGroup container) {
-////                    super.startUpdate(container);
-////                    ViewPager viewPager = (ViewPager) container;
-////                    int position = viewPager.getCurrentItem();
-////                    if (position == 0) {
-////                        position = getFirstItemPosition();
-////                    } else if (position == getCount() - 1) {
-////                        position = getLastItemPosition();
-////                    }
-////                    viewPager.setCurrentItem(position, false);
-////                }
-//
-//                private int getRealCount() {
-//                    return headerBean.getBanner().size();
-//                }
-//
-//                private int getRealPosition(int position) {
-//                    return position % getRealCount();
-//                }
-//
-//                private int getFirstItemPosition() {
-//                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount();
-//                }
-//
-//                private int getLastItemPosition() {
-//                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
-//                }
-//            });
-//            headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
-//            headerViewHolder.viewpager.setCurrentItem(switchBannerIndex, false);
-//            switchToPoint(0);
-//            headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//                @Override
-//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//                }
-//
-//                @Override
-//                public void onPageSelected(int position) {
-//                    switchToPoint(position % headerBean.getBanner().size());
-//                }
-//
-//                @Override
-//                public void onPageScrollStateChanged(int state) {
-//
-//                }
-//            });
-//            headerViewHolder.viewpager.setCurrentItem(0, false);
-//            startBannerPlay();
-//        }
-//    }
+    private void initViewPager() {
+        if (headerViewHolder != null) {
+            headerViewHolder.viewpager.setPageMargin(BaseUtils.dip2px(context, 7));
+            headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
+                @Override
+                public Object instantiateItem(final ViewGroup container, int position) {
+                    View view = LayoutInflater.from(context).inflate(R.layout.layout_news_banner_item, null);
+                    ImageView image_banner = view.findViewById(R.id.image_banner);
+                    TextView text_banner = view.findViewById(R.id.text_banner);
+                    Glide.with(context).load(headerBean.getBanner().get(getRealPosition(position)).getUrl()).
+                            apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
+                                    .placeholder(R.drawable.ic_launcher_background)).into(image_banner);
+                    text_banner.setText("比特币价格重挫45%，小投资者惨遭割韭菜");
+                    container.addView(view);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                    Toast.makeText(context, "click position= " + i, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return view;
+                }
+
+                @Override
+                public int getItemPosition(Object object) {
+                    return POSITION_NONE;
+                }
+
+                @Override
+                public void destroyItem(ViewGroup container, int position, Object object) {
+                    container.removeView((View) object);
+                }
+
+                @Override
+                public int getCount() {
+                    return Integer.MAX_VALUE;
+                }
+
+                @Override
+                public boolean isViewFromObject(View view, Object o) {
+                    return view == o;
+                }
+
+                private int getRealCount() {
+                    return headerBean.getBanner().size();
+                }
+
+                private int getRealPosition(int position) {
+                    return position % getRealCount();
+                }
+
+            });
+            headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
+            headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    BaseLog.d("select--" + position % headerBean.getBanner().size());
+                    switchToPoint(position % headerBean.getBanner().size());
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            startBanner();
+        }
+    }
 
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
@@ -280,6 +264,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
                                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         params.gravity = Gravity.CENTER_VERTICAL;
                         textView.setLayoutParams(params);
+                        textView.setSelected(false);
                         return textView;
                     }
                 });
@@ -327,6 +312,9 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
     });
 
     private void startSwitchText() {
+        if (!isStartSwitchText) {
+            return;
+        }
         headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(switchIndex).getTime());
         headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(switchIndex).getSite_content());
         switchHandler.postDelayed(new Runnable() {
@@ -341,74 +329,47 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         }, 3000);
     }
 
-    //停止循环播放
-    public void stopHeadLineAutoPlay() {
-        switchHandler.removeCallbacks(null);
-    }
-
-    //停止循环播放
-    public void stopBannerAutoPlay() {
-        scheduledExecutorService.shutdown();
-    }
-
-    private void startBannerPlay() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        //每隔2秒钟切换一张图片
-        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 2, 2, TimeUnit.SECONDS);
-    }
-
-    //切换图片
-    private class ViewPagerTask implements Runnable {
-
+    //热点新闻循环播放handler
+    public Handler switchBannerHandler = new Handler(new Handler.Callback() {
         @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            currentItem++;
-            if (currentItem == headerBean.getBanner().size()) {
-                currentItem = 0;
-            }
-            handler.obtainMessage().sendToTarget();
+        public boolean handleMessage(Message message) {
+            return false;
         }
+    });
 
-    }
+    private int firstPosition = Integer.MAX_VALUE / 2;
+    private volatile boolean isStartBanner = true;
+    private volatile boolean isStartSwitchText = true;
 
-    private void initBannerViewList() {
-        for (int i = 0; i < headerBean.getBanner().size(); i++) {
-            View view = LayoutInflater.from(context).inflate(R.layout.layout_news_banner_item, null);
-            ImageView image_banner = view.findViewById(R.id.image_banner);
-            TextView text_banner = view.findViewById(R.id.text_banner);
-            Glide.with(context).load(headerBean.getBanner().get(i).getUrl()).
-                    apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
-                            .placeholder(R.drawable.ic_launcher_background)).into(image_banner);
-            text_banner.setText("比特币价格重挫45%，小投资者惨遭割韭菜");
-            bannerViews.add(view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(context, "click position= " + i, Toast.LENGTH_SHORT).show();
+    private void startBanner() {
+        if (!isStartBanner) {
+            return;
+        }
+        headerViewHolder.viewpager.setCurrentItem(firstPosition, true);
+        switchBannerHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                firstPosition++;
+                int first = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size();
+                int last = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size() - 1;
+                if (firstPosition == 0) {
+                    firstPosition = first;
+                } else if (firstPosition == Integer.MAX_VALUE - 1) {
+                    firstPosition = last;
                 }
-            });
-        }
+                startBanner();
+            }
+        }, 3000);
     }
 
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            // TODO Auto-generated method stub
-            //设置当前页面
-            int position = headerViewHolder.viewpager.getCurrentItem();
-            int first = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size();
-            int last = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size() - 1;
-            if (position == 0) {
-                position = first;
-            } else if (position == Integer.MAX_VALUE - 1) {
-                position = last;
-            }
-            headerViewHolder.viewpager.setCurrentItem(position, false);
-//            headerViewHolder.viewpager.setCurrentItem(currentItem, false);
-        }
-
-    };
+    //停止循环播放
+    public void stopAll() {
+        isStartSwitchText = false;
+        isStartBanner = false;
+        switchHandler.removeCallbacks(null);
+        switchBannerHandler.removeCallbacks(null);
+        switchHandler = null;
+        switchBannerHandler = null;
+    }
 
 }
