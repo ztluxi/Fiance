@@ -59,38 +59,39 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
     private List<MogulData> mPostList;
     private Context mContext;
     private List<Translate> trslist;
-
+    private int tpye;
 
     public interface MyItemLongClickListener {
         void onTranslateClick(View view, int position, List<MogulData> list);
     }
 
-    private MyItemLongClickListener mLongClickListener;
+    public interface MyItemClickListener {
+        void onFabulous(View view, int position, List<MogulData> list);
+        void onShare(View view, int position, List<MogulData> list);
+    }
 
+    private MyItemLongClickListener mLongClickListener;
+    private MyItemClickListener mClickListener;
     public void setOnItemLongClickListener(MyItemLongClickListener listener) {
         this.mLongClickListener = listener;
     }
 
-    public MogulAdapter(Context context, List<MogulData> postList, List<Translate> trs) {
+    public void setOnItemClickListener(MyItemClickListener listener) {
+        this.mClickListener = listener;
+    }
+
+
+    public MogulAdapter(Context context, List<MogulData> postList, List<Translate> trs,int type) {
         super();
         mPostList = postList;
         mInflater = LayoutInflater.from(context);
         mContext = context;
         this.trslist = trs;
+        this.tpye = type;
     }
 
     @Override
     public void onBindViewHolder(final PostViewHolder holder, final int position) {
-        if (mLongClickListener != null) {
-            holder.mogulContentTv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mLongClickListener.onTranslateClick(v, pos, mPostList);
-                    return false;
-                }
-            });
-        }
         holder.mogulContentTv.setText("");
         holder.mogulName.setText("");
         holder.mogulTime.setText("");
@@ -112,14 +113,10 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
             holder.mogulPositionTv.setText(mPostList.get(position).getPosition());
             holder.mogulPositionTv.setVisibility(View.VISIBLE);
         }
-        holder.mogulFabulousNumberTv.setText(mPostList.get(position).getFabulous());
+        int like = mPostList.get(position).getFabulous();
+        holder.mogulFabulousNumberTv.setText(like+"");
 
-        RichText.from(mPostList.get(position).getContent()).urlClick(new OnUrlClickListener() {
-            @Override
-            public boolean urlClicked(String url) {
-                return false;
-            }
-        }).into(holder.mogulContentTv);
+        RichText.fromHtml(mPostList.get(position).getContent()).into(holder.mogulContentTv);
 
         try {
             if (!TextUtils.isEmpty(mPostList.get(position).getTranslate().getTranslations().get(0))) {
@@ -130,29 +127,57 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
 
         }
 
-        holder.shareImageIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MogulShareDialog(mContext).show();
-            }
-        });
+        if (tpye==0){
+            holder.mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, MogulCircleActivity.class));
+                }
+            });
+        }
 
-        holder.mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, MogulCircleActivity.class));
-            }
-        });
-        holder.mogulFabulousIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoodView goodView = new GoodView(mContext);
-                goodView.setImage(R.drawable.fabulous_sel);
-                goodView.show(view);
-                holder.mogulFabulousNumberTv.setText(mPostList.get(position).getFabulous()+1);
-            }
-        });
+        //翻译
+        if (mLongClickListener != null) {
+            holder.mogulContentTv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mLongClickListener.onTranslateClick(v, pos, mPostList);
+                    return false;
+                }
+            });
+        }
+        //点赞
+        if (mClickListener != null) {
+            holder.mogulFabulousIv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mClickListener.onFabulous(v, pos, mPostList);
+                    return false;
+                }
+            });
+        }
+        if (mClickListener!=null){
+            holder.mogulFabulousIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = holder.getLayoutPosition();
+                    mClickListener.onFabulous(view, pos, mPostList);
+                }
+            });
+        }
 
+        //分享
+        if (mClickListener != null) {
+            holder.shareImageIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = holder.getLayoutPosition();
+                    mClickListener.onShare(view, pos, mPostList);
+                }
+            });
+        }
     }
 
     @Override

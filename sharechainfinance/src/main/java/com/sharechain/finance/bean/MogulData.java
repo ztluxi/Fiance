@@ -15,8 +15,17 @@ public class MogulData {
     private String content;
     private String position;
     private String time;
-    private String fabulous;//点赞
+    private int fabulous;//点赞
+    private int id;
     private String head;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private Translate translate;
 
@@ -90,13 +99,11 @@ public class MogulData {
         this.time = time;
     }
 
-    public String getFabulous() {
+    public int getFabulous() {
         return fabulous;
     }
 
-    public void setFabulous(String fabulous) {
+    public void setFabulous(int fabulous) {
         this.fabulous = fabulous;
     }
-
-
 }

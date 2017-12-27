@@ -1,6 +1,7 @@
 package com.sharechain.finance.module.mine;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
@@ -8,13 +9,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.HistoryAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.HomeData;
+import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.TimeUtil;
@@ -46,9 +50,9 @@ public class MyNewsActivity extends BaseActivity {
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
     private List<NewsData> newsDataList = new ArrayList<>();
-
-
+    private String page="1";//页数
     private MyNewsAdapter newsAdapter;
+
     @Override
     public int getLayout() {
         return R.layout.activity_my_news;
@@ -72,7 +76,7 @@ public class MyNewsActivity extends BaseActivity {
         newsAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
             @Override
             public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                ToastManager.showShort(MyNewsActivity.this,"您点了"+position);
+                ToastManager.showShort(MyNewsActivity.this, "您点了" + position);
             }
         });
 
@@ -84,22 +88,30 @@ public class MyNewsActivity extends BaseActivity {
     @Override
     public void initData() {
         getNews();
-//        for (int i = 0; i < 10; i++) {
-//            NewsData newsData = new NewsData();
-//            newsData.setTime("2017-07-12");
-//            newsData.setTitle("大佬回复了你的评论");
-//            newsData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-//            newsDataList.add(newsData);
-//        }
 
     }
-    private void getNews(){
+
+    private void getNews() {
         final Map<String, String> params = new HashMap<>();
-        params.put(pageParam, String.valueOf(page));
+        params.put(pageParam, UrlList.PAGE);
         requestGet(UrlList.GET_NEWS, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
+                Logger.d(result);
+                MyNewsBean bean = JSON.parseObject(result, MyNewsBean.class);
+                if (bean.getSuccess() == 1) {
+                    for (int i = 0; i < bean.getData().size(); i++) {
+                        String content = bean.getData().get(i).getContent();
+                        String time = bean.getData().get(i).getCreate_time();
+                        int id = bean.getData().get(i).getId();
 
+                        NewsData newsData = new NewsData();
+                        newsData.setContent(content);
+                        newsData.setTime(time);
+                        newsData.setId(id);
+                        newsDataList.add(newsData);
+                    }
+                }
             }
 
             @Override

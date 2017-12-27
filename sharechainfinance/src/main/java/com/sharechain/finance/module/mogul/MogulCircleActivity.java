@@ -97,7 +97,8 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
         mogulCircleRl.setNestedScrollingEnabled(false);
         //设置布局管理器
         mogulCircleRl.setLayoutManager(linearLayoutManager);
-        mogulAdapter = new MogulAdapter(this, mogulDataList,null);
+        mogulAdapter = new MogulAdapter(this, mogulDataList,null,1);
+        mogulAdapter.setOnItemLongClickListener(this);
         mogulCircleRl.setAdapter(mogulAdapter);
         optionUtil = new PopOptionUtil(SFApplication.get(this));
     }
@@ -108,7 +109,7 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
             MogulData newsData = new MogulData(null);
             newsData.setHead("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
             newsData.setContent("Never give up" + i);
-            newsData.setFabulous("20090" + i);
+            newsData.setFabulous(1003+ i);
             newsData.setName("大哥大" + i);
             newsData.setPosition("未来财经ceo");
             newsData.setTime("2017-12-22");
