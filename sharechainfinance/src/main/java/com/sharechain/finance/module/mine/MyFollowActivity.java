@@ -5,17 +5,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
+import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.MyFollowAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.FollowData;
+import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.ToastManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,14 +79,33 @@ public class MyFollowActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        for (int i = 0; i < 10; i++) {
-            FollowData followData = new FollowData();
-            followData.setPosition("比特币分析师"+i);
-            followData.setWeibo(i+1+"微博");
-            followData.setName("我是大佬"+i);
-            followData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-            followDataList.add(followData);
-        }
+        getFollow();
+    }
+
+    private void getFollow() {
+        final Map<String, String> params = new HashMap<>();
+        params.put(pageParam, UrlList.PAGE);
+        requestGet(UrlList.GET_MY_FOLLOW, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+                Logger.d(result);
+
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
+
+//        for (int i = 0; i < 10; i++) {
+//            FollowData followData = new FollowData();
+//            followData.setPosition("比特币分析师"+i);
+//            followData.setWeibo(i+1+"微博");
+//            followData.setName("我是大佬"+i);
+//            followData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
+//            followDataList.add(followData);
+//        }
 
     }
 

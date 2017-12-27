@@ -5,16 +5,16 @@ package com.sharechain.finance.bean;
  */
 
 public class NewsData {
-    private String title;
+    private String content;
     private String time;
-    private String image;
+    private int id;
 
-    public String getTitle() {
-        return title;
+    public String getContent() {
+        return content;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTime() {
@@ -25,11 +25,11 @@ public class NewsData {
         this.time = time;
     }
 
-    public String getImage() {
-        return image;
+    public int getId() {
+        return id;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId(int id) {
+        this.id = id;
     }
 }

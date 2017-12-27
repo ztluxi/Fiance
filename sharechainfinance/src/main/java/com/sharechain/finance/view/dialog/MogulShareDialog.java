@@ -10,7 +10,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
+import com.sharechain.finance.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +33,6 @@ public class MogulShareDialog extends Dialog {
     ImageView image_qrcode;
     @BindView(R.id.text_uid)
     TextView text_uid;
-
     @OnClick(R.id.image_close)
     void closeDialog() {
         dismiss();
@@ -60,6 +62,14 @@ public class MogulShareDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_mogul_share_dialog);
         ButterKnife.bind(this);
+    }
+
+    public void setHead(Context context,String url){
+        ImageView imageView = findViewById(R.id.mogul_iv);
+
+        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.history).circleCrop();
+        GlideUtils.loadUserImage(SFApplication.get(context),url,imageView, headOptions);
+
     }
 
     @Override

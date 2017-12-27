@@ -8,6 +8,8 @@ import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.youdao.sdk.app.YouDaoApplication;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -17,7 +19,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import okhttp3.OkHttpClient;
 
@@ -63,6 +64,7 @@ public class SFApplication extends MultiDexApplication {
         registerActivityListener();
         YouDaoApplication.init(this,"3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
 
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     /**

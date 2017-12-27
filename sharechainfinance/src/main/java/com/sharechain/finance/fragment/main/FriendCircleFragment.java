@@ -23,6 +23,8 @@ import com.sharechain.finance.module.mogul.MogulSearchActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
 import com.sharechain.finance.utils.ToastManager;
+import com.sharechain.finance.view.dialog.MogulShareDialog;
+import com.sharechain.finance.view.fabulos.GoodView;
 import com.youdao.sdk.app.Language;
 import com.youdao.sdk.app.LanguageUtils;
 import com.youdao.sdk.ydonlinetranslate.Translator;
@@ -43,10 +45,10 @@ import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
- * Created by Administrator on 2017/12/13.
+ * Created by ${zhoutao} on 2017/12/27 0027.
  */
 
-public class FriendCircleFragment extends BaseFragment implements MogulAdapter.MyItemLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+public class FriendCircleFragment extends BaseFragment implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
 
     private static final int TRANSLATE_SUCCESS = 1000;
     @BindView(R.id.image_title_left)
@@ -110,17 +112,18 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     }
 
-    private void getData(){
+    //获取大佬圈列表
+    private void getData() {
         final Map<String, String> params = new HashMap<>();
-        params.put(pageParam, String.valueOf(page));
+        params.put(pageParam, UrlList.PAGE);
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
                 Logger.d(result);
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-                if (bean.getSuccess()==1){
-                    if (bean.getData().size()>1){
-                        for (int i = 0; i <bean.getData().size() ; i++) {
+                if (bean.getSuccess() == 1) {
+                    if (bean.getData().size() > 1) {
+                        for (int i = 0; i < bean.getData().size(); i++) {
                             String user_image = bean.getData().get(i).getProfile_image_url();
                             String create_time = bean.getData().get(i).getCreate_at();
                             String mogul_name = bean.getData().get(i).getFull_name();
@@ -140,11 +143,14 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                             mogulData.setHead(user_image);
                             mogulData.setTime(create_time);
                             mogulData.setWeibo(weibo_name);
+                            mogulData.setFabulous(1002);
+                            mogulData.setId(mogul_id);
                             mogulDataList.add(mogulData);
                         }
                     }
                 }
             }
+
             @Override
             protected void onFailed(String errStr) {
 
@@ -155,9 +161,10 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     @Override
     public void initData() {
         getData();
-        mogulAdapter = new MogulAdapter(getActivity(), mogulDataList,trslist);
+        mogulAdapter = new MogulAdapter(getActivity(), mogulDataList, trslist,0);
         mRvPostLister.setAdapter(mogulAdapter);
         mogulAdapter.setOnItemLongClickListener(this);
+        mogulAdapter.setOnItemClickListener(this);
         optionUtil = new PopOptionUtil(SFApplication.get(getActivity()));
 
     }
@@ -204,7 +211,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     }
 
-    private void loadMoreData(){
+    private void loadMoreData() {
 
     }
 
@@ -241,8 +248,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                             mogulData.setTranslate(result);
                         }
                         mogulDataList.set(position, mogulData);
-                        mogulAdapter.notifyDataSetChanged();
-                        mRvPostLister.setScrollingTouchSlop(mogulDataList.size() - position);
+                        updateAdapter(position, mogulDataList);
                     }
                 });
             }
@@ -259,6 +265,23 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
             }
         });
     }
+    //
+    private void addFabulous(int id) {
+        final Map<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(id));
+        requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                Logger.d(result);
+            }
+            @Override
+            protected void onFailed(String errStr) {
+                Logger.d(errStr);
+            }
+        });
+
+    }
+
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
@@ -271,9 +294,43 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         }, 3000);
     }
 
+    private void updateAdapter(int position, List<MogulData> mogulData) {
+        mogulAdapter.notifyDataSetChanged();
+//        mRvPostLister.setScrollingTouchSlop(mogulData.size() - position);
+
+    }
+
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
 
         return false;
+    }
+
+    @Override
+    public void onFabulous(View view, int position, List<MogulData> list) {
+        GoodView goodView = new GoodView(getActivity());
+        goodView.setImage(R.drawable.fabulous_sel);
+        goodView.show(view);
+        MogulData mogulData = new MogulData(null);
+        mogulData.setHead(list.get(position).getHead());
+        mogulData.setWeibo(list.get(position).getWeibo());
+        mogulData.setTime(list.get(position).getTime());
+        mogulData.setPosition(list.get(position).getPosition());
+        mogulData.setFabulous(list.get(position).getFabulous()+1);
+        mogulData.setUrlList(list.get(position).getUrlList());
+        mogulData.setContent(list.get(position).getContent());
+        mogulData.setName(list.get(position).getName());
+        mogulData.setTranslate(list.get(position).getTranslate());
+        addFabulous(list.get(position).getId());
+        mogulDataList.set(position, mogulData);
+        updateAdapter(position, mogulDataList);
+
+    }
+
+    @Override
+    public void onShare(View view, int position, List<MogulData> list) {
+//        MogulShareDialog mogulShareDialog = new MogulShareDialog(SFApplication.get(getActivity()));
+//        mogulShareDialog.setHead(SFApplication.get(getActivity()),list.get(position).getHead());
+//        mogulShareDialog.show();
     }
 }
