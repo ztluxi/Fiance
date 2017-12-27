@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -60,14 +62,16 @@ public class FastMsgDialog extends Dialog {
 
     public FastMsgDialog(@NonNull Context context, FastMsgData fastMsgData) {
         super(context, R.style.base_dialog_style);
+        this.context = context;
         this.fastMsgData = fastMsgData;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_fast_msg_dialog);
-        ButterKnife.bind(this);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fast_msg_dialog, null);
+        setContentView(view);
+        ButterKnife.bind(this, view);
         initViews();
     }
 

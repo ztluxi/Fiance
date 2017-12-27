@@ -130,8 +130,10 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         requestGet(UrlList.HOME_ARTICLE_LIST, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
-                xRefreshView.stopRefresh();
-                xRefreshView.stopLoadMore();
+                if (xRefreshView != null) {
+                    xRefreshView.stopRefresh();
+                    xRefreshView.stopLoadMore();
+                }
                 HomeArticleListBean bean = JSON.parseObject(result, HomeArticleListBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
                     if (page == 1) {
@@ -144,8 +146,10 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
             @Override
             protected void onFailed(String errStr) {
-                xRefreshView.stopRefresh();
-                xRefreshView.stopLoadMore();
+                if (xRefreshView != null) {
+                    xRefreshView.stopRefresh();
+                    xRefreshView.stopLoadMore();
+                }
             }
         });
     }

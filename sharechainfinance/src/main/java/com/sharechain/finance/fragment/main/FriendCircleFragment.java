@@ -28,7 +28,6 @@ import com.youdao.sdk.ydtranslate.TranslateParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,7 +94,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     @Override
     protected void initView() {
         initTitle(getString(R.string.main_tab_friend_circle));
-        immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
         back_Image.setVisibility(View.VISIBLE);
         back_Image.setImageResource(R.drawable.my_follow);
         searchImage.setVisibility(View.VISIBLE);
@@ -104,20 +102,10 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRvPostLister.setLayoutManager(manager);
 
-
         mogulAdapter = new MogulAdapter(getActivity(), mogulDataList,trslist);
         mRvPostLister.setAdapter(mogulAdapter);
         mogulAdapter.setOnItemLongClickListener(this);
         optionUtil = new PopOptionUtil(getActivity());
-    }
-
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden && immersionBar != null) {
-            immersionBar.statusBarColor(android.R.color.transparent).statusBarDarkFont(true).init();
-        }
     }
 
     @Override

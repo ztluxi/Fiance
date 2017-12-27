@@ -54,6 +54,11 @@ public abstract class BaseFragment extends LazyFragment {
         immersionBar = ImmersionBar.with(getActivity());
         unbinder = ButterKnife.bind(this, getContentView());
         initView();
+    }
+
+    @Override
+    protected void onFragmentStartLazy() {
+        super.onFragmentStartLazy();
         initData();
     }
 

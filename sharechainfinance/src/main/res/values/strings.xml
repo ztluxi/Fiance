@@ -82,5 +82,8 @@
     <string name="fastmsg_normal">最新资讯</string>
     <string name="fastmsg_important">重磅快讯</string>
 
+    <string name="share_weibo_name">/&#064;微博名</string>
+    <string name="share_to">分享至</string>
+
 
 </resources>
