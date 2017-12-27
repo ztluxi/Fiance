@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="50dp">
+        android:paddingTop="100dp">
 
         <LinearLayout
             android:id="@+id/content_ll"
@@ -29,7 +29,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scrollbars="none">
 
@@ -86,13 +86,13 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="2017----星期一 2017----星期一 2017----"
+                        android:text="2017----星期一 2017----2017----星期一 2017----星期一 2017---- 2017----"
                         android:textColor="@android:color/black"
                         android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="120dp"
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/share_dialog_margin_top"
                         android:gravity="center_horizontal"
@@ -196,7 +196,7 @@ UID1233"
                 android:id="@+id/image_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="21dp"
+                android:layout_marginBottom="100dp"
                 android:src="@drawable/icon_share_delete" />
         </LinearLayout>
     </RelativeLayout>

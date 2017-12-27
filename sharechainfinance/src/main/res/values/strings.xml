@@ -63,6 +63,7 @@
     <string name="has_follow">已关注</string>
     <string name="please_write_your_suggest">请填写您反馈的建议</string>
     <string name="please_write_your_phone_number">请填写您的手机号或者邮箱</string>
+    <string name="please_write_true_phone_number">请填写11位正常手机号</string>
     <string name="please_check_network">请检查您的网络</string>
     <string name="hot_search">热门搜索</string>
     <string name="search_history">搜索历史</string>
@@ -74,6 +75,13 @@
     <string name="search_tag_other">点击可添加更多频道</string>
     <string name="search_tag_click">点击进入频道</string>
     <string name="search_tag_bianji">编辑</string>
+    <string name="picture_preview">图片预览</string>
+    <string name="copy_success">复制成功</string>
+    <string name="reture">还原</string>
+    <string name="copy">复制</string>
+    <string name="translate">翻译</string>
+    <string name="nothing_new_data">没有最新数据了</string>
+    <string name="nothing_more_data">没有更多数据了</string>
 
     <string name="home_item_comment">评论</string>
     <string name="home_item_praise">赞同</string>

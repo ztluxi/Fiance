@@ -2,32 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/base_bg_color"
+    android:background="@color/white"
     android:orientation="vertical">
-
     <include layout="@layout/base_title" />
 
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        style="@style/MatchMatch"
+        android:id="@+id/rl_recyclerview_refresh">
 
-
-
-    <!--<com.andview.refreshview.XRefreshView-->
-        <!--android:id="@+id/xrefreshview_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ListView-->
-            <!--android:id="@+id/mogul_lv"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"></ListView>-->
-    <!--</com.andview.refreshview.XRefreshView>-->
     <android.support.v7.widget.RecyclerView
+        android:background="@color/white"
+        android:layout_weight="1"
         android:id="@+id/rv_post_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#e4e4e4"
+        android:layout_height="0dp"
         android:visibility="visible"/>
 
-
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 </LinearLayout>

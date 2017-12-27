@@ -82,7 +82,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
             case TYPE_HEADER:
                 view = getView(parent, R.layout.layout_header);
                 headerViewHolder = new HeaderViewHolder(view);
-                initViewPager();
+//                initViewPager();
                 initPoints();
                 setHeaderHotData();
                 return headerViewHolder;
@@ -142,87 +142,87 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         }
     }
 
-    private void initViewPager() {
-        if (headerViewHolder != null) {
-            headerViewHolder.viewpager.setPageMargin(BaseUtils.dip2px(context, 7));
-            headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
-                @Override
-                public Object instantiateItem(final ViewGroup container, int position) {
-                    return bannerViews.get(position);
-                }
-
-                @Override
-                public int getItemPosition(Object object) {
-                    return POSITION_NONE;
-                }
-
-                @Override
-                public void destroyItem(ViewGroup container, int position, Object object) {
-                    container.removeView((View) object);
-                }
-
-                @Override
-                public int getCount() {
-                    return headerBean.getBanner().size() + 2;
-                }
-
-                @Override
-                public boolean isViewFromObject(View view, Object o) {
-                    return view == o;
-                }
-
+//    private void initViewPager() {
+//        if (headerViewHolder != null) {
+//            headerViewHolder.viewpager.setPageMargin(BaseUtils.dip2px(context, 7));
+//            headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
 //                @Override
-//                public void startUpdate(ViewGroup container) {
-//                    super.startUpdate(container);
-//                    ViewPager viewPager = (ViewPager) container;
-//                    int position = viewPager.getCurrentItem();
-//                    if (position == 0) {
-//                        position = getFirstItemPosition();
-//                    } else if (position == getCount() - 1) {
-//                        position = getLastItemPosition();
-//                    }
-//                    viewPager.setCurrentItem(position, false);
+//                public Object instantiateItem(final ViewGroup container, int position) {
+//                    return bannerViews.get(position);
 //                }
-
-                private int getRealCount() {
-                    return headerBean.getBanner().size();
-                }
-
-                private int getRealPosition(int position) {
-                    return position % getRealCount();
-                }
-
-                private int getFirstItemPosition() {
-                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount();
-                }
-
-                private int getLastItemPosition() {
-                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
-                }
-            });
-            headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
-            headerViewHolder.viewpager.setCurrentItem(switchBannerIndex, false);
-            switchToPoint(0);
-            headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    switchToPoint(position % headerBean.getBanner().size());
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-            headerViewHolder.viewpager.setCurrentItem(0, false);
-            startBannerPlay();
-        }
-    }
+//
+//                @Override
+//                public int getItemPosition(Object object) {
+//                    return POSITION_NONE;
+//                }
+//
+//                @Override
+//                public void destroyItem(ViewGroup container, int position, Object object) {
+//                    container.removeView((View) object);
+//                }
+//
+//                @Override
+//                public int getCount() {
+//                    return headerBean.getBanner().size() + 2;
+//                }
+//
+//                @Override
+//                public boolean isViewFromObject(View view, Object o) {
+//                    return view == o;
+//                }
+//
+////                @Override
+////                public void startUpdate(ViewGroup container) {
+////                    super.startUpdate(container);
+////                    ViewPager viewPager = (ViewPager) container;
+////                    int position = viewPager.getCurrentItem();
+////                    if (position == 0) {
+////                        position = getFirstItemPosition();
+////                    } else if (position == getCount() - 1) {
+////                        position = getLastItemPosition();
+////                    }
+////                    viewPager.setCurrentItem(position, false);
+////                }
+//
+//                private int getRealCount() {
+//                    return headerBean.getBanner().size();
+//                }
+//
+//                private int getRealPosition(int position) {
+//                    return position % getRealCount();
+//                }
+//
+//                private int getFirstItemPosition() {
+//                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount();
+//                }
+//
+//                private int getLastItemPosition() {
+//                    return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
+//                }
+//            });
+//            headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
+//            headerViewHolder.viewpager.setCurrentItem(switchBannerIndex, false);
+//            switchToPoint(0);
+//            headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                @Override
+//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                }
+//
+//                @Override
+//                public void onPageSelected(int position) {
+//                    switchToPoint(position % headerBean.getBanner().size());
+//                }
+//
+//                @Override
+//                public void onPageScrollStateChanged(int state) {
+//
+//                }
+//            });
+//            headerViewHolder.viewpager.setCurrentItem(0, false);
+//            startBannerPlay();
+//        }
+//    }
 
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {

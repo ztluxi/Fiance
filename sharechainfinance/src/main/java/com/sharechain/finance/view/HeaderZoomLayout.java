@@ -99,15 +99,16 @@ public class HeaderZoomLayout extends ScrollView {
      * 放大view
      */
     private void setZoom(float s) {
-        float scaleTimes = (float) ((mHeaderWidth + s) / (mHeaderWidth * 1.0));
+        float scaleTimes = (float) ((mHeaderHeight + s) / (mHeaderHeight * 1.0));
 //        如超过最大放大倍数，直接返回
         if (scaleTimes > mScaleTimes) return;
 
         ViewGroup.LayoutParams layoutParams = mHeaderView.getLayoutParams();
-        layoutParams.width = (int) (mHeaderWidth + s);
-        layoutParams.height = (int) (mHeaderHeight * ((mHeaderWidth + s) / mHeaderWidth));
+        layoutParams.height = (int) (mHeaderHeight + s);
+        layoutParams.width = (int) (mHeaderWidth * ((mHeaderWidth + s) / mHeaderWidth));
+//        layoutParams.height = (int) (mHeaderHeight * ((mHeaderWidth + s) / mHeaderWidth));
 //        设置控件水平居中
-        ((MarginLayoutParams) layoutParams).setMargins(0, 0, -(layoutParams.width - mHeaderWidth) / 2, 0);
+        ((MarginLayoutParams) layoutParams).setMargins(0, 0, 0, -(layoutParams.height - mHeaderHeight) / 2);
         mHeaderView.setLayoutParams(layoutParams);
     }
 
@@ -115,7 +116,7 @@ public class HeaderZoomLayout extends ScrollView {
      * 回弹
      */
     private void replyView() {
-        final float distance = mHeaderView.getMeasuredWidth() - mHeaderWidth;
+        final float distance = mHeaderView.getMeasuredHeight() - mHeaderHeight;
         // 设置动画
         ValueAnimator anim = ObjectAnimator.ofFloat(distance, 0.0F).setDuration((long) (distance * mReplyRatio));
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

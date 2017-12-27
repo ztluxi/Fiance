@@ -7,14 +7,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
+import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseFragment;
+import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
+import com.sharechain.finance.bean.FastMsgBean;
+import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MyFollowActivity;
-import com.sharechain.finance.module.mine.SearchActivity;
+import com.sharechain.finance.module.mogul.MogulSearchActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.utils.PopClickEvent;
 import com.sharechain.finance.utils.PopOptionUtil;
 import com.sharechain.finance.utils.ToastManager;
 import com.youdao.sdk.app.Language;
@@ -27,16 +33,20 @@ import com.youdao.sdk.ydtranslate.TranslateParameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * Created by Administrator on 2017/12/13.
  */
 
-public class FriendCircleFragment extends BaseFragment implements MogulAdapter.MyItemLongClickListener {
+public class FriendCircleFragment extends BaseFragment implements MogulAdapter.MyItemLongClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
 
     private static final int TRANSLATE_SUCCESS = 1000;
     @BindView(R.id.image_title_left)
@@ -45,39 +55,29 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     ImageView searchImage;
     @BindView(R.id.rv_post_list)
     RecyclerView mRvPostLister;
+    @BindView(R.id.rl_recyclerview_refresh)
+    BGARefreshLayout mRefreshLayout;
     private MogulAdapter mogulAdapter;
     private List<MogulData> mogulDataList = new ArrayList<>();
-    private String[] IMG_URL_LIST = {
-            "http://ac-QYgvX1CC.clouddn.com/36f0523ee1888a57.jpg", "http://ac-QYgvX1CC.clouddn.com/07915a0154ac4a64.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/9ec4bc44bfaf07ed.jpg", "http://ac-QYgvX1CC.clouddn.com/fa85037f97e8191f.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/de13315600ba1cff.jpg", "http://ac-QYgvX1CC.clouddn.com/15c5c50e941ba6b0.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/10762c593798466a.jpg", "http://ac-QYgvX1CC.clouddn.com/eaf1c9d55c5f9afd.jpg",
-            "http://ac-QYgvX1CC.clouddn.com/ad99de83e1e3f7d4.jpg", "http://ac-QYgvX1CC.clouddn.com/233a5f70512befcc.jpg",
-    };
-
     private Translator translator;
-
     private PopOptionUtil optionUtil;
     private List<Translate> trslist = new ArrayList<Translate>();
+    /**
+     * 是否翻译过
+     */
+    private boolean isTranslate = false;
+
+    private int mNewPageNumber = 1;
+    private int mMorePageNumber = 0;
+
     private Handler mHander = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             switch (message.what) {
                 case TRANSLATE_SUCCESS:
                     final List<MogulData> list = (List<MogulData>) message.obj;
-                    final int postion = message.arg1;
-                    optionUtil.setOnPopClickEvent(new PopClickEvent() {
-                        @Override
-                        public void onPreClick() {
-                        }
+                    final int position = message.arg1;
 
-                        @Override
-                        public void onNextClick() {
-                            String content = list.get(postion).getContent();
-                            query(list,postion,content);
-                            optionUtil.dismiss();
-                        }
-                    });
                     break;
             }
 
@@ -99,31 +99,67 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         searchImage.setVisibility(View.VISIBLE);
         searchImage.setImageResource(R.drawable.search_white);
 
-        final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        initLister();
+    }
+
+    private void initLister() {
+        mRefreshLayout.setDelegate(this);
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(getActivity()), true));
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRvPostLister.setLayoutManager(manager);
 
-        mogulAdapter = new MogulAdapter(getActivity(), mogulDataList,trslist);
-        mRvPostLister.setAdapter(mogulAdapter);
-        mogulAdapter.setOnItemLongClickListener(this);
-        optionUtil = new PopOptionUtil(getActivity());
+    }
+
+    private void getData(){
+        final Map<String, String> params = new HashMap<>();
+        params.put(pageParam, String.valueOf(page));
+        requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                Logger.d(result);
+                MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
+                if (bean.getSuccess()==1){
+                    if (bean.getData().size()>1){
+                        for (int i = 0; i <bean.getData().size() ; i++) {
+                            String user_image = bean.getData().get(i).getProfile_image_url();
+                            String create_time = bean.getData().get(i).getCreate_at();
+                            String mogul_name = bean.getData().get(i).getFull_name();
+                            String weibo_name = bean.getData().get(i).getScreen_name();
+                            String positon = bean.getData().get(i).getProfessional();
+                            String text = bean.getData().get(i).getText();
+                            int mogul_id = bean.getData().get(i).getId();
+//                            List<String> imgs = new ArrayList<>();
+//                            imgs.add(user_image);
+//                            imgs.add(user_image);
+                            MogulData mogulData = new MogulData(null);
+                            mogulData.setName(mogul_name);
+                            mogulData.setTranslate(null);
+                            mogulData.setContent(text);
+                            mogulData.setPosition(positon);
+                            mogulData.setUrlList(null);
+                            mogulData.setHead(user_image);
+                            mogulData.setTime(create_time);
+                            mogulData.setWeibo(weibo_name);
+                            mogulDataList.add(mogulData);
+                        }
+                    }
+                }
+            }
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
     }
 
     @Override
     public void initData() {
-        for (int i = 0; i < 10; i++) {
-            MogulData newsData = new MogulData(null);
-            newsData.setHead("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-            newsData.setContent("Never give up");
-            newsData.setFabulous("20090" + i);
-            newsData.setName("大哥大" + i);
-            newsData.setPosition("未来财经ceo");
-            newsData.setTime("2017-12-22");
-            newsData.setWeibo("黑猫警长");
-            List<String> imgUrls = new ArrayList<>();
-            imgUrls.addAll(Arrays.asList(IMG_URL_LIST).subList(0, i % 9));
-            newsData.setUrlList(imgUrls);
-            mogulDataList.add(newsData);
-        }
+        getData();
+        mogulAdapter = new MogulAdapter(getActivity(), mogulDataList,trslist);
+        mRvPostLister.setAdapter(mogulAdapter);
+        mogulAdapter.setOnItemLongClickListener(this);
+        optionUtil = new PopOptionUtil(SFApplication.get(getActivity()));
+
     }
 
     @OnClick({R.id.image_title_left, R.id.image_title_right})
@@ -133,25 +169,46 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
                 break;
             case R.id.image_title_right:
-                BaseUtils.openActivity(getActivity(), SearchActivity.class, null);
+                BaseUtils.openActivity(getActivity(), MogulSearchActivity.class, null);
                 break;
         }
     }
 
     @Override
     public void onTranslateClick(final View view, final int position, final List<MogulData> list) {
-        view.setBackgroundColor(getResources().getColor(R.color.about_font));
+        if (list.get(position).getTranslate() != null) {
+            isTranslate = true;
+            optionUtil.setTextView(getString(R.string.reture));
+        } else {
+            optionUtil.setTextView(getString(R.string.translate));
+            isTranslate = false;
+        }
+        view.setBackgroundColor(getResources().getColor(R.color.white));
+        final String content = list.get(position).getContent();
+        optionUtil.setOnPopClickEvent(new PopOptionUtil.PopClickEvent() {
+            @Override
+            public void onPreClick() {
+                BaseUtils.copyComment(content, SFApplication.get(getActivity()));
+                optionUtil.dismiss();
+                view.setBackgroundColor(getResources().getColor(R.color.white));
+                ToastManager.showShort(getActivity(), getString(R.string.copy_success));
+            }
+
+            @Override
+            public void onNextClick() {
+                query(view, list, position, content);
+                optionUtil.dismiss();
+            }
+        });
         optionUtil.show(view);
-        Message message = new Message();
-        message.obj = list;
-        message.arg1 = position;
-        message.what = TRANSLATE_SUCCESS;
-        mHander.sendMessage(message);
 
     }
 
+    private void loadMoreData(){
 
-    private void query(final List<MogulData> mogulDataList1, final int position, String input) {
+    }
+
+    private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
         // 源语言或者目标语言其中之一必须为中文,目前只支持中文与其他几个语种的互译
         String to = "中文";
         String from = "英文";
@@ -167,6 +224,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 mHander.post(new Runnable() {
                     @Override
                     public void run() {
+                        view.setBackgroundColor(getResources().getColor(R.color.white));
                         MogulData mogulData = new MogulData(result);
                         mogulData.setHead(mogulDataList1.get(position).getHead());
                         mogulData.setWeibo(mogulDataList1.get(position).getWeibo());
@@ -176,8 +234,13 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setUrlList(mogulDataList1.get(position).getUrlList());
                         mogulData.setContent(mogulDataList1.get(position).getContent());
                         mogulData.setName(mogulDataList1.get(position).getName());
-                        mogulData.setTranslate(result);
-                        mogulDataList.set(position,mogulData);
+                        if (isTranslate) {
+                            mogulData.setTranslate(null);
+
+                        } else {
+                            mogulData.setTranslate(result);
+                        }
+                        mogulDataList.set(position, mogulData);
                         mogulAdapter.notifyDataSetChanged();
                         mRvPostLister.setScrollingTouchSlop(mogulDataList.size() - position);
                     }
@@ -190,12 +253,27 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                     @Override
                     public void run() {
 
-                        ToastManager.showShort(getActivity(),"查询错误:" + error.name());
+                        ToastManager.showShort(getActivity(), "翻译失败:" + error.name());
                     }
                 });
             }
         });
     }
 
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        mRefreshLayout.beginRefreshing();
+        mHander.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.endRefreshing();
+            }
+        }, 3000);
+    }
 
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+
+        return false;
+    }
 }

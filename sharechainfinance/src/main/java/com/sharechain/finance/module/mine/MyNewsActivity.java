@@ -3,17 +3,20 @@ package com.sharechain.finance.module.mine;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
+import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.HistoryAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.HomeData;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.utils.ToastManager;
 
@@ -21,7 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,15 +83,33 @@ public class MyNewsActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        for (int i = 0; i < 10; i++) {
-            NewsData newsData = new NewsData();
-            newsData.setTime("2017-07-12");
-            newsData.setTitle("大佬回复了你的评论");
-            newsData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
-            newsDataList.add(newsData);
-        }
+        getNews();
+//        for (int i = 0; i < 10; i++) {
+//            NewsData newsData = new NewsData();
+//            newsData.setTime("2017-07-12");
+//            newsData.setTitle("大佬回复了你的评论");
+//            newsData.setImage("http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg");
+//            newsDataList.add(newsData);
+//        }
 
     }
+    private void getNews(){
+        final Map<String, String> params = new HashMap<>();
+        params.put(pageParam, String.valueOf(page));
+        requestGet(UrlList.GET_NEWS, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
+
+    }
+
 
     @OnClick({R.id.image_title_left})
     public void onViewClicked(View view) {

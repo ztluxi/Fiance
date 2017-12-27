@@ -2,14 +2,16 @@ package com.sharechain.finance.view;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
 /**
- *
  * 弹性ScrollView
  * Created by zhoutao on 2017/1/11.
  */
@@ -34,6 +36,17 @@ public class BounceScrollView extends ScrollView {
         super(context, attrs);
     }
 
+    public BounceScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public BounceScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    }
+
     /***
      * 根据 XML 生成视图工作完成.该函数在生成视图的最后调用，在所有子视图添加完之后. 即使子类覆盖了 onFinishInflate
      * 方法，也应该调用父类的方法，使该方法得以执行.
@@ -47,21 +60,21 @@ public class BounceScrollView extends ScrollView {
         }
     }
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         // TODO Auto-generated method stub
 
         currentX = ev.getX();
         currentY = ev.getY();
-        switch(ev.getAction()){
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
                 break;
             case MotionEvent.ACTION_MOVE:
                 distanceX = currentX - lastX;
                 distanceY = currentY - lastY;
-                if(Math.abs(distanceX)< Math.abs(distanceY) && Math.abs(distanceY)>12){
-
+                if (Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY) > 12) {
                     upDownSlide = true;
                 }
                 break;
@@ -76,12 +89,28 @@ public class BounceScrollView extends ScrollView {
         if (upDownSlide && inner != null) commOnTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
-
+    private int mTouchSlop;
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // TODO Auto-generated method stub
-        return super.onInterceptTouchEvent(ev);
-    }
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                currentX = (int) ev.getRawX();
+                currentY = (int) ev.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int moveY = (int) ev.getRawY();
+                // 判断是否滑动，若滑动就拦截事件
+                if (Math.abs(moveY - currentY) > mTouchSlop) {
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+            return super.onInterceptTouchEvent(ev);
+        }
 
     /***
      * 监听touch
@@ -139,6 +168,7 @@ public class BounceScrollView extends ScrollView {
         }
     }
 
+
     /***
      * 回缩动画
      */
@@ -177,7 +207,7 @@ public class BounceScrollView extends ScrollView {
         return false;
     }
 
-    private void clear0(){
+    private void clear0() {
         lastX = 0;
         lastY = 0;
         distanceX = 0;

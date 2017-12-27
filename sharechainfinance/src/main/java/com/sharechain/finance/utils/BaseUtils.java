@@ -1,6 +1,8 @@
 package com.sharechain.finance.utils;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +22,22 @@ public class BaseUtils {
 
     private static final String NEWS_ITEM_SPECIAL = "special";
     private static final String NEWS_ITEM_PHOTO_SET = "photoset";
+
+
+    /**
+     * 复制评论
+     *
+     * @param content 文本内容
+     * @param context 资源管理器
+     */
+    public static void copyComment(String content, Context context) {
+        // 得到剪贴板管理器
+        ClipData clipData = ClipData.newPlainText("text", content);
+        ClipboardManager clip = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        clip.setPrimaryClip(clipData);
+    }
+
+
 
     /**
      * @param skipType
@@ -102,6 +120,21 @@ public class BaseUtils {
                 return false;
         }
         return true;
+    }
+
+
+    /**
+     * 正则校验 验证表单
+     *
+     * @param value
+     * @param reg
+     * @return
+     */
+    public static boolean valid(String value, String reg) {
+        if (value == null || reg == null) {
+            return false;
+        }
+        return value.matches(reg);
     }
 
     public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {

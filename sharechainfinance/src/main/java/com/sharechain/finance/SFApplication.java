@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import okhttp3.OkHttpClient;
 
@@ -37,7 +38,9 @@ public class SFApplication extends MultiDexApplication {
     public static String WX_APPID = "";
     public static String WX_APPSECRET = "";
     public static String WX_LOGIN_STATE = "wx_login_state";
-
+    public static SFApplication get(Context context) {
+        return (SFApplication) context.getApplicationContext();
+    }
     @Override
     public void onCreate() {
         super.onCreate();
