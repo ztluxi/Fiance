@@ -1,10 +1,12 @@
 package com.sharechain.finance.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Chu on 2017/12/18.
  */
 
-public class FastMsgData {
+public class FastMsgData implements Serializable {
     public static final int PARENT_TYPE = 0;
     public static final int CHILD_TYPE = 1;
 

@@ -95,6 +95,10 @@
         <activity
             android:name=".module.home.ArticleDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.mogul.ShareViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
     </application>
 

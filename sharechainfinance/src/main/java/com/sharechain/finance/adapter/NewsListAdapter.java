@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -264,7 +265,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         if (headerViewHolder != null) {
             if (headerBean.getTop_news().size() > 0) {
                 headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(0).getTime());
-                headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(0).getSite_content());
+//                headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(0).getSite_content());
             }
         }
     }
@@ -277,7 +278,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         @BindView(R.id.text_header_time)
         TextView text_header_time;
         @BindView(R.id.text_header_title)
-        TextView text_header_title;
+        TextSwitcher text_header_title;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);

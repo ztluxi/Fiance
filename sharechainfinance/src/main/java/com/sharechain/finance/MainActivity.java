@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.sharechain.finance.fragment.main.FastMsgFragment;
 import com.sharechain.finance.fragment.main.FriendCircleFragment;
 import com.sharechain.finance.fragment.main.HomeFragment;
-import com.sharechain.finance.fragment.main.MineFragment;
 import com.sharechain.finance.view.FragmentTabHost;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -22,7 +21,6 @@ public class MainActivity extends BaseActivity {
     private static final String TAB_HOME = "TAB_HOME";
     private static final String TAB_FAST_MSG = "TAB_FAST_MSG";
     private static final String TAB_FRIEND_CIRCLE = "TAB_FRIEND_CIRCLE";
-    private static final String TAB_MINE = "TAB_MINE";
 
     private enum BOTTOM_ITEM {
         HOME, FAST_MSG, FRIEND_CIRCLE
@@ -98,7 +96,6 @@ public class MainActivity extends BaseActivity {
         tabhost.addTab(tabhost.newTabSpec(TAB_HOME).setIndicator(TAB_HOME), HomeFragment.class, null);
         tabhost.addTab(tabhost.newTabSpec(TAB_FAST_MSG).setIndicator(TAB_FAST_MSG), FastMsgFragment.class, null);
         tabhost.addTab(tabhost.newTabSpec(TAB_FRIEND_CIRCLE).setIndicator(TAB_FRIEND_CIRCLE), FriendCircleFragment.class, null);
-        tabhost.addTab(tabhost.newTabSpec(TAB_MINE).setIndicator(TAB_MINE), MineFragment.class, null);
     }
 
     private void setBottom() {

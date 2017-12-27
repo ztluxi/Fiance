@@ -1,6 +1,7 @@
 package com.sharechain.finance;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,12 @@ public abstract class BaseFragment extends LazyFragment {
         immersionBar = ImmersionBar.with(getActivity());
         unbinder = ButterKnife.bind(this, getContentView());
         initView();
-    }
-
-    @Override
-    protected void onFragmentStartLazy() {
-        super.onFragmentStartLazy();
-        initData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+            }
+        }, 50);
     }
 
     /**
