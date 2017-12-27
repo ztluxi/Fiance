@@ -44,7 +44,6 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     private HomeIndexBean homeIndexBean;
     private List<HomeArticleListBean.DataBean.ArticleListsBean> dataList = new ArrayList<>();
     private List<HomeIndexBean.DataBean.BannerBean> imageList = new ArrayList<>();
-    private List<String> tipList = new ArrayList<>();
     private int curPosition;
 
     public static NewsFragment newInstance(HomeIndexBean homeIndexBean, int pos) {
@@ -74,8 +73,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     @Override
     protected void initView() {
-        initHeaderData();
-        mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData(), tipList);
+        mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData());
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
@@ -110,14 +108,6 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     @Override
     public void initData() {
         getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
-    }
-
-    private void initHeaderData() {
-        tipList.add("第一个Binner");
-        tipList.add("第二个Binner");
-        tipList.add("第三个Binner");
-        tipList.add("第四个Binner");
-        tipList.add("第五个Binner");
     }
 
     //根据id获取列表
@@ -156,9 +146,20 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     @Override
     public void onItemClick(View view, int position, boolean isPhoto) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("article_id", dataList.get(position).getID());
-        BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
+        if (position > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("article_id", dataList.get(position - 1).getID());
+            BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mNewsListAdapter != null) {
+            mNewsListAdapter.stopHeadLineAutoPlay();
+            mNewsListAdapter.stopBannerAutoPlay();
+        }
     }
 
 }

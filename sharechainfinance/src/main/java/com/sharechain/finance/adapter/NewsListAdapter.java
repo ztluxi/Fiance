@@ -17,16 +17,23 @@
 package com.sharechain.finance.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -34,9 +41,13 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.bean.HomeArticleListBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.view.AlphaPageTransformer;
+import com.sharechain.finance.view.ScaleInTransformer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,15 +55,19 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean.DataBean.ArticleListsBean> {
     private HeaderViewHolder headerViewHolder;
-    private List<String> tipList;
     private PagerAdapter pagerAdapter;
     private HomeIndexBean.DataBean headerBean;
+    private volatile int switchIndex = 0;
+    private volatile int switchBannerIndex = 0;
+    private int oldPosition = 0;//记录上一次点的位置
+    private int currentItem; //当前页面
+    private ScheduledExecutorService scheduledExecutorService;
+    private List<View> bannerViews = new ArrayList<>();
 
     public NewsListAdapter(Context context, List<HomeArticleListBean.DataBean.ArticleListsBean> list,
-                           HomeIndexBean.DataBean headerBean, List<String> tipList) {
+                           HomeIndexBean.DataBean headerBean) {
         super(context, list);
         this.headerBean = headerBean;
-        this.tipList = tipList;
         mIsShowHeader = true;
     }
 
@@ -133,22 +148,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
             headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
                 @Override
                 public Object instantiateItem(final ViewGroup container, int position) {
-                    ImageView view = new ImageView(context);
-                    view.setScaleType(ImageView.ScaleType.FIT_XY);
-                    final int realPosition = getRealPosition(position);
-                    Glide.with(context).load(headerBean.getBanner().get(realPosition).getUrl()).
-                            apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
-                                    .placeholder(R.drawable.ic_launcher_background)).into(view);
-                    container.addView(view);
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(context, "click position= " + realPosition, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    return view;
+                    return bannerViews.get(position);
                 }
-
 
                 @Override
                 public int getItemPosition(Object object) {
@@ -162,7 +163,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
 
                 @Override
                 public int getCount() {
-                    return Integer.MAX_VALUE;
+                    return headerBean.getBanner().size() + 2;
                 }
 
                 @Override
@@ -170,18 +171,18 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
                     return view == o;
                 }
 
-                @Override
-                public void startUpdate(ViewGroup container) {
-                    super.startUpdate(container);
-                    ViewPager viewPager = (ViewPager) container;
-                    int position = viewPager.getCurrentItem();
-                    if (position == 0) {
-                        position = getFirstItemPosition();
-                    } else if (position == getCount() - 1) {
-                        position = getLastItemPosition();
-                    }
-                    viewPager.setCurrentItem(position, false);
-                }
+//                @Override
+//                public void startUpdate(ViewGroup container) {
+//                    super.startUpdate(container);
+//                    ViewPager viewPager = (ViewPager) container;
+//                    int position = viewPager.getCurrentItem();
+//                    if (position == 0) {
+//                        position = getFirstItemPosition();
+//                    } else if (position == getCount() - 1) {
+//                        position = getLastItemPosition();
+//                    }
+//                    viewPager.setCurrentItem(position, false);
+//                }
 
                 private int getRealCount() {
                     return headerBean.getBanner().size();
@@ -199,8 +200,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
                     return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
                 }
             });
-            headerViewHolder.viewpager.setPageTransformer(true, new AlphaPageTransformer());
-            headerViewHolder.viewpager.setCurrentItem(0, false);
+            headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
+            headerViewHolder.viewpager.setCurrentItem(switchBannerIndex, false);
             switchToPoint(0);
             headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -218,6 +219,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
 
                 }
             });
+            headerViewHolder.viewpager.setCurrentItem(0, false);
+            startBannerPlay();
         }
     }
 
@@ -265,7 +268,22 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
         if (headerViewHolder != null) {
             if (headerBean.getTop_news().size() > 0) {
                 headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(0).getTime());
-//                headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(0).getSite_content());
+                headerViewHolder.text_header_title.setFactory(new ViewSwitcher.ViewFactory() {
+                    @Override
+                    public View makeView() {
+                        TextView textView = new TextView(context);
+                        textView.setLines(2);
+                        textView.setEllipsize(TextUtils.TruncateAt.END);
+                        textView.setTextSize(15);
+                        textView.setTextColor(ContextCompat.getColor(context, R.color.primary_text));
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.gravity = Gravity.CENTER_VERTICAL;
+                        textView.setLayoutParams(params);
+                        return textView;
+                    }
+                });
+                startSwitchText();
             }
         }
     }
@@ -299,5 +317,98 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
             ButterKnife.bind(this, view);
         }
     }
+
+    //热点新闻循环播放handler
+    public Handler switchHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            return false;
+        }
+    });
+
+    private void startSwitchText() {
+        headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(switchIndex).getTime());
+        headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(switchIndex).getSite_content());
+        switchHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switchIndex++;
+                if (switchIndex == headerBean.getTop_news().size()) {
+                    switchIndex = 0;
+                }
+                startSwitchText();
+            }
+        }, 3000);
+    }
+
+    //停止循环播放
+    public void stopHeadLineAutoPlay() {
+        switchHandler.removeCallbacks(null);
+    }
+
+    //停止循环播放
+    public void stopBannerAutoPlay() {
+        scheduledExecutorService.shutdown();
+    }
+
+    private void startBannerPlay() {
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        //每隔2秒钟切换一张图片
+        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 2, 2, TimeUnit.SECONDS);
+    }
+
+    //切换图片
+    private class ViewPagerTask implements Runnable {
+
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            currentItem++;
+            if (currentItem == headerBean.getBanner().size()) {
+                currentItem = 0;
+            }
+            handler.obtainMessage().sendToTarget();
+        }
+
+    }
+
+    private void initBannerViewList() {
+        for (int i = 0; i < headerBean.getBanner().size(); i++) {
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_news_banner_item, null);
+            ImageView image_banner = view.findViewById(R.id.image_banner);
+            TextView text_banner = view.findViewById(R.id.text_banner);
+            Glide.with(context).load(headerBean.getBanner().get(i).getUrl()).
+                    apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
+                            .placeholder(R.drawable.ic_launcher_background)).into(image_banner);
+            text_banner.setText("比特币价格重挫45%，小投资者惨遭割韭菜");
+            bannerViews.add(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Toast.makeText(context, "click position= " + i, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            //设置当前页面
+            int position = headerViewHolder.viewpager.getCurrentItem();
+            int first = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size();
+            int last = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size() - 1;
+            if (position == 0) {
+                position = first;
+            } else if (position == Integer.MAX_VALUE - 1) {
+                position = last;
+            }
+            headerViewHolder.viewpager.setCurrentItem(position, false);
+//            headerViewHolder.viewpager.setCurrentItem(currentItem, false);
+        }
+
+    };
 
 }

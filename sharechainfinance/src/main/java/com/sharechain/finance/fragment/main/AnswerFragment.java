@@ -3,6 +3,7 @@ package com.sharechain.finance.fragment.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -11,7 +12,6 @@ import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.AnswerAdapter;
-import com.sharechain.finance.adapter.NewsListAdapter;
 import com.sharechain.finance.bean.HomeArticleListBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
@@ -30,7 +30,7 @@ import butterknife.BindView;
  * Created by Chu on 2017/12/22.
  */
 
-public class AnswerFragment extends BaseFragment implements NewsListAdapter.OnNewsListItemClickListener {
+public class AnswerFragment extends BaseFragment implements AdapterView.OnItemClickListener {
 
     private static final String NEWS_TYPE_KEY = "NewsTypeKey";
     private static final String NEWS_TYPE_POSITION = "NewsTypePosition";
@@ -94,6 +94,7 @@ public class AnswerFragment extends BaseFragment implements NewsListAdapter.OnNe
         });
         answerAdapter.setData(dataList);
         listView.setAdapter(answerAdapter);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -137,9 +138,9 @@ public class AnswerFragment extends BaseFragment implements NewsListAdapter.OnNe
     }
 
     @Override
-    public void onItemClick(View view, int position, boolean isPhoto) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Bundle bundle = new Bundle();
-        bundle.putInt("article_id", dataList.get(position).getID());
+        bundle.putInt("article_id", dataList.get(i).getID());
         BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
     }
 
