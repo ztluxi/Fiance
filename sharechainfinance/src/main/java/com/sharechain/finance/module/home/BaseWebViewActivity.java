@@ -8,9 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.GeolocationPermissions;
@@ -20,73 +18,30 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
 import com.sharechain.finance.BaseActivity;
-import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.bean.ArticleDetailBean;
-import com.sharechain.finance.bean.ArticleListsBean;
-import com.sharechain.finance.bean.HistoryBean;
-import com.sharechain.finance.bean.LikeBean;
-import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.utils.BaseUtils;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.litepal.crud.DataSupport;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
- * Created by Chu on 2017/12/26.
+ * Created by Chu on 2017/12/28.
  */
 
-public class ArticleDetailActivity extends BaseActivity {
-    @BindView(R.id.text_article_title)
-    TextView text_article_title;
-    @BindView(R.id.image_avatar)
-    ImageView image_avatar;
-    @BindView(R.id.text_name)
-    TextView text_name;
-    @BindView(R.id.text_time)
-    TextView text_time;
-    @BindView(R.id.text_view_count)
-    TextView text_view_count;
+public class BaseWebViewActivity extends BaseActivity {
     @BindView(R.id.web_content)
     WebView web_content;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.text_from)
-    TextView text_from;
-    @BindView(R.id.flow_tags)
-    TagFlowLayout flow_tags;
-    @BindView(R.id.image_praise)
-    ImageView image_praise;
-    @BindView(R.id.text_praise_num)
-    TextView text_praise_num;
 
     private boolean isAnimStart = false;
     private int currentProgress;
-    private ArticleListsBean articleBean;
+    private String url;
 
     @Override
     public int getLayout() {
-        return R.layout.activity_article_detail;
+        return R.layout.activity_base_web;
     }
 
     @Override
@@ -109,22 +64,12 @@ public class ArticleDetailActivity extends BaseActivity {
                 //分享
             }
         });
-        //判断是否点赞
-        List<LikeBean> likeList = DataSupport.where("articleId = ?", String.valueOf(articleBean.getTagId())).find(LikeBean.class);
-        if (likeList.size() == 0) {
-            image_praise.setImageResource(R.drawable.icon_article_praise);
-            image_praise.setClickable(true);
-        } else {
-            image_praise.setImageResource(R.drawable.icon_article_praise_pre);
-            image_praise.setClickable(false);
-        }
-
     }
 
     @Override
     public void initData() {
-        articleBean = (ArticleListsBean) getIntent().getSerializableExtra("article");
-        getDetail();
+        url = getIntent().getStringExtra("web_url");
+        web_content.loadUrl(url);
     }
 
     private void initWebSetting() {
@@ -182,7 +127,7 @@ public class ArticleDetailActivity extends BaseActivity {
             // 处理javascript中的alert
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
                 // 构建一个Builder来显示网页中的对话框
-                AlertDialog.Builder builder = new AlertDialog.Builder(ArticleDetailActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BaseWebViewActivity.this);
                 builder.setTitle("Alert");
                 builder.setMessage(message);
                 builder.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
@@ -198,7 +143,7 @@ public class ArticleDetailActivity extends BaseActivity {
 
             // 处理javascript中的confirm
             public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ArticleDetailActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BaseWebViewActivity.this);
                 builder.setTitle("confirm");
                 builder.setMessage(message);
                 builder.setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
@@ -295,94 +240,6 @@ public class ArticleDetailActivity extends BaseActivity {
             }
         });
         anim.start();
-    }
-
-    private void updateView(ArticleDetailBean bean) {
-        text_article_title.setText(bean.getData().getArticle().getPost_title());
-        Glide.with(this).load("").into(image_avatar);
-        text_name.setText(bean.getData().getAuthor().getDisplay_name());
-        text_time.setText(bean.getData().getArticle().getPost_date_gmt());
-        text_view_count.setText(String.valueOf(bean.getData().getAuthor().getCount_view()));
-        if (bean.getData().getPost_tag().size() == 0) {
-            flow_tags.setVisibility(View.GONE);
-        }
-        flow_tags.setAdapter(new TagAdapter<ArticleDetailBean.DataBean.PostTagBean>(bean.getData().getPost_tag()) {
-            @Override
-            public View getView(FlowLayout parent, int position, ArticleDetailBean.DataBean.PostTagBean postTagBean) {
-                TextView tv = (TextView) LayoutInflater.from(ArticleDetailActivity.this).inflate(R.layout.layout_item_article_tag,
-                        flow_tags, false);
-                tv.setText(postTagBean.getName());
-                tv.setBackgroundDrawable(BaseUtils.createGradientDrawable(0, Color.parseColor("#fd5f5a"),
-                        BaseUtils.dip2px(ArticleDetailActivity.this, 5), Color.parseColor("#fd5f5a")));
-                return tv;
-            }
-        });
-        //赞数目
-        text_praise_num.setText(String.valueOf(bean.getData().getAuthor().getCount_article()));
-        //图文详情
-        Document doc = Jsoup.parse(bean.getData().getArticle().getPost_content());
-        Elements elements = doc.getElementsByTag("img");
-        for (Element element : elements) {
-            element.attr("width", "100%").attr("height", "auto");
-        }
-        web_content.loadDataWithBaseURL(null, doc.toString(), "text/html", "utf-8", null);
-    }
-
-    private void getDetail() {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(articleBean.getTagId()));
-        requestGet(UrlList.HOME_ARTICLE_DETAIL, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                ArticleDetailBean bean = JSON.parseObject(result, ArticleDetailBean.class);
-                if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
-                    //获取文章成功，将该文章存储到数据库
-                    if (!BaseUtils.isEmpty(articleBean.getPost_title())) {
-                        //异步查询数据库
-                        List<HistoryBean> tmpList = DataSupport.where("tagId = ?", String.valueOf(articleBean.getTagId())).find(HistoryBean.class);
-                        if (tmpList.size() == 0) {
-                            HistoryBean historyBean = convertToHistory(articleBean);
-                            historyBean.save();
-                        }
-                    }
-                    updateView(bean);
-                }
-            }
-
-            @Override
-            protected void onFailed(String errStr) {
-
-            }
-        });
-    }
-
-    //点赞
-    private void praise() {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(articleBean.getTagId()));
-        requestGet(UrlList.HOME_ARTICLE_PRAISE, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                ArticleDetailBean bean = JSON.parseObject(result, ArticleDetailBean.class);
-                if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
-                    image_praise.setImageResource(R.drawable.icon_article_praise_pre);
-                    LikeBean likeBean = new LikeBean();
-                    likeBean.setArticleId(articleBean.getTagId());
-                    likeBean.save();
-                    image_praise.setClickable(false);
-                }
-            }
-
-            @Override
-            protected void onFailed(String errStr) {
-
-            }
-        });
-    }
-
-    @OnClick(R.id.image_praise)
-    void clickPraise() {
-        praise();
     }
 
     @Override

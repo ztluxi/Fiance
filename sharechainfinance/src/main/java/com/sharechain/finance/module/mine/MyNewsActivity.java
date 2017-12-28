@@ -1,13 +1,9 @@
 package com.sharechain.finance.module.mine;
 
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
@@ -15,25 +11,18 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.adapter.HistoryAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
-import com.sharechain.finance.bean.HomeData;
 import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.utils.ToastManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
@@ -88,7 +77,6 @@ public class MyNewsActivity extends BaseActivity {
     @Override
     public void initData() {
         getNews();
-
     }
 
     private void getNews() {

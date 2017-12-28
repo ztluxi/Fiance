@@ -71,12 +71,15 @@ public class ManageTagActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        for (int i = 0; i < 10; i++) {
-            NewsChannelTable channelTable = new NewsChannelTable();
-            channelTable.setNewsChannelName("其它");
-            channelTable.setNewsChannelFixed(false);
-            channelTable.setNewsChannelSelect(false);
-            newsChannelsMore.add(channelTable);
+        for (int i = 0; i < newsChannelsMine.size(); i++) {
+            if (!newsChannelsMine.get(i).getNewsChannelName().equals("推荐")) {
+                NewsChannelTable channelTable = new NewsChannelTable();
+                channelTable.setNewsChannelId(String.valueOf(newsChannelsMine.get(i).getNewsChannelId()));
+                channelTable.setNewsChannelName(newsChannelsMine.get(i).getNewsChannelName());
+                channelTable.setNewsChannelFixed(false);
+                channelTable.setNewsChannelSelect(false);
+                newsChannelsMore.add(channelTable);
+            }
         }
         initRecyclerViewMineAndMore();
     }

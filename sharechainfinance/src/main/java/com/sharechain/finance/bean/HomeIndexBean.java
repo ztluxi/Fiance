@@ -80,6 +80,7 @@ public class HomeIndexBean implements Serializable {
 
             private String url;
             private int pid;
+            private String post_title;
 
             public String getUrl() {
                 return url;
@@ -95,6 +96,14 @@ public class HomeIndexBean implements Serializable {
 
             public void setPid(int pid) {
                 this.pid = pid;
+            }
+
+            public String getPost_title() {
+                return post_title;
+            }
+
+            public void setPost_title(String post_title) {
+                this.post_title = post_title;
             }
         }
 

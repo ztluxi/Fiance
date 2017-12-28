@@ -61,8 +61,7 @@
             android:layout_below="@id/ll_tab"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingLeft="15dp">
 
             <TextView
                 android:id="@+id/text_search"
@@ -79,15 +78,21 @@
                 android:textColor="@color/color_7c7c7c" />
 
             <ImageView
+                android:id="@+id/image_notification"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="24dp"
+                android:paddingRight="12dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/icon_home_msg" />
 
             <ImageView
+                android:id="@+id/image_history"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="12dp"
+                android:paddingRight="15dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/icon_home_history" />
 
         </LinearLayout>

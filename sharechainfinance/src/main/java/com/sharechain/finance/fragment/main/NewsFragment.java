@@ -13,6 +13,7 @@ import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.NewsListAdapter;
+import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HomeArticleListBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
@@ -42,7 +43,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     private NewsListAdapter mNewsListAdapter;
     private HomeIndexBean homeIndexBean;
-    private List<HomeArticleListBean.DataBean.ArticleListsBean> dataList = new ArrayList<>();
+    private List<ArticleListsBean> dataList = new ArrayList<>();
     private List<HomeIndexBean.DataBean.BannerBean> imageList = new ArrayList<>();
     private int curPosition;
 
@@ -129,6 +130,11 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
                     if (page == 1) {
                         dataList.clear();
                     }
+                    //给tagId赋值
+                    for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
+                        tmp.setTagId(tmp.getID());
+                        tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
+                    }
                     dataList.addAll(bean.getData().getArticle_lists());
                     mNewsListAdapter.notifyDataSetChanged();
                 }
@@ -148,7 +154,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     public void onItemClick(View view, int position, boolean isPhoto) {
         if (position > 0) {
             Bundle bundle = new Bundle();
-            bundle.putInt("article_id", dataList.get(position - 1).getID());
+            bundle.putSerializable("article", dataList.get(position - 1));
             BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
         }
     }
@@ -158,6 +164,22 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         super.onDestroy();
         if (mNewsListAdapter != null) {
             mNewsListAdapter.stopAll();
+        }
+    }
+
+    @Override
+    protected void onFragmentStopLazy() {
+        super.onFragmentStopLazy();
+        if (mNewsListAdapter != null) {
+            mNewsListAdapter.waitCircleAll();
+        }
+    }
+
+    @Override
+    protected void onFragmentStartLazy() {
+        super.onFragmentStartLazy();
+        if (mNewsListAdapter != null) {
+            mNewsListAdapter.notifyCircleAll();
         }
     }
 

@@ -12,6 +12,7 @@ import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.AnswerAdapter;
+import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HomeArticleListBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
@@ -42,7 +43,7 @@ public class AnswerFragment extends BaseFragment implements AdapterView.OnItemCl
 
     private AnswerAdapter answerAdapter;
     private HomeIndexBean homeIndexBean;
-    private List<HomeArticleListBean.DataBean.ArticleListsBean> dataList = new ArrayList<>();
+    private List<ArticleListsBean> dataList = new ArrayList<>();
     private int curPosition;
 
     public static AnswerFragment newInstance(HomeIndexBean homeIndexBean, int pos) {
@@ -121,9 +122,13 @@ public class AnswerFragment extends BaseFragment implements AdapterView.OnItemCl
                     if (page == 1) {
                         dataList.clear();
                     }
+                    //给tagId赋值
+                    for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
+                        tmp.setTagId(tmp.getID());
+                        tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
+                    }
                     dataList.addAll(bean.getData().getArticle_lists());
                     answerAdapter.setData(dataList);
-                    answerAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -140,7 +145,7 @@ public class AnswerFragment extends BaseFragment implements AdapterView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Bundle bundle = new Bundle();
-        bundle.putInt("article_id", dataList.get(i).getID());
+        bundle.putSerializable("article", dataList.get(i));
         BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
     }
 

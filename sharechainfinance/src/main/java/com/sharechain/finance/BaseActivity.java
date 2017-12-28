@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.sharechain.finance.bean.ArticleListsBean;
+import com.sharechain.finance.bean.HistoryBean;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -41,6 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected InputMethodManager inputMethodManager;
     protected int page = 1;//分页页码
     protected String pageParam = "page";
+    protected LinearLayout ll_load_failed;
+    protected TextView text_refresh;
+    protected TextView empty_view;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +94,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         image_title_right = findViewById(R.id.image_title_right);
         text_title = findViewById(R.id.text_title);
         text_title.setText(titleStr);
+    }
+
+    //初始化数据为空会或者加载失败的情况
+    protected void initEmptyView(XRefreshView xRefreshView) {
+        xRefreshView.setEmptyView(R.layout.layout_empty_view);
+        ll_load_failed = xRefreshView.getEmptyView().findViewById(R.id.ll_load_failed);
+        text_refresh = xRefreshView.getEmptyView().findViewById(R.id.text_refresh);
+        empty_view = xRefreshView.getEmptyView().findViewById(R.id.empty_view);
+    }
+
+    protected void setEmptyView(XRefreshView xRefreshView, boolean isEnable) {
+        ll_load_failed.setVisibility(View.GONE);
+        empty_view.setVisibility(View.VISIBLE);
+        xRefreshView.enableEmptyView(isEnable);
+    }
+
+    protected void setFailedView(XRefreshView xRefreshView, boolean isEnable) {
+        ll_load_failed.setVisibility(View.VISIBLE);
+        empty_view.setVisibility(View.GONE);
+        xRefreshView.enableEmptyView(isEnable);
     }
 
     protected void initXRefreshView(XRefreshView xRefreshView) {
@@ -146,6 +171,36 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .mediaType(JSON)
                 .build()
                 .execute(callback);
+    }
+
+    protected HistoryBean convertToHistory(ArticleListsBean articleBean) {
+        HistoryBean bean = new HistoryBean();
+        bean.setID(articleBean.getID());
+        bean.setImage(articleBean.getImage());
+        bean.setName(articleBean.getName());
+        bean.setPost_content(articleBean.getPost_content());
+        bean.setPost_date_gmt(articleBean.getPost_date_gmt());
+        bean.setPost_title(articleBean.getPost_title());
+        bean.setPost_view_rand(articleBean.getPost_view_rand());
+        bean.setTagId(articleBean.getTagId());
+        bean.setUser_avatars(articleBean.getUser_avatars());
+        bean.setViews(articleBean.getViews());
+        return bean;
+    }
+
+    protected ArticleListsBean convertToArticle(HistoryBean articleBean) {
+        ArticleListsBean bean = new ArticleListsBean();
+        bean.setID(articleBean.getID());
+        bean.setImage(articleBean.getImage());
+        bean.setName(articleBean.getName());
+        bean.setPost_content(articleBean.getPost_content());
+        bean.setPost_date_gmt(articleBean.getPost_date_gmt());
+        bean.setPost_title(articleBean.getPost_title());
+        bean.setPost_view_rand(articleBean.getPost_view_rand());
+        bean.setTagId(articleBean.getTagId());
+        bean.setUser_avatars(articleBean.getUser_avatars());
+        bean.setViews(articleBean.getViews());
+        return bean;
     }
 
     public abstract int getLayout();

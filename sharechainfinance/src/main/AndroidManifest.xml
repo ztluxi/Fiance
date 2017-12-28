@@ -85,7 +85,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.SearchActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name="com.sharechain.finance.module.mogul.MogulCircleActivity"
             android:screenOrientation="portrait" />
@@ -97,13 +98,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.mogul.PhotoGalleryActivity"
-            android:screenOrientation="portrait" /> <activity
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".module.home.ArticleDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.mogul.ShareViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".module.home.BaseWebViewActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

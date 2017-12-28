@@ -16,7 +16,9 @@
  */
 package com.sharechain.finance.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -37,12 +39,14 @@ import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.sharechain.finance.BaseLog;
 import com.sharechain.finance.R;
-import com.sharechain.finance.bean.HomeArticleListBean;
+import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HomeIndexBean;
+import com.sharechain.finance.module.home.ArticleDetailActivity;
+import com.sharechain.finance.module.home.BaseWebViewActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.ScaleInTransformer;
+import com.sharechain.finance.view.UserOperateCallbackViewPager;
 
 import java.util.List;
 
@@ -50,13 +54,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean.DataBean.ArticleListsBean> {
+public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
     private HeaderViewHolder headerViewHolder;
     private PagerAdapter pagerAdapter;
     private HomeIndexBean.DataBean headerBean;
     private volatile int switchIndex = 0;
 
-    public NewsListAdapter(Context context, List<HomeArticleListBean.DataBean.ArticleListsBean> list,
+    public NewsListAdapter(Context context, List<ArticleListsBean> list,
                            HomeIndexBean.DataBean headerBean) {
         super(context, list);
         this.headerBean = headerBean;
@@ -128,30 +132,36 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
 
     private void setItemValues(ItemViewHolder holder, int position) {
         if (position > 0) {
-            HomeArticleListBean.DataBean.ArticleListsBean bean = mList.get(position - 1);
+            ArticleListsBean bean = mList.get(position - 1);
             holder.text_content.setText(bean.getPost_title());
             holder.text_time.setText(bean.getPost_date_gmt() + "  " + bean.getName());
+            Glide.with(context).load(bean.getUser_avatars()).into(holder.image_pic);
         }
     }
 
     private void initViewPager() {
         if (headerViewHolder != null) {
             headerViewHolder.viewpager.setPageMargin(BaseUtils.dip2px(context, 7));
+            headerViewHolder.viewpager.setOffscreenPageLimit(headerBean.getBanner().size());
             headerViewHolder.viewpager.setAdapter(pagerAdapter = new PagerAdapter() {
                 @Override
-                public Object instantiateItem(final ViewGroup container, int position) {
+                public Object instantiateItem(final ViewGroup container, final int position) {
                     View view = LayoutInflater.from(context).inflate(R.layout.layout_news_banner_item, null);
                     ImageView image_banner = view.findViewById(R.id.image_banner);
                     TextView text_banner = view.findViewById(R.id.text_banner);
                     Glide.with(context).load(headerBean.getBanner().get(getRealPosition(position)).getUrl()).
                             apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
                                     .placeholder(R.drawable.ic_launcher_background)).into(image_banner);
-                    text_banner.setText("比特币价格重挫45%，小投资者惨遭割韭菜");
+                    text_banner.setText(headerBean.getBanner().get(getRealPosition(position)).getPost_title());
                     container.addView(view);
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                    Toast.makeText(context, "click position= " + i, Toast.LENGTH_SHORT).show();
+                            Bundle bundle = new Bundle();
+                            ArticleListsBean articleListsBean = new ArticleListsBean();
+                            articleListsBean.setTagId(headerBean.getBanner().get(getRealPosition(position)).getPid());
+                            bundle.putSerializable("article", articleListsBean);
+                            BaseUtils.openActivity((Activity) context, ArticleDetailActivity.class, bundle);
                         }
                     });
                     return view;
@@ -195,13 +205,24 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
 
                 @Override
                 public void onPageSelected(int position) {
-                    BaseLog.d("select--" + position % headerBean.getBanner().size());
+                    firstPosition = headerViewHolder.viewpager.getCurrentItem();
                     switchToPoint(position % headerBean.getBanner().size());
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
 
+                }
+            });
+            //用户手指触摸操作让自动滑动停止
+            headerViewHolder.viewpager.setUserOperating(new UserOperateCallbackViewPager.IUserOperating() {
+                @Override
+                public void userOperating(boolean isOperating) {
+                    if (isOperating) {
+                        stopBanner();
+                    } else {
+                        startBanner();
+                    }
                 }
             });
             startBanner();
@@ -268,6 +289,14 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
                         return textView;
                     }
                 });
+                headerViewHolder.text_header_title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("web_url", headerBean.getTop_news().get(switchIndex).getSite_url());
+                        BaseUtils.openActivity((Activity) context, BaseWebViewActivity.class, bundle);
+                    }
+                });
                 startSwitchText();
             }
         }
@@ -275,7 +304,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.viewpager)
-        ViewPager viewpager;
+        UserOperateCallbackViewPager viewpager;
         @BindView(R.id.ll_point)
         LinearLayout ll_point;
         @BindView(R.id.text_header_time)
@@ -312,22 +341,28 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
     });
 
     private void startSwitchText() {
-        if (!isStartSwitchText) {
+        if (headerViewHolder == null) {
             return;
         }
         headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(switchIndex).getTime());
         headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(switchIndex).getSite_content());
-        switchHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                switchIndex++;
-                if (switchIndex == headerBean.getTop_news().size()) {
-                    switchIndex = 0;
-                }
-                startSwitchText();
-            }
-        }, 3000);
+        switchHandler.postDelayed(textRunnable, 3000);
     }
+
+    private void stopSwitchText() {
+        switchHandler.removeCallbacks(textRunnable);
+    }
+
+    private Runnable textRunnable = new Runnable() {
+        @Override
+        public void run() {
+            switchIndex++;
+            if (switchIndex == headerBean.getTop_news().size()) {
+                switchIndex = 0;
+            }
+            startSwitchText();
+        }
+    };
 
     //热点新闻循环播放handler
     public Handler switchBannerHandler = new Handler(new Handler.Callback() {
@@ -338,36 +373,49 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<HomeArticleListBean
     });
 
     private int firstPosition = Integer.MAX_VALUE / 2;
-    private volatile boolean isStartBanner = true;
-    private volatile boolean isStartSwitchText = true;
 
     private void startBanner() {
-        if (!isStartBanner) {
+        if (headerViewHolder == null) {
             return;
         }
         headerViewHolder.viewpager.setCurrentItem(firstPosition, true);
-        switchBannerHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                firstPosition++;
-                int first = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size();
-                int last = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size() - 1;
-                if (firstPosition == 0) {
-                    firstPosition = first;
-                } else if (firstPosition == Integer.MAX_VALUE - 1) {
-                    firstPosition = last;
-                }
-                startBanner();
-            }
-        }, 3000);
+        switchBannerHandler.postDelayed(bannerRunnable, 3000);
     }
 
-    //停止循环播放
+    private void stopBanner() {
+        switchBannerHandler.removeCallbacks(bannerRunnable);
+    }
+
+    private Runnable bannerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            firstPosition++;
+            int first = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size();
+            int last = Integer.MAX_VALUE / headerBean.getBanner().size() / 2 * headerBean.getBanner().size() - 1;
+            if (firstPosition == 0) {
+                firstPosition = first;
+            } else if (firstPosition == Integer.MAX_VALUE - 1) {
+                firstPosition = last;
+            }
+            startBanner();
+        }
+    };
+
+    //暂停循环
+    public void waitCircleAll() {
+        stopBanner();
+        stopSwitchText();
+    }
+
+    public void notifyCircleAll() {
+        startSwitchText();
+        startBanner();
+    }
+
+    //停止循环播放并释放
     public void stopAll() {
-        isStartSwitchText = false;
-        isStartBanner = false;
-        switchHandler.removeCallbacks(null);
-        switchBannerHandler.removeCallbacks(null);
+        stopBanner();
+        stopSwitchText();
         switchHandler = null;
         switchBannerHandler = null;
     }

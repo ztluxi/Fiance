@@ -19,6 +19,7 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.NewsChannelTable;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ManageTagActivity;
+import com.sharechain.finance.module.mine.HistoryActivity;
 import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.module.mine.SearchActivity;
 import com.sharechain.finance.utils.BaseUtils;
@@ -163,6 +164,11 @@ public class HomeFragment extends BaseFragment {
     @OnClick(R.id.text_search)
     void search() {
         BaseUtils.openActivity(getActivity(), SearchActivity.class, null);
+    }
+
+    @OnClick(R.id.image_history)
+    void getHistory() {
+        BaseUtils.openActivity(getActivity(), HistoryActivity.class, null);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

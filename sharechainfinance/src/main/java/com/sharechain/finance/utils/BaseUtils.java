@@ -38,7 +38,6 @@ public class BaseUtils {
     }
 
 
-
     /**
      * @param skipType
      * @return
@@ -190,6 +189,17 @@ public class BaseUtils {
 
     public static Drawable createRectDrawable(int fillColor, int roundRadius) {
         return createGradientDrawable(0, fillColor, roundRadius, fillColor);
+    }
+
+    //    i:128;s:92:\"http://www.weilaicaijing.com/wp-content/uploads/2017/12/avatar_user_3_1513218915-128x128.jpg\";
+    public static String getSubImageUrl(String imageUrl, String firstTag, String lastTag) {
+        if (imageUrl.contains(firstTag) && imageUrl.contains(lastTag)) {
+            int first = imageUrl.indexOf(firstTag) + firstTag.length();
+            int last = imageUrl.indexOf(lastTag);
+            String tmp = imageUrl.substring(first, last).replace("\"", "");
+            return tmp;
+        }
+        return "";
     }
 
 }

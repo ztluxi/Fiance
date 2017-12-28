@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="demo" />
+    <version value="1" />
+    <list>
+        <mapping class="com.sharechain.finance.bean.ArticleListsBean" />
+        <mapping class="com.sharechain.finance.bean.SearchTagBean" />
+        <mapping class="com.sharechain.finance.bean.LikeBean" />
+        <mapping class="com.sharechain.finance.bean.HistoryBean" />
+    </list>
+</litepal>

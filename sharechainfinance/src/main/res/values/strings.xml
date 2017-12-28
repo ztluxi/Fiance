@@ -43,6 +43,7 @@
     <string name="take_picture">拍照</string>
     <string name="photo">相册</string>
     <string name="cancel">取消</string>
+    <string name="search_hint">输入文本右侧取消变为搜索</string>
 
     <string name="share_success">分享成功</string>
     <string name="share_failed">分享失败</string>
@@ -93,5 +94,7 @@
     <string name="share_weibo_name">/&#064;微博名</string>
     <string name="share_to">分享至</string>
 
-
+    <string name="load_failed_tip">哎呀，您访问的页面丢失了~</string>
+    <string name="load_refresh">刷新</string>
+    <string name="load_no_data">暂无数据~</string>
 </resources>
