@@ -5,9 +5,15 @@ package com.sharechain.finance.bean;
  */
 
 public class UrlList {
-    private static String base_url = "http://api.weilaicaijing.com";
     public static final int CODE_SUCCESS = 1;
-    public static final String PAGE = "1";
+    public static int PAGE = 1;
+    public static final String PAGE_STR = "page";
+    public static final String MOGUL_SEARCH_ID = "celebrity_id";
+    public static final String MOGUL_CANCLE_FOLLOW_ID = "id";
+    public static final String MOGUL_KEYWORD = "search_str";
+
+
+    private static String base_url = "http://api.weilaicaijing.com";
     public static final String HOME_INDEX = base_url + "/api_app/Home/index";
     public static final String HOME_ARTICLE_LIST = base_url + "/api_app/Home/article_lists";
     public static final String HOME_ARTICLE_DETAIL = base_url + "/api_app/Home/article_detail";

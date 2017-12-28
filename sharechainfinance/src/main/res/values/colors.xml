@@ -46,4 +46,11 @@
 
     <color name="has_follow">#bfe9572f</color>
 
+    <color name="btn_has_follow_start">#fe7254</color>
+    <color name="btn_has_follow_end">#ff4649</color>
+
+
+    <color name="transparent">#00FFFFFF</color>
+    <color name="exit_dialog">#00000000</color>
+
 </resources>

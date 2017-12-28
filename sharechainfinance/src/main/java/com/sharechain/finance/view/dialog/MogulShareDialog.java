@@ -66,8 +66,7 @@ public class MogulShareDialog extends Dialog {
 
     public void setHead(Context context,String url){
         ImageView imageView = findViewById(R.id.mogul_iv);
-
-        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.history).circleCrop();
+        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
         GlideUtils.loadUserImage(SFApplication.get(context),url,imageView, headOptions);
 
     }

@@ -105,7 +105,22 @@ public class TimeUtil {
         mCalendar.setTimeInMillis(time);
         return mCalendar.getTime();
     }
-
+    /**
+     * String转换成Date
+     *
+     * @param time
+     * @return
+     */
+    public static Date StringToDate(String time) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");//
+        Date date= null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
     /**
      * 获取距今前后多少天的日期
      *

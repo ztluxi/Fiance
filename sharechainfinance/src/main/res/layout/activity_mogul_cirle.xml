@@ -58,7 +58,6 @@
                         android:layout_height="?attr/actionBarSize"
                         android:layout_gravity="bottom"
                         app:tabIndicatorColor="@color/colorAccent" />
-
                     <ImageView
                         android:id="@+id/back_iv"
                         android:layout_width="wrap_content"
@@ -74,7 +73,6 @@
                         android:layout_marginTop="25dp"
                         android:layout_toRightOf="@+id/back_iv"
                         android:gravity="center"
-                        android:paddingRight="40dp"
                         android:text="大哥大"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
@@ -150,27 +148,28 @@
             </RelativeLayout>
 
         </android.support.design.widget.AppBarLayout>
+
+        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+          app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/rl_recyclerview_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-            android:id="@+id/rl_recyclerview_refresh"
-            style="@style/MatchMatch">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mogul_circle_rl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:visibility="visible" />
-            </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
-
         </android.support.v4.widget.NestedScrollView>
 
-
-
+        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

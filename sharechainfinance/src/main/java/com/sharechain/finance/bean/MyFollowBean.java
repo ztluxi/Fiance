@@ -6,7 +6,9 @@ import java.util.List;
  * Created by ${zhoutao} on 2017/12/27 0027.
  */
 
-public class MogulCircleBean {
+public class MyFollowBean {
+
+
     /**
      * success : 1
      * msg : 获取成功
@@ -15,7 +17,7 @@ public class MogulCircleBean {
 
     private int success;
     private String msg;
-    private MyFollowBean.DataBean data;
+    private DataBean data;
 
     public int getSuccess() {
         return success;
@@ -33,11 +35,11 @@ public class MogulCircleBean {
         this.msg = msg;
     }
 
-    public MyFollowBean.DataBean getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(MyFollowBean.DataBean data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
@@ -48,7 +50,7 @@ public class MogulCircleBean {
          */
 
         private int is_focus;
-        private List<MyFollowBean.DataBean.ListsBean> lists;
+        private List<ListsBean> lists;
 
         public int getIs_focus() {
             return is_focus;
@@ -58,11 +60,11 @@ public class MogulCircleBean {
             this.is_focus = is_focus;
         }
 
-        public List<MyFollowBean.DataBean.ListsBean> getLists() {
+        public List<ListsBean> getLists() {
             return lists;
         }
 
-        public void setLists(List<MyFollowBean.DataBean.ListsBean> lists) {
+        public void setLists(List<ListsBean> lists) {
             this.lists = lists;
         }
 
@@ -89,7 +91,7 @@ public class MogulCircleBean {
             private int id;
             private String since_id;
             private int social_type;
-            private List<MyFollowBean.DataBean.ListsBean.ImagesBean> images;
+            private List<ImagesBean> images;
 
             public String getProfile_image_url() {
                 return profile_image_url;
@@ -163,11 +165,11 @@ public class MogulCircleBean {
                 this.social_type = social_type;
             }
 
-            public List<MyFollowBean.DataBean.ListsBean.ImagesBean> getImages() {
+            public List<ImagesBean> getImages() {
                 return images;
             }
 
-            public void setImages(List<MyFollowBean.DataBean.ListsBean.ImagesBean> images) {
+            public void setImages(List<ImagesBean> images) {
                 this.images = images;
             }
 
@@ -188,5 +190,4 @@ public class MogulCircleBean {
             }
         }
     }
-
 }

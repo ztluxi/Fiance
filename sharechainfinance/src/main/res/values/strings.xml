@@ -55,6 +55,7 @@
     <string name="feedback_one">请输入您宝贵的意见，您的意见与反馈是我们前进的动力</string>
     <string name="feedback_two">请输入您的手机号/邮箱</string>
     <string name="submit">提交</string>
+    <string name="sure">确定</string>
 
     <string name="big_msg">重磅快讯</string>
     <string name="view_detail">查看详情</string>
@@ -93,6 +94,10 @@
 
     <string name="share_weibo_name">/&#064;微博名</string>
     <string name="share_to">分享至</string>
+    <string name="you_follow">您关注了</string>
+    <string name="you_cancel">您取消了对</string>
+    <string name="de_follow">的关注</string>
+    <string name="mogul_search">大佬圈搜索</string>
 
     <string name="load_failed_tip">哎呀，您访问的页面丢失了~</string>
     <string name="load_refresh">刷新</string>

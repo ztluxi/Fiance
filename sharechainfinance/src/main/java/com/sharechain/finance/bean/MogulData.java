@@ -18,6 +18,15 @@ public class MogulData {
     private int fabulous;//点赞
     private int id;
     private String head;
+    private int focus;
+
+    public int getFocus() {
+        return focus;
+    }
+
+    public void setFocus(int focus) {
+        this.focus = focus;
+    }
 
     public int getId() {
         return id;

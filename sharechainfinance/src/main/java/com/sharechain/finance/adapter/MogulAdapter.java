@@ -1,5 +1,6 @@
 package com.sharechain.finance.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -28,6 +29,7 @@ import com.sharechain.finance.module.mogul.PhotoGalleryActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.OkHttpImageDownloader;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 import com.sharechain.finance.view.fabulos.GoodView;
 import com.youdao.sdk.ydtranslate.Translate;
@@ -43,7 +45,9 @@ import com.zzhoujay.richtext.ig.DefaultImageGetter;
 import com.zzhoujay.richtext.ig.ImageDownloader;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,13 +64,13 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
     private Context mContext;
     private List<Translate> trslist;
     private int tpye;
-
+    private boolean isLike = true;
     public interface MyItemLongClickListener {
         void onTranslateClick(View view, int position, List<MogulData> list);
     }
 
     public interface MyItemClickListener {
-        void onFabulous(View view, int position, List<MogulData> list);
+        void onFabulous(View view, int position, List<MogulData> list,boolean isLike);
         void onShare(View view, int position, List<MogulData> list);
     }
 
@@ -104,20 +108,22 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         holder.mogulCcontentTranslateLl.setVisibility(View.GONE);
 
         holder.mNglContent.setImagesData(mPostList.get(position).getUrlList());
-        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.history).circleCrop();
+        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).error(R.drawable.logo).circleCrop();
         GlideUtils.loadUserImage(mContext, mPostList.get(position).getHead(), holder.mogulHeadIvs, headOptions);
         holder.mogulName.setText(mPostList.get(position).getName());
-        holder.mogulTime.setText(mPostList.get(position).getTime());
+
+        Date date = TimeUtil.StringToDate(mPostList.get(position).getTime());
+        holder.mogulTime.setText(TimeUtil.RelativeDateFormat(date));
+
         holder.mogulWeibo.setText(mPostList.get(position).getWeibo());
         if (!BaseUtils.isEmpty(mPostList.get(position).getPosition())){
             holder.mogulPositionTv.setText(mPostList.get(position).getPosition());
             holder.mogulPositionTv.setVisibility(View.VISIBLE);
         }
-        int like = mPostList.get(position).getFabulous();
+        final int like = mPostList.get(position).getFabulous();
         holder.mogulFabulousNumberTv.setText(like+"");
 
         RichText.fromHtml(mPostList.get(position).getContent()).into(holder.mogulContentTv);
-
         try {
             if (!TextUtils.isEmpty(mPostList.get(position).getTranslate().getTranslations().get(0))) {
                 holder.mogulTranslateTv.setText(mPostList.get(position).getTranslate().getTranslations().get(0));
@@ -131,7 +137,11 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
             holder.mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, MogulCircleActivity.class));
+                    Intent intent = new Intent(mContext, MogulCircleActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", mPostList.get(position).getId());
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -149,21 +159,25 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         }
         //点赞
         if (mClickListener != null) {
-            holder.mogulFabulousIv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mClickListener.onFabulous(v, pos, mPostList);
-                    return false;
-                }
-            });
-        }
-        if (mClickListener!=null){
             holder.mogulFabulousIv.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mClickListener.onFabulous(view, pos, mPostList);
+                    if (isLike) {
+                        GoodView goodView = new GoodView(mContext);
+                        goodView.setImage(R.drawable.fabulous_sel);
+                        goodView.show(v);
+                        holder.mogulFabulousNumberTv.setText(like + 1 + "");
+                        holder.mogulFabulousIv.setImageResource(R.drawable.fabulous_sel);
+                        holder.mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.colorRed));
+                        isLike = false;
+                    } else {
+                        holder.mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
+                        holder.mogulFabulousNumberTv.setText(like+"");
+                        holder.mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
+                        isLike = true;
+                    }
+                    mClickListener.onFabulous(v, pos, mPostList, isLike);
                 }
             });
         }
@@ -208,7 +222,7 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
             protected void onDisplayImage(Context context, ImageView imageView, String s) {
-                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.history).centerInside();
+                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).error(R.drawable.logo).centerInside();
                 GlideUtils.loadUserImage(mContext, s, imageView, headOptions);
             }
 

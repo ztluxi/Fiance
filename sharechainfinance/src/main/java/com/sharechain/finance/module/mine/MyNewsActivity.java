@@ -61,16 +61,7 @@ public class MyNewsActivity extends BaseActivity {
                 refreshView.stopRefresh();
             }
         });
-        newsAdapter = new MyNewsAdapter(this, R.layout.adapter_my_news_item);
-        newsAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                ToastManager.showShort(MyNewsActivity.this, "您点了" + position);
-            }
-        });
 
-        newsAdapter.setData(newsDataList);
-        myNewslv.setAdapter(newsAdapter);
 
     }
 
@@ -79,9 +70,10 @@ public class MyNewsActivity extends BaseActivity {
         getNews();
     }
 
+    //获取我的消息列表
     private void getNews() {
         final Map<String, String> params = new HashMap<>();
-        params.put(pageParam, UrlList.PAGE);
+        params.put(pageParam, String.valueOf(UrlList.PAGE));
         requestGet(UrlList.GET_NEWS, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
@@ -100,14 +92,31 @@ public class MyNewsActivity extends BaseActivity {
                         newsDataList.add(newsData);
                     }
                 }
+                updateAdapter(newsDataList);
             }
-
             @Override
             protected void onFailed(String errStr) {
-
+                Logger.d(errStr);
             }
         });
 
+    }
+
+    private void updateAdapter(List<NewsData> newsDataList) {
+        if (newsAdapter==null){
+            newsAdapter = new MyNewsAdapter(this, R.layout.adapter_my_news_item);
+            newsAdapter.setData(newsDataList);
+            myNewslv.setAdapter(newsAdapter);
+            newsAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(ViewGroup parent, View childView, int position) {
+                    ToastManager.showShort(MyNewsActivity.this, "您点了" + position);
+                }
+            });
+
+        }else {
+            newsAdapter.notifyDataSetChanged();
+        }
     }
 
 

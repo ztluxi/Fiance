@@ -9,6 +9,24 @@ public class FollowData {
     private String weibo;
     private String position;
     private String image;
+    private int MogulID;
+    private int Facous;
+
+    public int getFacous() {
+        return Facous;
+    }
+
+    public void setFacous(int facous) {
+        Facous = facous;
+    }
+
+    public int getMogulID() {
+        return MogulID;
+    }
+
+    public void setMogulID(int mogulID) {
+        MogulID = mogulID;
+    }
 
     public String getWeibo() {
         return weibo;

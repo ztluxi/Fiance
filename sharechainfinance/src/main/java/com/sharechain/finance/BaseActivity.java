@@ -2,6 +2,7 @@ package com.sharechain.finance;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -56,8 +57,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         mImmersionBar.statusBarColor(android.R.color.transparent).init();   //所有子类都将继承这些相同的属性
 
         ButterKnife.bind(this);
-        initData();
+
         initView();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+            }
+        },800);
     }
 
     protected void hideSoftKeyboard(EditText editText) {
