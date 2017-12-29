@@ -96,6 +96,7 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
 
     @Override
     public void onBindViewHolder(final PostViewHolder holder, final int position) {
+
         holder.mogulContentTv.setText("");
         holder.mogulName.setText("");
         holder.mogulTime.setText("");
@@ -113,8 +114,8 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         holder.mogulName.setText(mPostList.get(position).getName());
 
         Date date = TimeUtil.StringToDate(mPostList.get(position).getTime());
-        holder.mogulTime.setText(TimeUtil.RelativeDateFormat(date));
 
+        holder.mogulTime.setText(TimeUtil.RelativeDateFormat(date));
         holder.mogulWeibo.setText(mPostList.get(position).getWeibo());
         if (!BaseUtils.isEmpty(mPostList.get(position).getPosition())){
             holder.mogulPositionTv.setText(mPostList.get(position).getPosition());
@@ -123,10 +124,13 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         final int like = mPostList.get(position).getFabulous();
         holder.mogulFabulousNumberTv.setText(like+"");
 
-        RichText.fromHtml(mPostList.get(position).getContent()).into(holder.mogulContentTv);
+        RichText.from(mPostList.get(position).getContent()).into(holder.mogulContentTv);
+
+
         try {
             if (!TextUtils.isEmpty(mPostList.get(position).getTranslate().getTranslations().get(0))) {
-                holder.mogulTranslateTv.setText(mPostList.get(position).getTranslate().getTranslations().get(0));
+                RichText.from(mPostList.get(position).getTranslate().getTranslations().get(0)).into(holder.mogulTranslateTv);
+//                holder.mogulTranslateTv.setText(mPostList.get(position).getTranslate().getTranslations().get(0));
                 holder.mogulCcontentTranslateLl.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -140,6 +144,10 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
                     Intent intent = new Intent(mContext, MogulCircleActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", mPostList.get(position).getId());
+                    bundle.putString("head",mPostList.get(position).getHead());
+                    bundle.putString("name",mPostList.get(position).getName());
+                    bundle.putString("position",mPostList.get(position).getPosition());
+                    bundle.putInt("focus",mPostList.get(position).getFabulous());
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }

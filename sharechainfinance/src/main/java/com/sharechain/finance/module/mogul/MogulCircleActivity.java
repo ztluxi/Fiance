@@ -8,18 +8,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.request.RequestOptions;
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
+import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FullLinear;
@@ -31,6 +37,8 @@ import com.youdao.sdk.ydtranslate.Translate;
 import com.youdao.sdk.ydtranslate.TranslateErrorCode;
 import com.youdao.sdk.ydtranslate.TranslateListener;
 import com.youdao.sdk.ydtranslate.TranslateParameters;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,25 +54,47 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by ${zhoutao} on 2017/12/22 0022.
  */
 
-public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.MyItemLongClickListener ,MogulAdapter.MyItemClickListener, BGARefreshLayout.BGARefreshLayoutDelegate{
+public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
     @BindView(R.id.back_iv)
     ImageView back_Image;
+    @BindView(R.id.mogul_top_name_tv)
+    TextView mogul_top_name_tv;
+    @BindView(R.id.mogul_name_tv)
+    TextView mogul_name_tv;
+    @BindView(R.id.mogul_position_tv)
+    TextView mogul_position_tv;
+    @BindView(R.id.mogul_follow_tv)
+    TextView mogul_follow_tv;
+    @BindView(R.id.mogul_center_iv)
+    ImageView mogul_center_iv;
     @BindView(R.id.mogul_circle_rl)
     RecyclerView mogulCircleRl;
     @BindView(R.id.rl_recyclerview_refresh)
     BGARefreshLayout mRefreshLayout;
-    @BindView(R.id.collapsing_toolbar_layout)
-    CollapsingToolbarLayout collapsing_toolbar_layout;
+    @BindView(R.id.no_result_rl)
+    RelativeLayout no_result_rl;
+    //    @BindView(R.id.collapsing_toolbar_layout)
+//    CollapsingToolbarLayout collapsing_toolbar_layout;
     private List<MogulData> mogulDataList = new ArrayList<>();
     private MogulAdapter mogulAdapter;
+
     @Override
     public int getLayout() {
         return R.layout.activity_mogul_cirle;
     }
+
     /**
      * 是否翻译过
      */
     private boolean isTranslate = false;
+    /**
+     * 是否关注
+     */
+    private int focus;
+    private int id;
+    private String mogul_name;
+
+
     private Translator translator;
     private PopOptionUtil optionUtil;
     private List<Translate> trslist = new ArrayList<Translate>();
@@ -76,22 +106,47 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
             return false;
         }
     });
+
     @Override
     public void initView() {
+//        collapsing_toolbar_layout.setTitleEnabled(false);
+        focus = getIntent().getIntExtra("focus", 0);
+        String head = getIntent().getStringExtra("head");
+        String mogulPosition = getIntent().getStringExtra("position");
+        mogul_name = getIntent().getStringExtra("name");
+        mogul_top_name_tv.setText(mogul_name);
+        mogul_name_tv.setText(mogul_name);
+        mogul_position_tv.setText(mogulPosition);
+        if (focus == 1) {
+            mogul_follow_tv.setBackgroundResource(R.drawable.my_has_follow_bg);
+            mogul_follow_tv.setText(R.string.has_follow);
+        } else {
+            mogul_follow_tv.setBackgroundResource(R.drawable.my_no_follow_bg);
+            mogul_follow_tv.setText(R.string.follow);
+        }
+        RequestOptions options = new RequestOptions().circleCrop();
+        options.placeholder(R.drawable.logo);
+        options.error(R.drawable.logo);
+        GlideUtils.loadUserImage(this, head, mogul_center_iv, options);
 
-        collapsing_toolbar_layout.setTitleEnabled(false);
+
         mRefreshLayout.setDelegate(this);
         mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
-        if (mogulCircleRl != null) {
-            mogulCircleRl.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged() {
-                    if (mRefreshLayout != null) {
-                        mRefreshLayout.setEnabled(mogulCircleRl.getScrollY() == 0);
-                    }
-                }
-            });
-        }
+        mogulCircleRl.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                mRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         mogulCircleRl.setNestedScrollingEnabled(false);
         //设置布局管理器
         mogulCircleRl.setLayoutManager(new FullLinear(this, LinearLayoutManager.VERTICAL, true));
@@ -102,9 +157,10 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
     @Override
     public void initData() {
         //获取大佬ID
-        int id = getIntent().getIntExtra("id", 0);
+        id = getIntent().getIntExtra("id", 0);
         getMogulDetail(id);
     }
+
     //获取大佬个人中心
     private void getMogulDetail(int mogulId) {
         final Map<String, String> params = new HashMap<>();
@@ -114,7 +170,9 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
             protected void onSuccess(String result) {
                 Logger.d(result);
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-                if (bean.getSuccess() == 1) {
+                if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
+                    no_result_rl.setVisibility(View.GONE);
+                    mogulCircleRl.setVisibility(View.VISIBLE);
                     int focus = bean.getData().getIs_focus();
                     if (bean.getData().getLists().size() > 1) {
                         for (int i = 0; i < bean.getData().getLists().size(); i++) {
@@ -144,47 +202,105 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
                             mogulDataList.add(mogulData);
                         }
                     }
-                    updateAdapter(mogulDataList);
+                    updateAdapter();
+                } else {
+                    no_result_rl.setVisibility(View.VISIBLE);
+                    mogulCircleRl.setVisibility(View.GONE);
                 }
             }
 
             @Override
             protected void onFailed(String errStr) {
-
+                Logger.d(errStr);
             }
         });
 
     }
 
-    private void updateAdapter(List<MogulData> mogulDataList){
-        if (mogulAdapter==null){
-            mogulAdapter = new MogulAdapter(this, mogulDataList,null,1);
+    private void updateAdapter() {
+        if (mogulAdapter == null) {
+            mogulAdapter = new MogulAdapter(this, mogulDataList, null, 1);
             mogulAdapter.setOnItemLongClickListener(this);
             mogulAdapter.setOnItemClickListener(this);
             mogulCircleRl.setAdapter(mogulAdapter);
-        }else {
+        } else {
             mogulAdapter.notifyDataSetChanged();
         }
 
     }
 
-    @OnClick({R.id.back_iv})
+    @OnClick({R.id.back_iv, R.id.mogul_follow_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
                 finish();
                 break;
+            case R.id.mogul_follow_tv:
+                if (focus == 1) {
+                    cancelMogulFollow(id);
+                } else {
+                    addMogulFollow(id);
+                }
+                break;
         }
+    }
+
+
+    //取消大佬关注
+    private void cancelMogulFollow(int mogulID) {
+        final Map<String, String> params = new HashMap<>();
+        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
+        requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+                ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_cancel) + mogul_name + getString(R.string.de_follow));
+                Logger.d(result);
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+                Logger.d(errStr);
+            }
+        });
+    }
+
+    //关注大佬
+    private void addMogulFollow(int mogulID) {
+        final Map<String, String> params = new HashMap<>();
+        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
+        requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+//                {"success":0,"msg":"请登录","data":""}
+                try {
+                    org.json.JSONObject object = new org.json.JSONObject(result);
+                    int success = object.getInt("success");
+                    String messg = object.getString("msg");
+                    if (success == 0) {
+                        ToastManager.showShort(MogulCircleActivity.this, messg);
+                    } else {
+                        ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_follow) + mogul_name);
+                        Logger.d(result);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+                Logger.d(errStr);
+            }
+        });
     }
 
     @Override
     public void onTranslateClick(final View view, final int position, final List<MogulData> list) {
-
-
         if (list.get(position).getTranslate() != null) {
             isTranslate = true;
             optionUtil.setTextView(getString(R.string.reture));
-        }else {
+        } else {
             optionUtil.setTextView(getString(R.string.translate));
             isTranslate = false;
         }
@@ -209,8 +325,8 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
         view.setBackgroundColor(getResources().getColor(R.color.white));
 
 
-
     }
+
     private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
         // 源语言或者目标语言其中之一必须为中文,目前只支持中文与其他几个语种的互译
         String to = "中文";
@@ -286,7 +402,7 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
         mogulData.setPosition(list.get(position).getPosition());
         if (isLike) {
             mogulData.setFabulous(list.get(position).getFabulous() + 1);
-        }else {
+        } else {
             mogulData.setFabulous(list.get(position).getFabulous());
         }
         mogulData.setUrlList(list.get(position).getUrlList());
@@ -295,12 +411,18 @@ public class MogulCircleActivity extends BaseActivity implements  MogulAdapter.M
         mogulData.setTranslate(list.get(position).getTranslate());
         addFabulous(list.get(position).getId());
     }
+
     @Override
     public void onShare(View view, int position, List<MogulData> list) {
+
+        String url = list.get(position).getHead();
+        String name = list.get(position).getName();
+        String weibo = list.get(position).getWeibo();
+        String zhiwei = list.get(position).getPosition();
+        String content = list.get(position).getContent();
         MogulShareDialog mogulShareDialog = new MogulShareDialog(this);
         mogulShareDialog.show();
-        mogulShareDialog.setHead(this,list.get(position).getHead());
-
+        mogulShareDialog.setContent(this, url, zhiwei, name, content, weibo);
     }
 
     //点赞

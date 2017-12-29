@@ -44,9 +44,21 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, final int position, final FollowData model) {
-        helper.setText(R.id.my_follow_name, model.getName());
-        helper.setText(R.id.my_follow_weibo, model.getWeibo());
+        ImageView mogulHeadIv = helper.getImageView(R.id.my_follow_Image_iv);
+        TextView mogulNameTV = helper.getTextView(R.id.my_follow_name);
+        TextView mogulWeiboTV = helper.getTextView(R.id.my_follow_weibo);
         TextView positionTv =  helper.getView(R.id.my_follow_position);
+        TextView followTv =  helper.getView(R.id.has_follow_tv);
+
+        TextView follow =  helper.getView(R.id.has_follow_tv);
+        mogulHeadIv.setImageResource(R.drawable.logo);
+        mogulNameTV.setText("");
+        mogulWeiboTV.setText("");
+        positionTv.setText("");
+
+        mogulNameTV.setText(model.getName());
+        mogulWeiboTV.setText(R.string.share_weibo_name+model.getWeibo());
+        mogulNameTV.setText(model.getName());
         String professional = model.getPosition();
         if (professional.equals("")) {
             positionTv.setVisibility(View.GONE);
@@ -54,8 +66,6 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
             positionTv.setVisibility(View.VISIBLE);
         }
         positionTv.setText(professional+"");
-
-        TextView follow =  helper.getView(R.id.has_follow_tv);
         //如果已关注了显示已关注背景，反正则显示蓝色未关注
         if (model.getFacous()==1){
             follow.setText(R.string.has_follow);
@@ -64,12 +74,10 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
             follow.setText(R.string.follow);
             follow.setBackgroundResource(R.drawable.my_no_follow_bg);
         }
-
-        ImageView userImage = helper.getView(R.id.my_follow_Image_iv);
         RequestOptions options = new RequestOptions().circleCrop().placeholder(R.drawable.logo).error(R.drawable.logo);
-        GlideUtils.loadUserImage(mContext,model.getImage(),userImage,options);
+        GlideUtils.loadUserImage(mContext,model.getImage(),mogulHeadIv,options);
 
-        helper.getView(R.id.has_follow_tv).setOnClickListener(new View.OnClickListener() {
+        followTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mClickListener.cancelFollow(view,position,model);
