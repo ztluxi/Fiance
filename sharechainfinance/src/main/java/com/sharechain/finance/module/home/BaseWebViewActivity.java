@@ -47,7 +47,7 @@ public class BaseWebViewActivity extends BaseActivity {
     @Override
     public void initView() {
         initTitle(getString(R.string.app_name));
-        image_title_left.setImageResource(R.drawable.icon_article_back);
+        image_title_left.setImageResource(R.drawable.back);
         image_title_left.setVisibility(View.VISIBLE);
         image_title_right.setImageResource(R.drawable.icon_article_share);
         image_title_right.setVisibility(View.VISIBLE);

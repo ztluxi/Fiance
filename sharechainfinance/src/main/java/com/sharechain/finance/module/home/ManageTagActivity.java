@@ -64,7 +64,15 @@ public class ManageTagActivity extends BaseActivity {
         mImmersionBar.statusBarColor(R.color.colorBlack).init();
         view_status_bar.setVisibility(View.GONE);
         rl_base_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-        image_title_right.setVisibility(View.VISIBLE);
+        image_title_left.setVisibility(View.VISIBLE);
+        image_title_left.setImageResource(R.drawable.icon_back_black);
+        image_title_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        image_title_right.setVisibility(View.GONE);
         image_title_right.setImageResource(R.drawable.icon_home_search);
     }
 

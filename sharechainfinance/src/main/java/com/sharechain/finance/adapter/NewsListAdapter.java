@@ -45,9 +45,11 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.module.home.BaseWebViewActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.ScaleInTransformer;
 import com.sharechain.finance.view.UserOperateCallbackViewPager;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -134,7 +136,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
         if (position > 0) {
             ArticleListsBean bean = mList.get(position - 1);
             holder.text_content.setText(bean.getPost_title());
-            holder.text_time.setText(bean.getPost_date_gmt() + "  " + bean.getName());
+            Date date = TimeUtil.StringToDate(bean.getPost_date_gmt());
+            holder.text_time.setText(TimeUtil.RelativeDateFormat(date) + "  " + bean.getName());
             Glide.with(context).load(bean.getUser_avatars()).into(holder.image_pic);
         }
     }

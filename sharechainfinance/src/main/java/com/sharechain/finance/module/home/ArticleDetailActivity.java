@@ -95,7 +95,7 @@ public class ArticleDetailActivity extends BaseActivity {
     public void initView() {
         articleBean = (ArticleListsBean) getIntent().getSerializableExtra("article");
         initTitle(getString(R.string.app_name));
-        image_title_left.setImageResource(R.drawable.icon_article_back);
+        image_title_left.setImageResource(R.drawable.back);
         image_title_left.setVisibility(View.VISIBLE);
         image_title_right.setImageResource(R.drawable.icon_article_share);
         image_title_right.setVisibility(View.VISIBLE);
@@ -316,8 +316,16 @@ public class ArticleDetailActivity extends BaseActivity {
                 TextView tv = (TextView) LayoutInflater.from(ArticleDetailActivity.this).inflate(R.layout.layout_item_article_tag,
                         flow_tags, false);
                 tv.setText(postTagBean.getName());
-                tv.setBackgroundDrawable(BaseUtils.createGradientDrawable(0, Color.parseColor("#fd5f5a"),
-                        BaseUtils.dip2px(ArticleDetailActivity.this, 5), Color.parseColor("#fd5f5a")));
+                if (position % 3 == 0) {
+                    tv.setBackgroundDrawable(BaseUtils.createGradientDrawable(0, Color.parseColor("#fd5f5a"),
+                            BaseUtils.dip2px(ArticleDetailActivity.this, 5), Color.parseColor("#fd5f5a")));
+                } else if (position % 3 == 1) {
+                    tv.setBackgroundDrawable(BaseUtils.createGradientDrawable(0, Color.parseColor("#ff8d29"),
+                            BaseUtils.dip2px(ArticleDetailActivity.this, 5), Color.parseColor("#ff8d29")));
+                } else if (position % 3 == 2) {
+                    tv.setBackgroundDrawable(BaseUtils.createGradientDrawable(0, Color.parseColor("#3badfc"),
+                            BaseUtils.dip2px(ArticleDetailActivity.this, 5), Color.parseColor("#3badfc")));
+                }
                 return tv;
             }
         });
