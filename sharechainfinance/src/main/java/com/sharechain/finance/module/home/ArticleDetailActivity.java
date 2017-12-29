@@ -35,6 +35,7 @@ import com.sharechain.finance.bean.HistoryBean;
 import com.sharechain.finance.bean.LikeBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.view.fabulos.GoodView;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -91,6 +92,7 @@ public class ArticleDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        articleBean = (ArticleListsBean) getIntent().getSerializableExtra("article");
         initTitle(getString(R.string.app_name));
         image_title_left.setImageResource(R.drawable.icon_article_back);
         image_title_left.setVisibility(View.VISIBLE);
@@ -123,7 +125,6 @@ public class ArticleDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        articleBean = (ArticleListsBean) getIntent().getSerializableExtra("article");
         getDetail();
     }
 
@@ -365,6 +366,9 @@ public class ArticleDetailActivity extends BaseActivity {
             protected void onSuccess(String result) {
                 ArticleDetailBean bean = JSON.parseObject(result, ArticleDetailBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
+                    GoodView goodView = new GoodView(ArticleDetailActivity.this);
+                    goodView.setImage(R.drawable.icon_article_praise_pre);
+                    goodView.show(image_praise);
                     image_praise.setImageResource(R.drawable.icon_article_praise_pre);
                     LikeBean likeBean = new LikeBean();
                     likeBean.setArticleId(articleBean.getTagId());
