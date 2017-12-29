@@ -112,7 +112,7 @@ public class TimeUtil {
      * @return
      */
     public static Date StringToDate(String time) {
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");//
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//
         Date date= null;
         try {
             date = sdf.parse(time);

@@ -6,8 +6,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.logger.Logger;
@@ -51,6 +53,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     private static final int TRANSLATE_SUCCESS = 1000;
     @BindView(R.id.image_title_left)
     ImageView back_Image;
+    @BindView(R.id.empty_view)
+    TextView empty_view;
     @BindView(R.id.image_title_right)
     ImageView searchImage;
     @BindView(R.id.rv_post_list)
@@ -113,16 +117,15 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
-                if (UrlList.PAGE== 1) {
-                    mRefreshLayout.endRefreshing();
-                }
-                if (mRefreshLayout.isLoadingMore()){
-                    mRefreshLayout.endLoadingMore();
-                }
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 Logger.d(result);
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-                if (bean.getSuccess() == 1) {
-                    if (UrlList.PAGE== 1) {
+
+                if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
+                    empty_view.setVisibility(View.GONE);
+                    mRefreshLayout.setVisibility(View.VISIBLE);
+                    if (UrlList.PAGE == 1) {
                         mogulDataList.clear();
                     }
                     if (bean.getData().getLists().size() > 1) {
@@ -135,8 +138,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                             String text = bean.getData().getLists().get(i).getText();
                             int mogul_id = bean.getData().getLists().get(i).getId();
                             List<String> imgs = new ArrayList<>();
-                            if (bean.getData().getLists().get(i).getImages().size()!=0){
-                                for (int j = 0; j <bean.getData().getLists().get(i).getImages().size(); j++) {
+                            if (bean.getData().getLists().get(i).getImages().size() != 0) {
+                                for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
                                     imgs.add(bean.getData().getLists().get(i).getImages().get(j).getUrl());
                                 }
                             }
@@ -156,12 +159,19 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         }
                     }
                     updateAdapter(mogulDataList.size());
+                } else {
+                    empty_view.setVisibility(View.VISIBLE);
+                    mRefreshLayout.setVisibility(View.GONE);
+
+
                 }
             }
 
             @Override
             protected void onFailed(String errStr) {
-
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
+                Logger.d(errStr);
             }
         });
     }
@@ -178,9 +188,9 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
                 break;
             case R.id.image_title_right:
-                Intent intent = new Intent(getActivity(),MyFollowActivity.class);
+                Intent intent = new Intent(getActivity(), MyFollowActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("type",2);
+                bundle.putInt("type", 2);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -196,26 +206,26 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
             optionUtil.setTextView(getString(R.string.translate));
             isTranslate = false;
         }
-        view.setBackgroundColor(getResources().getColor(R.color.white));
+//        view.setBackgroundColor(getResources().getColor(R.color.about_font));
         final String content = list.get(position).getContent();
         optionUtil.setOnPopClickEvent(new PopOptionUtil.PopClickEvent() {
             @Override
             public void onPreClick() {
                 BaseUtils.copyComment(content, SFApplication.get(getActivity()));
                 optionUtil.dismiss();
-                view.setBackgroundColor(getResources().getColor(R.color.white));
                 ToastManager.showShort(getActivity(), getString(R.string.copy_success));
             }
-
             @Override
             public void onNextClick() {
                 query(view, list, position, content);
                 optionUtil.dismiss();
+
             }
         });
         optionUtil.show(view);
 
     }
+
 
 
     private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
@@ -303,12 +313,12 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     }
 
     private void updateAdapter(int position) {
-        if (mogulAdapter==null){
+        if (mogulAdapter == null) {
             mogulAdapter = new MogulAdapter(getActivity(), mogulDataList, trslist, 0);
             mogulAdapter.setOnItemLongClickListener(this);
             mogulAdapter.setOnItemClickListener(this);
             mRvPostLister.setAdapter(mogulAdapter);
-        }else {
+        } else {
             mogulAdapter.notifyItemChanged(position);
         }
 
@@ -325,7 +335,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         mogulData.setPosition(list.get(position).getPosition());
         if (isLike) {
             mogulData.setFabulous(list.get(position).getFabulous() + 1);
-        }else {
+        } else {
             mogulData.setFabulous(list.get(position).getFabulous());
         }
         mogulData.setUrlList(list.get(position).getUrlList());
@@ -340,8 +350,13 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     @Override
     public void onShare(View view, int position, List<MogulData> list) {
+        String url = list.get(position).getHead();
+        String name = list.get(position).getName();
+        String weibo = list.get(position).getWeibo();
+        String zhiwei = list.get(position).getPosition();
+        String content = list.get(position).getContent();
         MogulShareDialog mogulShareDialog = new MogulShareDialog(getActivity());
         mogulShareDialog.show();
-        mogulShareDialog.setHead(getActivity(),list.get(position).getHead());
+        mogulShareDialog.setContent(getActivity(), url, zhiwei, name, content, weibo);
     }
 }

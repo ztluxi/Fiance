@@ -20,7 +20,7 @@
             android:layout_above="@+id/image_close_ll"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="21dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/common_mogul_white_round_bg"
             android:orientation="vertical"
             android:paddingLeft="@dimen/share_dialog_padding_left"
@@ -52,8 +52,8 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:text="未来财经ceo"
-                            android:textColor="@android:color/black"
-                            android:textSize="15sp" />
+                            android:textColor="@color/tint_home_color"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/text_weibo"
@@ -62,28 +62,30 @@
                             android:layout_marginLeft="5dp"
                             android:ellipsize="end"
                             android:gravity="center_vertical"
-                            android:text="@string/aite_weibo"
+                            android:text="@string/share_weibo_name"
                             android:textColor="@android:color/black"
-                            android:textSize="15sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <TextView
+                        android:visibility="visible"
+                        android:padding="3dp"
+                        android:background="@drawable/mogul_follow_bg"
                         android:id="@+id/text_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/share_dialog_margin_top"
-                        android:background="@drawable/mogul_follow_bg"
                         android:gravity="center"
                         android:lines="1"
                         android:text="未来财经"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp" />
+                        android:textColor="@color/tint_home_color"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/text_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="22dp"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:text="2017----星期一 2017----2017----星期一 2017----星期一 2017---- 2017----"

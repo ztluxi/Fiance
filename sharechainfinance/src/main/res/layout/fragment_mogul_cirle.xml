@@ -7,6 +7,7 @@
     <include layout="@layout/base_title" />
 
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:visibility="visible"
         style="@style/MatchMatch"
         android:id="@+id/rl_recyclerview_refresh">
 
@@ -19,4 +20,8 @@
         android:visibility="visible"/>
 
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+    <include
+        layout="@layout/layout_empty_view"/>
+
 </LinearLayout>

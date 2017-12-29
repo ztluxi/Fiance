@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.utils.GlideUtils;
+import com.zzhoujay.richtext.RichText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,10 +31,20 @@ public class MogulShareDialog extends Dialog {
     TextView text_namet;
     @BindView(R.id.text_position)
     TextView text_position;
+    @BindView(R.id.text_weibo)
+    TextView text_weibo;
+    @BindView(R.id.text_content)
+    TextView text_content;
+
+
+
     @BindView(R.id.image_qrcode)
     ImageView image_qrcode;
-    @BindView(R.id.text_uid)
-    TextView text_uid;
+
+
+    @BindView(R.id.mogul_iv)
+    ImageView headImage;
+
     @OnClick(R.id.image_close)
     void closeDialog() {
         dismiss();
@@ -64,12 +76,21 @@ public class MogulShareDialog extends Dialog {
         ButterKnife.bind(this);
     }
 
-    public void setHead(Context context,String url){
-        ImageView imageView = findViewById(R.id.mogul_iv);
-        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.loadUserImage(SFApplication.get(context),url,imageView, headOptions);
 
+    public void setContent(Context context,String url,String position,String name,String content,String weibo){
+        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
+        GlideUtils.loadUserImage(SFApplication.get(context),url,headImage, headOptions);
+        text_namet.setText(name+"");
+        if (position.equals("")){
+            text_position.setVisibility(View.GONE);
+        }else {
+            text_position.setText(position);
+        }
+        text_weibo.setText(R.string.share_weibo_name+weibo+"");
+        RichText.fromHtml(content).into(text_content);
     }
+
+
 
     @Override
     public void show() {

@@ -43,6 +43,7 @@
             android:textSize="15sp" />
 
         <Button
+            android:elevation="2dp"
             android:id="@+id/submit_btn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
