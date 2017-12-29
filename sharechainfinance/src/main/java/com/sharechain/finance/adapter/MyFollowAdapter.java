@@ -11,6 +11,7 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 
 import java.util.List;
@@ -57,7 +58,12 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
         positionTv.setText("");
 
         mogulNameTV.setText(model.getName());
-        mogulWeiboTV.setText(R.string.share_weibo_name+model.getWeibo());
+        mogulWeiboTV.setText(model.getWeibo());
+        if (!BaseUtils.isEmpty(model.getWeibo())){
+            mogulWeiboTV.setVisibility(View.VISIBLE);
+        }else {
+            mogulWeiboTV.setVisibility(View.GONE);
+        }
         mogulNameTV.setText(model.getName());
         String professional = model.getPosition();
         if (professional.equals("")) {

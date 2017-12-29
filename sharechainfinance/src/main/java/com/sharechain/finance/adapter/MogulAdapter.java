@@ -116,7 +116,14 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         Date date = TimeUtil.StringToDate(mPostList.get(position).getTime());
 
         holder.mogulTime.setText(TimeUtil.RelativeDateFormat(date));
+
+
         holder.mogulWeibo.setText(mPostList.get(position).getWeibo());
+        if (!BaseUtils.isEmpty(mPostList.get(position).getWeibo())){
+            holder.mogulWeibo.setVisibility(View.VISIBLE);
+        }else {
+            holder.mogulWeibo.setVisibility(View.GONE);
+        }
         if (!BaseUtils.isEmpty(mPostList.get(position).getPosition())){
             holder.mogulPositionTv.setText(mPostList.get(position).getPosition());
             holder.mogulPositionTv.setVisibility(View.VISIBLE);

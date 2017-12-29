@@ -54,7 +54,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by ${zhoutao} on 2017/12/22 0022.
  */
 
-public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener {
     @BindView(R.id.back_iv)
     ImageView back_Image;
     @BindView(R.id.mogul_top_name_tv)
@@ -130,8 +130,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         GlideUtils.loadUserImage(this, head, mogul_center_iv, options);
 
 
-        mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
+//        mRefreshLayout.setDelegate(this);
+//        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
         mogulCircleRl.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -165,10 +165,17 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     private void getMogulDetail(int mogulId) {
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(104));
+        params.put(UrlList.LIMIT, String.valueOf(50));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 Logger.d(result);
+
+                if (UrlList.PAGE==1){
+                    mogulDataList.clear();
+                }
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
                 if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
                     no_result_rl.setVisibility(View.GONE);
@@ -211,6 +218,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
             @Override
             protected void onFailed(String errStr) {
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
                 Logger.d(errStr);
             }
         });
@@ -379,19 +388,19 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         });
     }
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
-        UrlList.PAGE = 1;
-        getMogulDetail(UrlList.PAGE);
-
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        UrlList.PAGE++;
-        getMogulDetail(UrlList.PAGE);
-        return false;
-    }
+//    @Override
+//    public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
+//        UrlList.PAGE = 1;
+//        getMogulDetail(UrlList.PAGE);
+//
+//    }
+//
+//    @Override
+//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+//        UrlList.PAGE++;
+//        getMogulDetail(UrlList.PAGE);
+//        return false;
+//    }
 
     @Override
     public void onFabulous(View view, int position, List<MogulData> list, boolean isLike) {

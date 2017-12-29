@@ -8,6 +8,9 @@ public class UrlList {
     public static final int CODE_SUCCESS = 1;
     public static int PAGE = 1;
     public static final String PAGE_STR = "page";
+    public static final String LIMIT = "limit";
+
+
     public static final String MOGUL_SEARCH_ID = "celebrity_id";
     public static final String MOGUL_CANCLE_FOLLOW_ID = "id";
     public static final String MOGUL_KEYWORD = "search_str";

@@ -90,6 +90,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
         initXRefreshView(refreshView);
         refreshView.setPullRefreshEnable(true);
         refreshView.setPullLoadEnable(true);
+
         refreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
             @Override
             public void onRefresh(boolean isPullDown) {

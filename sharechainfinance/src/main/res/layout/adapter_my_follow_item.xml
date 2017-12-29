@@ -37,6 +37,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
             android:id="@+id/my_follow_name"
             android:layout_width="wrap_content"
@@ -49,11 +50,10 @@
 
 
         <TextView
+            android:drawablePadding="3dp"
             android:visibility="visible"
-            android:drawableLeft="@drawable/youdao_switch"
+            android:drawableLeft="@drawable/aite"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
             android:id="@+id/my_follow_weibo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +64,7 @@
 
 
         <TextView
+            android:layout_marginTop="5dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:visibility="visible"
