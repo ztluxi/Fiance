@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
@@ -24,7 +26,6 @@ import com.sharechain.finance.bean.SearchTagBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.bean.UrlList;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -39,6 +40,8 @@ import org.litepal.crud.callback.FindMultiCallback;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -224,6 +227,7 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
                     //给tagId赋值
                     for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
                         tmp.setTagId(tmp.getID());
+                        tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
                     }
                     dataList.addAll(bean.getData().getArticle_lists());
                     answerAdapter.setData(dataList);
@@ -257,11 +261,16 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
         unregistrar.unregister();
     }
 
-
-
     @OnClick(R.id.text_cancel)
     void cancel() {
         hideSoftKeyboard(search_et);
+        //取消
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 10);
     }
 
     @OnClick(R.id.search_page_delete)
