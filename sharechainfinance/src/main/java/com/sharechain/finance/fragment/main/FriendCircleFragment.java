@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
+import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.UrlList;
@@ -33,6 +33,8 @@ import com.youdao.sdk.ydtranslate.Translate;
 import com.youdao.sdk.ydtranslate.TranslateErrorCode;
 import com.youdao.sdk.ydtranslate.TranslateListener;
 import com.youdao.sdk.ydtranslate.TranslateParameters;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,11 +68,12 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     private Translator translator;
     private PopOptionUtil optionUtil;
     private List<Translate> trslist = new ArrayList<Translate>();
+
+    private MogulCircleBean bean;
     /**
      * 是否翻译过
      */
     private boolean isTranslate = false;
-
 
     private Handler mHander = new Handler(new Handler.Callback() {
         @Override
@@ -119,52 +122,14 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
             protected void onSuccess(String result) {
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
-                Logger.d(result);
-                MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-
-                if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
-                    empty_view.setVisibility(View.GONE);
-                    mRefreshLayout.setVisibility(View.VISIBLE);
-                    if (UrlList.PAGE == 1) {
-                        mogulDataList.clear();
-                    }
-                    if (bean.getData().getLists().size() > 1) {
-                        for (int i = 0; i < bean.getData().getLists().size(); i++) {
-                            String user_image = bean.getData().getLists().get(i).getProfile_image_url();
-                            String create_time = bean.getData().getLists().get(i).getCreate_at();
-                            String mogul_name = bean.getData().getLists().get(i).getFull_name();
-                            String weibo_name = bean.getData().getLists().get(i).getScreen_name();
-                            String positon = bean.getData().getLists().get(i).getProfessional();
-                            String text = bean.getData().getLists().get(i).getText();
-                            int mogul_id = bean.getData().getLists().get(i).getId();
-                            List<String> imgs = new ArrayList<>();
-                            if (bean.getData().getLists().get(i).getImages().size() != 0) {
-                                for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
-                                    imgs.add(bean.getData().getLists().get(i).getImages().get(j).getUrl());
-                                }
-                            }
-                            MogulData mogulData = new MogulData(null);
-                            mogulData.setName(mogul_name);
-                            mogulData.setTranslate(null);
-                            mogulData.setContent(text);
-                            mogulData.setPosition(positon);
-                            mogulData.setUrlList(null);
-                            mogulData.setHead(user_image);
-                            mogulData.setTime(create_time);
-                            mogulData.setWeibo(weibo_name);
-                            mogulData.setFabulous(1002);
-                            mogulData.setId(mogul_id);
-                            mogulData.setUrlList(imgs);
-                            mogulDataList.add(mogulData);
-                        }
-                    }
-                    updateAdapter(mogulDataList.size());
-                } else {
-                    empty_view.setVisibility(View.VISIBLE);
-                    mRefreshLayout.setVisibility(View.GONE);
-
-
-                }
+                bean = JSON.parseObject(result, MogulCircleBean.class);
+                //保存首页缓存数据
+                DataSupport.deleteAll(MainCacheBean.class, "type = ?", String.valueOf(MainCacheBean.TYPE_FRIEND_CIRCLE));
+                MainCacheBean mainCacheBean = new MainCacheBean();
+                mainCacheBean.setType(MainCacheBean.TYPE_FRIEND_CIRCLE);
+                mainCacheBean.setCacheJson(result);
+                mainCacheBean.save();
+                updateView();
             }
 
             @Override
@@ -176,8 +141,61 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         });
     }
 
+    private void updateView() {
+        if (bean != null) {
+            if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
+                empty_view.setVisibility(View.GONE);
+                mRefreshLayout.setVisibility(View.VISIBLE);
+                if (UrlList.PAGE == 1) {
+                    mogulDataList.clear();
+                }
+                if (bean.getData().getLists().size() > 1) {
+                    for (int i = 0; i < bean.getData().getLists().size(); i++) {
+                        String user_image = bean.getData().getLists().get(i).getProfile_image_url();
+                        String create_time = bean.getData().getLists().get(i).getCreate_at();
+                        String mogul_name = bean.getData().getLists().get(i).getFull_name();
+                        String weibo_name = bean.getData().getLists().get(i).getScreen_name();
+                        String positon = bean.getData().getLists().get(i).getProfessional();
+                        String text = bean.getData().getLists().get(i).getText();
+                        int mogul_id = bean.getData().getLists().get(i).getId();
+                        List<String> imgs = new ArrayList<>();
+                        if (bean.getData().getLists().get(i).getImages().size() != 0) {
+                            for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
+                                imgs.add(bean.getData().getLists().get(i).getImages().get(j).getUrl());
+                            }
+                        }
+                        MogulData mogulData = new MogulData(null);
+                        mogulData.setName(mogul_name);
+                        mogulData.setTranslate(null);
+                        mogulData.setContent(text);
+                        mogulData.setPosition(positon);
+                        mogulData.setUrlList(null);
+                        mogulData.setHead(user_image);
+                        mogulData.setTime(create_time);
+                        mogulData.setWeibo(weibo_name);
+                        mogulData.setFabulous(1002);
+                        mogulData.setId(mogul_id);
+                        mogulData.setUrlList(imgs);
+                        mogulDataList.add(mogulData);
+                    }
+                }
+                updateAdapter(mogulDataList.size());
+            } else {
+                empty_view.setVisibility(View.VISIBLE);
+                mRefreshLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+
     @Override
     public void initData() {
+        //json缓存
+        List<MainCacheBean> newsCache = DataSupport.where("type = ?", String.valueOf(MainCacheBean.TYPE_FRIEND_CIRCLE)).find(MainCacheBean.class);
+        if (newsCache.size() > 0) {
+            String cacheJson = newsCache.get(0).getCacheJson();
+            bean = JSON.parseObject(cacheJson, MogulCircleBean.class);
+        }
+        updateView();
         getData(UrlList.PAGE);
     }
 
@@ -215,6 +233,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 optionUtil.dismiss();
                 ToastManager.showShort(getActivity(), getString(R.string.copy_success));
             }
+
             @Override
             public void onNextClick() {
                 query(view, list, position, content);
@@ -225,7 +244,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         optionUtil.show(view);
 
     }
-
 
 
     private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
@@ -323,7 +341,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         }
 
     }
-
 
     //点赞
     @Override

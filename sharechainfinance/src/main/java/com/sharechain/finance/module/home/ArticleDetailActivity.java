@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
@@ -299,8 +300,10 @@ public class ArticleDetailActivity extends BaseActivity {
     }
 
     private void updateView(ArticleDetailBean bean) {
+        String avatarStr = BaseUtils.getSubImageUrl(bean.getData().getAuthor().getMeta_value(), "i:64;s:90:", ";i:52;s:90:");
         text_article_title.setText(bean.getData().getArticle().getPost_title());
-        Glide.with(this).load("").into(image_avatar);
+        RequestOptions options = new RequestOptions().circleCrop();
+        Glide.with(this).load(avatarStr).apply(options).into(image_avatar);
         text_name.setText(bean.getData().getAuthor().getDisplay_name());
         text_time.setText(bean.getData().getArticle().getPost_date_gmt());
         text_view_count.setText(String.valueOf(bean.getData().getAuthor().getCount_view()));

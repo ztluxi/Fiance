@@ -2,17 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="15dp"
     android:background="@drawable/icon_fastmsg_header_bg"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
-
-    <include layout="@layout/base_title" />
+    android:orientation="vertical"
+    android:paddingBottom="15dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="50dp"
         android:text="@string/big_msg"
         android:textColor="@color/white"
         android:textSize="19sp" />
@@ -24,20 +22,24 @@
         android:background="@color/white" />
 
     <TextView
+        android:id="@+id/text_big_news"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="9dp"
-        android:text="比特币价格突破"
+        android:ellipsize="end"
+        android:lines="1"
         android:textColor="@color/white"
         android:textSize="12sp" />
 
     <Button
+        android:id="@+id/btn_view_detail"
         android:layout_width="76dp"
         android:layout_height="25dp"
         android:layout_marginTop="9dp"
         android:background="@drawable/common_fastmsg_detail_bg"
         android:gravity="center"
-
         android:text="@string/view_detail"
         android:textColor="@color/white"
         android:textSize="12sp" />

@@ -19,6 +19,7 @@ import com.sharechain.finance.bean.NewsChannelTable;
 import com.sharechain.finance.view.ItemDragHelperCallback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,6 @@ public class ManageTagActivity extends BaseActivity {
     @Override
     public void initView() {
         initTitle("");
-        List<NewsChannelTable> getList = (List<NewsChannelTable>) getIntent().getSerializableExtra("list");
-        newsChannelsMine.addAll(getList);
         mImmersionBar.statusBarColor(R.color.colorBlack).init();
         view_status_bar.setVisibility(View.GONE);
         rl_base_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -71,16 +70,10 @@ public class ManageTagActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        for (int i = 0; i < newsChannelsMine.size(); i++) {
-            if (!newsChannelsMine.get(i).getNewsChannelName().equals("推荐")) {
-                NewsChannelTable channelTable = new NewsChannelTable();
-                channelTable.setNewsChannelId(String.valueOf(newsChannelsMine.get(i).getNewsChannelId()));
-                channelTable.setNewsChannelName(newsChannelsMine.get(i).getNewsChannelName());
-                channelTable.setNewsChannelFixed(false);
-                channelTable.setNewsChannelSelect(false);
-                newsChannelsMore.add(channelTable);
-            }
-        }
+        List<NewsChannelTable> tmpMineList = DataSupport.where("cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_MINE)).find(NewsChannelTable.class);
+        newsChannelsMine.addAll(tmpMineList);
+        List<NewsChannelTable> tmpMoreList = DataSupport.where("cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_ALL)).find(NewsChannelTable.class);
+        newsChannelsMore.addAll(tmpMoreList);
         initRecyclerViewMineAndMore();
     }
 
@@ -191,7 +184,18 @@ public class ManageTagActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (isDataChanged) {
+            //编辑后先删除所有标签，然后再添加编辑后的标签
+            DataSupport.deleteAll(NewsChannelTable.class, "cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_MINE));
             List<NewsChannelTable> resultList = mNewsChannelAdapterMine.getData();
+            for (NewsChannelTable tmp : resultList) {
+                NewsChannelTable mine = new NewsChannelTable();
+                mine.setCacheType(NewsChannelTable.CACHE_TYPE_MINE);
+                mine.setNewsChannelName(tmp.getNewsChannelName());
+                mine.setNewsChannelId(tmp.getNewsChannelId());
+                mine.setNewsChannelSelect(tmp.getNewsChannelSelect());
+                mine.setNewsChannelFixed(tmp.getNewsChannelFixed());
+                mine.save();
+            }
             BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
             baseNotifyBean.setType(TYPE_MANAGE_TAG_RESULT);
             baseNotifyBean.setObj(resultList);

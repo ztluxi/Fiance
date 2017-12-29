@@ -16,6 +16,7 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.ViewPagerAdapter;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.HomeIndexBean;
+import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.NewsChannelTable;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ManageTagActivity;
@@ -36,6 +37,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -80,7 +82,22 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        //json缓存
+        List<MainCacheBean> newsCache = DataSupport.where("type = ?", String.valueOf(MainCacheBean.TYPE_HOME_NEWS)).find(MainCacheBean.class);
+        if (newsCache.size() > 0) {
+            String cacheJson = newsCache.get(0).getCacheJson();
+            homeIndexBean = JSON.parseObject(cacheJson, HomeIndexBean.class);
+        }
+        //标签缓存
+        List<NewsChannelTable> tmpMineList = DataSupport.where("cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_MINE)).find(NewsChannelTable.class);
+        typeList.addAll(tmpMineList);//从数据库获取
+        titleList.clear();
+        for (NewsChannelTable table : typeList) {
+            titleList.add(table.getNewsChannelName());
+        }
+        //获取标签，轮播图，热讯数据
         getHomeIndexData();
+        //加载轮播图，热讯控件
         loadData();
     }
 
@@ -192,22 +209,31 @@ public class HomeFragment extends BaseFragment {
                 HomeIndexBean bean = JSON.parseObject(result, HomeIndexBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
                     homeIndexBean = bean;
-                    //返回成功
-                    for (int i = 0; i < bean.getData().getArticle_title_lists().size(); i++) {
-                        HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean = bean.getData().getArticle_title_lists().get(i);
-                        NewsChannelTable table = new NewsChannelTable();
-                        table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
-                        table.setNewsChannelName(titleListsBean.getName());
-                        if (i == 0) {
-                            table.setNewsChannelFixed(true);
-                            table.setNewsChannelSelect(false);
-                        } else {
-                            table.setNewsChannelFixed(false);
-                            table.setNewsChannelSelect(false);
+                    //保存首页缓存数据
+                    DataSupport.deleteAll(MainCacheBean.class, "type = ?", String.valueOf(MainCacheBean.TYPE_HOME_NEWS));
+                    MainCacheBean mainCacheBean = new MainCacheBean();
+                    mainCacheBean.setType(MainCacheBean.TYPE_HOME_NEWS);
+                    mainCacheBean.setCacheJson(result);
+                    mainCacheBean.save();
+                    if (typeList.size() == 0) {
+                        //第一次进入app
+                        for (int i = 0; i < bean.getData().getArticle_title_lists().size(); i++) {
+                            HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean = bean.getData().getArticle_title_lists().get(i);
+                            NewsChannelTable allTable = getCacheAllTable(titleListsBean, i);
+                            NewsChannelTable mineTable = getCacheMineTable(titleListsBean, i);
+                            allTable.save();
+                            mineTable.save();
+                            //第一次进入
+                            typeList.add(mineTable);
+                            titleList.add(titleListsBean.getName());
                         }
-                        typeList.add(table);
-                        titleList.add(titleListsBean.getName());
+                    } else {
+                        titleList.clear();
+                        for (NewsChannelTable table : typeList) {
+                            titleList.add(table.getNewsChannelName());
+                        }
                     }
+                    //返回成功
                     loadData();
                 }
             }
@@ -217,6 +243,36 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private NewsChannelTable getCacheAllTable(HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean, int i) {
+        NewsChannelTable table = new NewsChannelTable();
+        table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
+        table.setNewsChannelName(titleListsBean.getName());
+        table.setCacheType(NewsChannelTable.CACHE_TYPE_ALL);//设置缓存类型为全部
+        if (i == 0) {
+            table.setNewsChannelFixed(true);
+            table.setNewsChannelSelect(false);
+        } else {
+            table.setNewsChannelFixed(false);
+            table.setNewsChannelSelect(false);
+        }
+        return table;
+    }
+
+    private NewsChannelTable getCacheMineTable(HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean, int i) {
+        NewsChannelTable table = new NewsChannelTable();
+        table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
+        table.setNewsChannelName(titleListsBean.getName());
+        table.setCacheType(NewsChannelTable.CACHE_TYPE_MINE);//设置缓存类型为全部
+        if (i == 0) {
+            table.setNewsChannelFixed(true);
+            table.setNewsChannelSelect(false);
+        } else {
+            table.setNewsChannelFixed(false);
+            table.setNewsChannelSelect(false);
+        }
+        return table;
     }
 
     @Override

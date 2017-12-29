@@ -1,6 +1,8 @@
 package com.sharechain.finance.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.module.home.BaseWebViewActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.FastMsgDialog;
 
@@ -98,6 +101,14 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
                 @Override
                 public void onClick(View view) {
                     new FastMsgDialog(context, listData.get(i)).show();
+                }
+            });
+            childViewHolder.text_view_article.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("web_url", listData.get(i).getUrl());
+                    BaseUtils.openActivity((Activity) context, BaseWebViewActivity.class, bundle);
                 }
             });
         }

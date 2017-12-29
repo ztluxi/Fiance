@@ -1,9 +1,10 @@
 package com.sharechain.finance.fragment.main;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
@@ -14,11 +15,15 @@ import com.sharechain.finance.adapter.FastMsgAdapter;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.FastMsgBean;
 import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.module.home.BaseWebViewActivity;
+import com.sharechain.finance.utils.BaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.halfbit.pinnedsection.PinnedSectionListView;
 
 /**
@@ -37,9 +43,13 @@ public class FastMsgFragment extends BaseFragment {
     XRefreshView xRefreshView;
     @BindView(R.id.listView)
     PinnedSectionListView listView;
+    @BindView(R.id.text_big_news)
+    TextView text_big_news;
 
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
+    private FastMsgBean.DataBean.ListBean headData;
+    private FastMsgBean bean;
 
     @Override
     protected int getLayout() {
@@ -51,11 +61,6 @@ public class FastMsgFragment extends BaseFragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        initTitle(getString(R.string.main_tab_fast_msg));
-        rl_base_layout.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-        view_status_bar.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-        text_title.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-        view_line.setVisibility(View.GONE);
         initXRefreshView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
@@ -84,7 +89,9 @@ public class FastMsgFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("web_url", dataList.get(i).getUrl());
+                    BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
                 }
             }
         });
@@ -92,6 +99,13 @@ public class FastMsgFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        //json缓存
+        List<MainCacheBean> newsCache = DataSupport.where("type = ?", String.valueOf(MainCacheBean.TYPE_FAST_MSG)).find(MainCacheBean.class);
+        if (newsCache.size() > 0) {
+            String cacheJson = newsCache.get(0).getCacheJson();
+            bean = JSON.parseObject(cacheJson, FastMsgBean.class);
+        }
+        updateView();
         getDetail();
     }
 
@@ -110,33 +124,14 @@ public class FastMsgFragment extends BaseFragment {
             protected void onSuccess(String result) {
                 xRefreshView.stopRefresh();
                 xRefreshView.stopLoadMore();
-                FastMsgBean bean = JSON.parseObject(result, FastMsgBean.class);
-                if (bean.isSuccess()) {
-                    if (page == 1) {
-                        dataList.clear();
-                    }
-                    for (int i = 0; i < bean.getData().size(); i++) {
-                        FastMsgBean.DataBean parentBean = bean.getData().get(i);
-                        String sectionText = parentBean.getTime();
-                        FastMsgData groupData = new FastMsgData();
-                        groupData.setType(FastMsgData.PARENT_TYPE);
-                        groupData.setSectionText(sectionText);
-                        dataList.add(groupData);
-                        for (int j = 0; j < parentBean.getList().size(); j++) {
-                            String content = parentBean.getList().get(j).getText();
-                            FastMsgData childData = new FastMsgData();
-                            childData.setSectionText(sectionText);//日期
-                            childData.setType(FastMsgData.CHILD_TYPE);//子item
-                            childData.setDataText(content);//内容
-                            childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
-                            childData.setTitle(parentBean.getList().get(j).getTitle());//标题
-                            childData.setHour(parentBean.getList().get(j).getHour());//时间
-                            childData.setUrl(parentBean.getList().get(j).getUrl());//url
-                            dataList.add(childData);
-                        }
-                    }
-                    adapter.notifyDataSetChanged();
-                }
+                bean = JSON.parseObject(result, FastMsgBean.class);
+                //保存缓存数据
+                DataSupport.deleteAll(MainCacheBean.class, "type = ?", String.valueOf(MainCacheBean.TYPE_FAST_MSG));
+                MainCacheBean mainCacheBean = new MainCacheBean();
+                mainCacheBean.setType(MainCacheBean.TYPE_FAST_MSG);
+                mainCacheBean.setCacheJson(result);
+                mainCacheBean.save();
+                updateView();
             }
 
             @Override
@@ -145,6 +140,54 @@ public class FastMsgFragment extends BaseFragment {
                 xRefreshView.stopLoadMore();
             }
         });
+    }
+
+    private void updateView() {
+        if (bean != null) {
+            if (bean.isSuccess()) {
+                if (page == 1) {
+                    dataList.clear();
+                    //取出头部数据
+                    if (bean.getData().size() > 0 && bean.getData().get(0).getList().size() > 0) {
+                        headData = bean.getData().get(0).getList().get(0);
+                        text_big_news.setText(headData.getTitle());
+                    }
+                }
+                for (int i = 0; i < bean.getData().size(); i++) {
+                    FastMsgBean.DataBean parentBean = bean.getData().get(i);
+                    String sectionText = parentBean.getTime();
+                    FastMsgData groupData = new FastMsgData();
+                    groupData.setType(FastMsgData.PARENT_TYPE);
+                    groupData.setSectionText(sectionText);
+                    dataList.add(groupData);
+                    for (int j = 0; j < parentBean.getList().size(); j++) {
+                        if (page == 1 && i == 0 && j == 0) {
+                            continue;
+                        }
+                        String content = parentBean.getList().get(j).getText();
+                        FastMsgData childData = new FastMsgData();
+                        childData.setSectionText(sectionText);//日期
+                        childData.setType(FastMsgData.CHILD_TYPE);//子item
+                        childData.setDataText(content);//内容
+                        childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
+                        childData.setTitle(parentBean.getList().get(j).getTitle());//标题
+                        childData.setHour(parentBean.getList().get(j).getHour());//时间
+                        childData.setUrl(parentBean.getList().get(j).getUrl());//url
+                        dataList.add(childData);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @OnClick(R.id.btn_view_detail)
+    void viewDetail() {
+        if (headData != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("web_url", headData.getUrl());
+            BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
+        }
     }
 
     @Override

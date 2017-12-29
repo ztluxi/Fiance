@@ -20,12 +20,16 @@ import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+
+import static com.sharechain.finance.bean.ArticleListsBean.CACHE_TYPE_RECOMMENT;
 
 /**
  * Created by Administrator on 2017/12/15.
@@ -108,6 +112,10 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     @Override
     public void initData() {
+        List<ArticleListsBean> cacheList = DataSupport.where("cacheType = ?",
+                String.valueOf(CACHE_TYPE_RECOMMENT)).find(ArticleListsBean.class);
+        dataList.addAll(cacheList);
+        mNewsListAdapter.notifyDataSetChanged();
         getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
     }
 
@@ -129,11 +137,16 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
                     if (page == 1) {
                         dataList.clear();
+                        //缓存第一页数据
+                        DataSupport.deleteAll(ArticleListsBean.class, "cacheType = ?", String.valueOf(CACHE_TYPE_RECOMMENT));
                     }
                     //给tagId赋值
                     for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
                         tmp.setTagId(tmp.getID());
                         tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
+                        if (page == 1) {
+                            tmp.save();
+                        }
                     }
                     dataList.addAll(bean.getData().getArticle_lists());
                     mNewsListAdapter.notifyDataSetChanged();

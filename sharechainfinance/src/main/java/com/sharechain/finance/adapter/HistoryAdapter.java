@@ -2,6 +2,7 @@ package com.sharechain.finance.adapter;
 
 import android.content.Context;
 
+import com.bumptech.glide.Glide;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.HistoryBean;
 
@@ -23,6 +24,7 @@ public class HistoryAdapter extends BGAAdapterViewAdapter<HistoryBean> {
         helper.getTextView(R.id.text_content).setText(model.getPost_title());
         helper.getTextView(R.id.text_comment_num).setText(model.getViews() + mContext.getString(R.string.home_item_comment));
         helper.getTextView(R.id.text_comment_num).setText(model.getPost_view_rand() + mContext.getString(R.string.home_item_praise));
+        Glide.with(mContext).load(model.getUser_avatars()).into(helper.getImageView(R.id.image_pic));
     }
 
 }

@@ -77,7 +77,8 @@
                     android:paddingTop="8dp"
                     android:text="查看原文"
                     android:textColor="@color/color_base_blue"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/image_share"

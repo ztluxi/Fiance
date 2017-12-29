@@ -9,6 +9,9 @@ import java.io.Serializable;
  */
 
 public class ArticleListsBean extends DataSupport implements Serializable {
+    public static final int CACHE_TYPE_RECOMMENT = 0;
+    public static final int CACHE_TYPE_OTHER = 1;
+    public static final int CACHE_TYPE_HISTORY = 2;
     private int tagId;
     private int ID;
     private String post_title;
@@ -19,6 +22,7 @@ public class ArticleListsBean extends DataSupport implements Serializable {
     private int views;
     private String image;
     private String name;
+    private int cacheType;
 
     public int getID() {
         return ID;
@@ -98,5 +102,13 @@ public class ArticleListsBean extends DataSupport implements Serializable {
 
     public void setTagId(int tagId) {
         this.tagId = tagId;
+    }
+
+    public int getCacheType() {
+        return cacheType;
+    }
+
+    public void setCacheType(int cacheType) {
+        this.cacheType = cacheType;
     }
 }

@@ -75,7 +75,6 @@ public class MineActivity extends BaseActivity {
 
     }
 
-
     @OnClick({R.id.back_iv, R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -100,7 +99,7 @@ public class MineActivity extends BaseActivity {
             case R.id.clear_cache_tv:
                 break;
             case R.id.score_tv:
-                BaseUtils.openActivity(this, SearchActivity.class, null);
+//                BaseUtils.openActivity(this, SearchActivity.class, null);
                 break;
             case R.id.about_tv:
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);

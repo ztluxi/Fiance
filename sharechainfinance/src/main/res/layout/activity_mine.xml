@@ -6,7 +6,7 @@
     android:background="@color/base_bg_color"
     android:orientation="vertical">
 
-    <com.sharechain.finance.view.BounceScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -51,11 +51,11 @@
                             android:paddingRight="35dp">
 
                             <TextView
-                                android:layout_marginTop="15dp"
                                 android:id="@+id/user_login"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/user_image"
+                                android:layout_marginTop="15dp"
                                 android:text="@string/login_privilege"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
@@ -125,31 +125,31 @@
                     android:layout_marginLeft="10dp" />
 
                 <LinearLayout
-                    android:background="@drawable/mine_item_touch_bg"
                     android:id="@+id/clear_cache_ll"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:background="@drawable/mine_item_touch_bg"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:drawablePadding="15dp"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:drawableLeft="@drawable/clear_memory"
                         android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/clear_memory"
+                        android:drawablePadding="15dp"
                         android:gravity="center_vertical"
                         android:text="@string/clear_cache"
                         android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:drawablePadding="5dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_weight="3"
                         android:id="@+id/clear_cache_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="3"
+                        android:drawablePadding="5dp"
                         android:drawableRight="@drawable/icon_right"
                         android:gravity="right|center_vertical"
                         android:text="11.22M"
@@ -312,6 +312,6 @@
 
         </RelativeLayout>
 
-    </com.sharechain.finance.view.BounceScrollView>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

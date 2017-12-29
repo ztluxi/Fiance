@@ -66,8 +66,6 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">true</item>
-        <!--//闪屏图片-->
-        <item name="android:windowBackground">@drawable/uoko_guide_background_1</item>
     </style>
 
     <!--dialog style-->

@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/icon_fastmsg_calendar"
         android:drawablePadding="8dp"
-        android:text="2017-12-12"
         android:textColor="@color/colorBlack"
         android:textSize="12sp" />
 
