@@ -76,7 +76,6 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
                 view = LayoutInflater.from(context).inflate(R.layout.item_fastmsg_child, viewGroup, false);
             }
             childViewHolder = new ChildViewHolder(view);
-            childViewHolder.text_title.setText(listData.get(i).getTitle());
             childViewHolder.text_time.setText(listData.get(i).getHour());
             childViewHolder.text_content.setText(listData.get(i).getDataText());
             if (listData.get(i).getMsgType() == 1) {
@@ -135,8 +134,6 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
     }
 
     class ChildViewHolder {
-        @BindView(R.id.text_title)
-        TextView text_title;
         @BindView(R.id.text_msg_type)
         TextView text_msg_type;
         @BindView(R.id.text_time)

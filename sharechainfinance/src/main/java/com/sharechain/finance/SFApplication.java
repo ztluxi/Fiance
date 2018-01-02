@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -39,12 +40,17 @@ public class SFApplication extends MultiDexApplication {
     public static String WX_APPID = "";
     public static String WX_APPSECRET = "";
     public static String WX_LOGIN_STATE = "wx_login_state";
+
     public static SFApplication get(Context context) {
         return (SFApplication) context.getApplicationContext();
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        //极光推送
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         //litePal数据库
         LitePal.initialize(this);
         WindowManager manager = (WindowManager)
@@ -62,7 +68,7 @@ public class SFApplication extends MultiDexApplication {
         OkHttpUtils.initClient(okHttpClient);
         //ActivityLifeLifeCycle
         registerActivityListener();
-        YouDaoApplication.init(this,"3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
+        YouDaoApplication.init(this, "3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
 
         Logger.addLogAdapter(new AndroidLogAdapter());
     }

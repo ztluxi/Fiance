@@ -27,6 +27,7 @@ import butterknife.OnClick;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
 /**
+ * 推送记录
  * Created by ${zhoutao} on 2017/12/13 0013.
  */
 
@@ -39,7 +40,7 @@ public class MyNewsActivity extends BaseActivity {
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
     private List<NewsData> newsDataList = new ArrayList<>();
-    private String page="1";//页数
+    private String page = "1";//页数
     private MyNewsAdapter newsAdapter;
 
     @Override
@@ -61,8 +62,6 @@ public class MyNewsActivity extends BaseActivity {
                 refreshView.stopRefresh();
             }
         });
-
-
     }
 
     @Override
@@ -94,6 +93,7 @@ public class MyNewsActivity extends BaseActivity {
                 }
                 updateAdapter(newsDataList);
             }
+
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);
@@ -103,7 +103,7 @@ public class MyNewsActivity extends BaseActivity {
     }
 
     private void updateAdapter(List<NewsData> newsDataList) {
-        if (newsAdapter==null){
+        if (newsAdapter == null) {
             newsAdapter = new MyNewsAdapter(this, R.layout.adapter_my_news_item);
             newsAdapter.setData(newsDataList);
             myNewslv.setAdapter(newsAdapter);
@@ -114,7 +114,7 @@ public class MyNewsActivity extends BaseActivity {
                 }
             });
 
-        }else {
+        } else {
             newsAdapter.notifyDataSetChanged();
         }
     }

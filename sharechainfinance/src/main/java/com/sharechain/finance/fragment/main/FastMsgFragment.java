@@ -88,7 +88,8 @@ public class FastMsgFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE) {
+                if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE &&
+                        !BaseUtils.isEmpty(dataList.get(i).getUrl())) {
                     Bundle bundle = new Bundle();
                     bundle.putString("web_url", dataList.get(i).getUrl());
                     BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
@@ -150,7 +151,7 @@ public class FastMsgFragment extends BaseFragment {
                     //取出头部数据
                     if (bean.getData().size() > 0 && bean.getData().get(0).getList().size() > 0) {
                         headData = bean.getData().get(0).getList().get(0);
-                        text_big_news.setText(headData.getTitle());
+                        text_big_news.setText(headData.getText());
                     }
                 }
                 for (int i = 0; i < bean.getData().size(); i++) {

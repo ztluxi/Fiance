@@ -111,10 +111,10 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-	implementation files('libs/YoudaoBase.jar')
+    implementation files('libs/YoudaoBase.jar')
     implementation files('libs/YoudaoTranslateOnline.jar')
 
-   //jsoup
+    //jsoup
     compile 'org.jsoup:jsoup:1.10.1'
     //富文本
     compile 'com.zzhoujay.richtext:richtext:3.0.4'
