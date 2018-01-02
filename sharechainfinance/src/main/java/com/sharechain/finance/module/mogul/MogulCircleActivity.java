@@ -1,8 +1,10 @@
 package com.sharechain.finance.module.mogul;
 
+import android.app.Dialog;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FullLinear;
+import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 import com.youdao.sdk.app.Language;
 import com.youdao.sdk.app.LanguageUtils;
@@ -54,7 +57,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by ${zhoutao} on 2017/12/22 0022.
  */
 
-public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener {
+public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener,BGARefreshLayout.BGARefreshLayoutDelegate{
     @BindView(R.id.back_iv)
     ImageView back_Image;
     @BindView(R.id.mogul_top_name_tv)
@@ -73,10 +76,10 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     BGARefreshLayout mRefreshLayout;
     @BindView(R.id.no_result_rl)
     RelativeLayout no_result_rl;
-    //    @BindView(R.id.collapsing_toolbar_layout)
-//    CollapsingToolbarLayout collapsing_toolbar_layout;
     private List<MogulData> mogulDataList = new ArrayList<>();
     private MogulAdapter mogulAdapter;
+
+    private Dialog mDialog;
 
     @Override
     public int getLayout() {
@@ -93,6 +96,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     private int focus;
     private int id;
     private String mogul_name;
+    private String head;
+    private String mogulPosition;
 
 
     private Translator translator;
@@ -110,9 +115,11 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     @Override
     public void initView() {
 //        collapsing_toolbar_layout.setTitleEnabled(false);
+        //获取大佬ID
+        id = getIntent().getIntExtra("id", 0);
         focus = getIntent().getIntExtra("focus", 0);
-        String head = getIntent().getStringExtra("head");
-        String mogulPosition = getIntent().getStringExtra("position");
+        head = getIntent().getStringExtra("head");
+        mogulPosition = getIntent().getStringExtra("position");
         mogul_name = getIntent().getStringExtra("name");
         mogul_top_name_tv.setText(mogul_name);
         mogul_name_tv.setText(mogul_name);
@@ -127,11 +134,11 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.logo);
         options.error(R.drawable.logo);
-        GlideUtils.loadUserImage(this, head, mogul_center_iv, options);
+        GlideUtils.getInstance().loadUserImage(this, head, mogul_center_iv, options);
 
 
-//        mRefreshLayout.setDelegate(this);
-//        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
+        mRefreshLayout.setDelegate(this);
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
         mogulCircleRl.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -151,18 +158,18 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         //设置布局管理器
         mogulCircleRl.setLayoutManager(new FullLinear(this, LinearLayoutManager.VERTICAL, true));
         optionUtil = new PopOptionUtil(SFApplication.get(this));
-
+        mDialog = new LoadDialog().LoadProgressDialog(this);
     }
 
     @Override
     public void initData() {
-        //获取大佬ID
-        id = getIntent().getIntExtra("id", 0);
+
         getMogulDetail(id);
     }
 
     //获取大佬个人中心
     private void getMogulDetail(int mogulId) {
+        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(104));
         params.put(UrlList.LIMIT, String.valueOf(50));
@@ -177,7 +184,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                     mogulDataList.clear();
                 }
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-                if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
+                if (bean.getSuccess() == 1 && bean.getData().getLists().size()!=0) {
                     no_result_rl.setVisibility(View.GONE);
                     mogulCircleRl.setVisibility(View.VISIBLE);
                     int focus = bean.getData().getIs_focus();
@@ -190,6 +197,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             String positon = bean.getData().getLists().get(i).getProfessional();
                             String text = bean.getData().getLists().get(i).getText();
                             int mogul_id = bean.getData().getLists().get(i).getId();
+                            int fabulous = bean.getData().getLists().get(i).getHits();
 
                             List<String> imgs = new ArrayList<>();
                             imgs.add(user_image);
@@ -203,30 +211,35 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             mogulData.setHead(user_image);
                             mogulData.setTime(create_time);
                             mogulData.setWeibo(weibo_name);
-                            mogulData.setFabulous(1002);
+                            mogulData.setFabulous(fabulous);
                             mogulData.setId(mogul_id);
                             mogulData.setFocus(focus);
                             mogulDataList.add(mogulData);
                         }
                     }
-                    updateAdapter();
                 } else {
                     no_result_rl.setVisibility(View.VISIBLE);
                     mogulCircleRl.setVisibility(View.GONE);
                 }
+                updateAdapter();
             }
-
             @Override
             protected void onFailed(String errStr) {
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
                 Logger.d(errStr);
+                if (mDialog!=null&&mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
 
     }
 
     private void updateAdapter() {
+        if (mDialog!=null&&mDialog.isShowing()){
+            mDialog.dismiss();
+        }
         if (mogulAdapter == null) {
             mogulAdapter = new MogulAdapter(this, mogulDataList, null, 1);
             mogulAdapter.setOnItemLongClickListener(this);
@@ -388,19 +401,19 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         });
     }
 
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
-//        UrlList.PAGE = 1;
-//        getMogulDetail(UrlList.PAGE);
-//
-//    }
-//
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        UrlList.PAGE++;
-//        getMogulDetail(UrlList.PAGE);
-//        return false;
-//    }
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
+        UrlList.PAGE = 1;
+        getMogulDetail(UrlList.PAGE);
+
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        UrlList.PAGE++;
+        getMogulDetail(UrlList.PAGE);
+        return false;
+    }
 
     @Override
     public void onFabulous(View view, int position, List<MogulData> list, boolean isLike) {
@@ -451,6 +464,5 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         });
 
     }
-
 
 }

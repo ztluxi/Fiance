@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
@@ -16,6 +17,7 @@ import com.sharechain.finance.bean.WXAccessBean;
 import com.sharechain.finance.bean.WXRefreshBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ToastManager;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -52,8 +54,8 @@ public class MineActivity extends BaseActivity {
     TextView scoreTv;
     @BindView(R.id.exit_tv)
     TextView exitTv;
-
     private IWXAPI iwxapi;
+    private String size;//glide缓存大小；
 
     @Override
     public int getLayout() {
@@ -62,17 +64,20 @@ public class MineActivity extends BaseActivity {
 
     @Override
     public void initView() {
+
+
         iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID);
         mImmersionBar.statusBarColor(android.R.color.transparent).init();
         setTitlePadding(ll_top_info);
-        RequestOptions options = new RequestOptions().circleCrop();
+        RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         options.placeholder(R.drawable.icon_share_weixin);
-        GlideUtils.loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
+        GlideUtils.getInstance().loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
     }
 
     @Override
     public void initData() {
-
+        size = GlideUtils.getInstance().getCacheSize(this);
+        clearCacheTv.setText(size+"");
     }
 
     @OnClick({R.id.back_iv, R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
@@ -97,6 +102,8 @@ public class MineActivity extends BaseActivity {
                 BaseUtils.openActivity(this, FeedbackActivity.class, null);
                 break;
             case R.id.clear_cache_tv:
+                GlideUtils.getInstance().clearImageAllCache(this);
+                clearCacheTv.setText("");
                 break;
             case R.id.score_tv:
 //                BaseUtils.openActivity(this, SearchActivity.class, null);

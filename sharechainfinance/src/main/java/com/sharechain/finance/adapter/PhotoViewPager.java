@@ -100,12 +100,12 @@ public class PhotoViewPager<T> extends PagerAdapter {
 
             @Override
             public void onOutsidePhotoTap() {
-
+                mContext.finish();
             }
         });
         String url = mDatas.get(position);
         RequestOptions options = new RequestOptions().placeholder(R.drawable.logo).error(R.drawable.logo).centerInside();
-        GlideUtils.loadUserImage(SFApplication.get(mContext), url, photoView, options);
+        GlideUtils.getInstance().loadUserImage(SFApplication.get(mContext), url, photoView, options);
         container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return view;
     }

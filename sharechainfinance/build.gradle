@@ -106,7 +106,6 @@ dependencies {
 
     //9宫图
     compile 'com.jaeger.ninegridimageview:library:1.1.1'
-
     //放大图片查看
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
@@ -118,6 +117,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.1'
     //富文本
     compile 'com.zzhoujay.richtext:richtext:3.0.4'
-    compile 'com.zzhoujay.okhttpimagedownloader:OkHttpImageDownloader:1.0.2'
 }
 

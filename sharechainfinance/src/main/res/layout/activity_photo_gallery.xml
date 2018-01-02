@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sharechain.finance.module.mogul.CustomViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/photo_vp"
     android:background="@color/white">
 
 
-    <com.sharechain.finance.module.mogul.CustomViewPager
-        android:id="@+id/photo_vp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+    <!--<com.sharechain.finance.module.mogul.CustomViewPager-->
+        <!--android:id="@+id/photo_vp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true" />-->
 
-    <LinearLayout
-        android:id="@+id/toolbar_ll"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/toolbar_ll"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:visibility="gone">-->
 
-        <include layout="@layout/base_title" />
-    </LinearLayout>
+        <!--<include layout="@layout/base_title" />-->
+    <!--</LinearLayout>-->
 
-</RelativeLayout>
+</com.sharechain.finance.module.mogul.CustomViewPager>

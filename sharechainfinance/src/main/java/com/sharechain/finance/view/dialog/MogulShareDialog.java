@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.zzhoujay.richtext.RichText;
 
@@ -79,14 +80,20 @@ public class MogulShareDialog extends Dialog {
 
     public void setContent(Context context,String url,String position,String name,String content,String weibo){
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.loadUserImage(SFApplication.get(context),url,headImage, headOptions);
+        GlideUtils.getInstance().loadUserImage(SFApplication.get(context),url,headImage, headOptions);
         text_namet.setText(name+"");
         if (position.equals("")){
             text_position.setVisibility(View.GONE);
         }else {
             text_position.setText(position);
         }
-        text_weibo.setText(R.string.share_weibo_name+weibo+"");
+        if (BaseUtils.isEmpty(weibo)){
+            text_weibo.setText(weibo+"");
+            text_weibo.setVisibility(View.GONE);
+        }else {
+            text_weibo.setText(weibo+"");
+            text_weibo.setVisibility(View.VISIBLE);
+        }
         RichText.fromHtml(content).into(text_content);
     }
 

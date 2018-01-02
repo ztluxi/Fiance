@@ -56,13 +56,15 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:visibility="gone"
+                            android:drawableLeft="@drawable/aite"
+                            android:drawablePadding="3dp"
                             android:id="@+id/text_weibo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:ellipsize="end"
                             android:gravity="center_vertical"
-                            android:text="@string/share_weibo_name"
                             android:textColor="@android:color/black"
                             android:textSize="12sp" />
                     </LinearLayout>

@@ -81,7 +81,7 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
             follow.setBackgroundResource(R.drawable.my_no_follow_bg);
         }
         RequestOptions options = new RequestOptions().circleCrop().placeholder(R.drawable.logo).error(R.drawable.logo);
-        GlideUtils.loadUserImage(mContext,model.getImage(),mogulHeadIv,options);
+        GlideUtils.getInstance().loadUserImage(mContext,model.getImage(),mogulHeadIv,options);
 
         followTv.setOnClickListener(new View.OnClickListener() {
             @Override

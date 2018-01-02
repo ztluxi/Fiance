@@ -3,6 +3,7 @@ package com.sharechain.finance.utils;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.sharechain.finance.R;
+
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 
@@ -64,7 +67,7 @@ public class PopOptionUtil {
             int[] location = new int[2];
             view.getLocationOnScreen(location);
             //在控件上方显示
-            popupWindow.showAtLocation(view, Gravity.TOP, (location[0]) - popupWidth / 2, location[1] - popupHeight);
+            popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,(location[0] + view.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight);
 //        }
     }
 

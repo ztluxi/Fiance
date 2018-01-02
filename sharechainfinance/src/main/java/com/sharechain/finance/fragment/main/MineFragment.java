@@ -54,7 +54,7 @@ public class MineFragment extends BaseFragment {
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.logo);
         options.error(R.drawable.logo);
-        GlideUtils.loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
+        GlideUtils.getInstance().loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
 
     }
 

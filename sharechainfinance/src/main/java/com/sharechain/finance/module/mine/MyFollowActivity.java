@@ -1,11 +1,13 @@
 package com.sharechain.finance.module.mine;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +31,11 @@ import com.sharechain.finance.bean.MyFollowBean;
 import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.module.home.BaseWebViewActivity;
+import com.sharechain.finance.module.mogul.MogulCircleActivity;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
+import com.sharechain.finance.view.dialog.LoadDialog;
 
 import org.json.JSONException;
 
@@ -70,6 +76,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     private MyFollowAdapter followAdapter;
 
+    private Dialog mDialog;
     @Override
     public int getLayout() {
         return R.layout.activity_my_follow;
@@ -106,10 +113,15 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 getFollow(type);
             }
         });
+
+        mDialog = new LoadDialog().LoadProgressDialog(this);
         initListen();
     }
 
     private void updateAdapter() {
+        if (mDialog!=null && mDialog.isShowing()){
+            mDialog.dismiss();
+        }
         if (followAdapter == null) {
             followAdapter = new MyFollowAdapter(this, R.layout.adapter_my_follow_item);
             followAdapter.setMyItemClickLister(this);
@@ -137,11 +149,24 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 return false;
             }
         });
+        myNewslv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", followDataList.get(i).getMogulID());
+                bundle.putString("head", followDataList.get(i).getImage());
+                bundle.putString("name", followDataList.get(i).getName());
+                bundle.putString("position", followDataList.get(i).getPosition());
+                bundle.putInt("focus", followDataList.get(i).getFacous());
+                BaseUtils.openActivity(MyFollowActivity.this, MogulCircleActivity.class, bundle);
+            }
+        });
 
     }
 
     //2搜索大佬圈 1 搜索我的关注
     private void searchMogul(String search_str) {
+        mDialog.show();
         String url = null;
         final Map<String, String> params = new HashMap<>();
         params.put("search_str", search_str);
@@ -163,40 +188,44 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                         empty_view.setVisibility(View.VISIBLE);
                         refreshView.setVisibility(View.GONE);
                     } else {
+                        MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
+                        int focus = bean.getData().getIs_focus();
+                        if (bean.getSuccess() == 1) {
+                            //如果返回数据为空
+                            if (bean.getData() == null || bean.getData().equals("")) {
+                                empty_view.setVisibility(View.GONE);
+                                refreshView.setVisibility(View.GONE);
+                                return;
+                            }
+                            if (bean.getData().getLists().size() != 0) {
+                                for (int i = 0; i < bean.getData().getLists().size(); i++) {
+                                    FollowData followData = new FollowData();
+                                    followData.setPosition(bean.getData().getLists().get(i).getProfessional());
+                                    followData.setWeibo(bean.getData().getLists().get(i).getScreen_name());
+                                    followData.setName(bean.getData().getLists().get(i).getFull_name());
+                                    followData.setImage(bean.getData().getLists().get(i).getProfile_image_url());
+                                    followData.setFacous(focus);
+                                    followDataList.add(followData);
+                                }
+                            }
 
+                        }
 
                     }
+                    updateAdapter();
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                 }
 
-//                MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-//                int focus = bean.getData().getIs_focus();
-//                if (bean.getSuccess() == 1) {
-//                    //如果返回数据为空
-//                    if (bean.getData()==null||bean.getData().equals("")){
-//                        no_result_rl.setVisibility(View.VISIBLE);
-//                        refreshView.setVisibility(View.GONE);
-//                        return;
-//                    }
-//                    if (bean.getData().getLists().size() != 0) {
-//                        for (int i = 0; i < bean.getData().getLists().size(); i++) {
-//                            FollowData followData = new FollowData();
-//                            followData.setPosition(bean.getData().getLists().get(i).getProfessional());
-//                            followData.setWeibo(bean.getData().getLists().get(i).getScreen_name());
-//                            followData.setName(bean.getData().getLists().get(i).getFull_name());
-//                            followData.setImage(bean.getData().getLists().get(i).getProfile_image_url());
-//                            followData.setFacous(focus);
-//                            followDataList.add(followData);
-//                        }
-//                    }
-//                    updateAdapter(followDataList);
-//                }
             }
 
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
 
@@ -204,6 +233,8 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     //获取我的关注列表
     private void getFollow(final int type) {
+        mDialog.show();
+
         String url = null;
         final Map<String, String> params = new HashMap<>();
         if (type == 0) {
@@ -220,7 +251,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 Logger.d(result);
                 if (type == 0) {
                     FollowBean myFollowBean = JSON.parseObject(result, FollowBean.class);
-                    if (myFollowBean.getSuccess() == 1 && myFollowBean.getData() != null) {
+                    if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
                         empty_view.setVisibility(View.GONE);
                         refreshView.setVisibility(View.VISIBLE);
                         if (UrlList.PAGE == 1) {
@@ -275,6 +306,9 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 refreshView.stopRefresh();
                 refreshView.stopLoadMore();
                 Logger.d(errStr);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
 
@@ -282,6 +316,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     //取消大佬关注
     private void cancelMogulFollow(int mogulID, final int position, final FollowData data) {
+        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         if (type == 2) {
             params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
@@ -295,17 +330,24 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 followAdapter.notifyDataSetChanged();
                 ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
                 Logger.d(result);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
 
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
     }
 
     //关注大佬
     private void addMogulFollow(int mogulID, final int position, final FollowData data) {
+        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         if (type == 2) {
             params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
@@ -331,12 +373,17 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
 
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
     }

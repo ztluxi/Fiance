@@ -1,8 +1,10 @@
 package com.sharechain.finance.module.mine;
 
+import android.app.Dialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -16,6 +18,7 @@ import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.ToastManager;
+import com.sharechain.finance.view.dialog.LoadDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +42,12 @@ public class MyNewsActivity extends BaseActivity {
     ListView myNewslv;
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
+    @BindView(R.id.no_result_ll)
+    LinearLayout no_result_ll;
     private List<NewsData> newsDataList = new ArrayList<>();
     private String page = "1";//页数
     private MyNewsAdapter newsAdapter;
+    private Dialog mDialog;
 
     @Override
     public int getLayout() {
@@ -62,6 +68,7 @@ public class MyNewsActivity extends BaseActivity {
                 refreshView.stopRefresh();
             }
         });
+        mDialog = new LoadDialog().LoadProgressDialog(this);
     }
 
     @Override
@@ -71,6 +78,7 @@ public class MyNewsActivity extends BaseActivity {
 
     //获取我的消息列表
     private void getNews() {
+        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         params.put(pageParam, String.valueOf(UrlList.PAGE));
         requestGet(UrlList.GET_NEWS, params, new MyStringCallback(this) {
@@ -78,7 +86,7 @@ public class MyNewsActivity extends BaseActivity {
             protected void onSuccess(String result) {
                 Logger.d(result);
                 MyNewsBean bean = JSON.parseObject(result, MyNewsBean.class);
-                if (bean.getSuccess() == 1) {
+                if (bean.getSuccess() == 1 && bean.getData().size() != 0) {
                     for (int i = 0; i < bean.getData().size(); i++) {
                         String content = bean.getData().get(i).getContent();
                         String time = bean.getData().get(i).getCreate_time();
@@ -90,6 +98,9 @@ public class MyNewsActivity extends BaseActivity {
                         newsData.setId(id);
                         newsDataList.add(newsData);
                     }
+                } else {
+                    refreshView.setVisibility(View.GONE);
+                    no_result_ll.setVisibility(View.VISIBLE);
                 }
                 updateAdapter(newsDataList);
             }
@@ -97,13 +108,19 @@ public class MyNewsActivity extends BaseActivity {
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);
+                if (mDialog != null && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
             }
         });
 
     }
 
     private void updateAdapter(List<NewsData> newsDataList) {
-        if (newsAdapter == null) {
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+        if (newsAdapter==null) {
             newsAdapter = new MyNewsAdapter(this, R.layout.adapter_my_news_item);
             newsAdapter.setData(newsDataList);
             myNewslv.setAdapter(newsAdapter);
@@ -113,11 +130,10 @@ public class MyNewsActivity extends BaseActivity {
                     ToastManager.showShort(MyNewsActivity.this, "您点了" + position);
                 }
             });
-
-        } else {
-            newsAdapter.notifyDataSetChanged();
-        }
+        } else{
+        newsAdapter.notifyDataSetChanged();
     }
+}
 
 
     @OnClick({R.id.image_title_left})

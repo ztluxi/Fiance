@@ -1,5 +1,6 @@
 package com.sharechain.finance.fragment.main;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
 import com.sharechain.finance.utils.ToastManager;
+import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 import com.youdao.sdk.app.Language;
 import com.youdao.sdk.app.LanguageUtils;
@@ -69,6 +71,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     private PopOptionUtil optionUtil;
     private List<Translate> trslist = new ArrayList<Translate>();
 
+    //转圈圈的加载框
+    private Dialog mDialog;
     private MogulCircleBean bean;
     /**
      * 是否翻译过
@@ -110,13 +114,16 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRvPostLister.setLayoutManager(manager);
 
+        mDialog = new LoadDialog().LoadProgressDialog(getActivity());
         optionUtil = new PopOptionUtil(SFApplication.get(getActivity()));
     }
 
     //获取大佬圈列表
     private void getData(int page) {
+        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.PAGE_STR, String.valueOf(page));
+        params.put(UrlList.LIMIT, String.valueOf(10));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
@@ -137,13 +144,16 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
                 Logger.d(errStr);
+                if (mDialog!=null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
             }
         });
     }
 
     private void updateView() {
         if (bean != null) {
-            if (bean.getSuccess() == 1 && bean.getData().getLists() != null) {
+            if (bean.getSuccess() == 1 && bean.getData().getLists().size() != 0) {
                 empty_view.setVisibility(View.GONE);
                 mRefreshLayout.setVisibility(View.VISIBLE);
                 if (UrlList.PAGE == 1) {
@@ -157,6 +167,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         String weibo_name = bean.getData().getLists().get(i).getScreen_name();
                         String positon = bean.getData().getLists().get(i).getProfessional();
                         String text = bean.getData().getLists().get(i).getText();
+                        int fabulous = bean.getData().getLists().get(i).getHits();
+
                         int mogul_id = bean.getData().getLists().get(i).getId();
                         List<String> imgs = new ArrayList<>();
                         if (bean.getData().getLists().get(i).getImages().size() != 0) {
@@ -173,18 +185,19 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setHead(user_image);
                         mogulData.setTime(create_time);
                         mogulData.setWeibo(weibo_name);
-                        mogulData.setFabulous(1002);
+                        mogulData.setFabulous(fabulous);
                         mogulData.setId(mogul_id);
                         mogulData.setUrlList(imgs);
                         mogulDataList.add(mogulData);
                     }
                 }
-                updateAdapter(mogulDataList.size());
             } else {
                 empty_view.setVisibility(View.VISIBLE);
                 mRefreshLayout.setVisibility(View.GONE);
             }
         }
+        updateAdapter(mogulDataList.size());
+
     }
 
     @Override
@@ -331,6 +344,9 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     }
 
     private void updateAdapter(int position) {
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
         if (mogulAdapter == null) {
             mogulAdapter = new MogulAdapter(getActivity(), mogulDataList, trslist, 0);
             mogulAdapter.setOnItemLongClickListener(this);
