@@ -3,6 +3,8 @@ package com.sharechain.finance;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.tv_tabhost_fast_msg)
     void clickFastMsg() {
         curItem = BOTTOM_ITEM.FAST_MSG;
+//        suoFang(tv_tabhost_fast_msg);
         setBottom();
     }
 
@@ -122,6 +125,14 @@ public class MainActivity extends BaseActivity {
         tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home_un), null, null);
         tv_tabhost_friend_circle.setTextColor(getResources().getColor(R.color.color_999999));
         tv_tabhost_friend_circle.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_big_brother), null, null);
+    }
+
+    private void suoFang(ImageView iv) {
+        ScaleAnimation animation = new ScaleAnimation(0.8f, 1, 0.8f, 1, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(200);
+        animation.setFillAfter(true);
+        iv.startAnimation(animation);
     }
 
 }

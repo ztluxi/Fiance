@@ -3,6 +3,7 @@ package com.sharechain.finance.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,8 +61,10 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     // 我的频道点击事件
     private OnMyChannelItemClickListener mChannelItemClickListener;
+    private Context context;
 
     public ChannelAdapter(Context context, ItemTouchHelper helper, List<NewsChannelTable> mMyChannelItems, List<NewsChannelTable> mOtherChannelItems) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mItemTouchHelper = helper;
         this.mMyChannelItems = mMyChannelItems;
@@ -192,7 +195,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 };
 
             case TYPE_OTHER:
-                view = mInflater.inflate(R.layout.item_my, parent, false);
+                view = mInflater.inflate(R.layout.item_manage_tag_other, parent, false);
                 final OtherViewHolder otherHolder = new OtherViewHolder(view);
                 otherHolder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -275,21 +278,27 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
             MyViewHolder myHolder = (MyViewHolder) holder;
-            myHolder.text_item.setText(mMyChannelItems.get(position - COUNT_PRE_MY_HEADER).getNewsChannelName());
-            if (isEditMode) {
-                myHolder.image_delete.setVisibility(View.VISIBLE);
+            int pos = position - COUNT_PRE_MY_HEADER;
+            myHolder.text_item.setText(mMyChannelItems.get(pos).getNewsChannelName());
+            if (mMyChannelItems.get(pos).getNewsChannelFixed()) {
+                myHolder.text_item.setBackgroundResource(R.drawable.common_transparent_bg);
+                myHolder.text_item.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                myHolder.image_delete.setVisibility(View.GONE);
             } else {
-                myHolder.image_delete.setVisibility(View.INVISIBLE);
+                myHolder.text_item.setBackgroundResource(R.drawable.search_bg);
+                myHolder.text_item.setTextColor(ContextCompat.getColor(context, R.color.about_font));
+                if (isEditMode) {
+                    myHolder.image_delete.setVisibility(View.VISIBLE);
+                } else {
+                    myHolder.image_delete.setVisibility(View.GONE);
+                }
             }
         } else if (holder instanceof OtherViewHolder) {
-            ((OtherViewHolder) holder).textView.setText(mOtherChannelItems.get(position - mMyChannelItems.size() - COUNT_PRE_OTHER_HEADER).getNewsChannelName());
+            OtherViewHolder otherHolder = (OtherViewHolder) holder;
+            int pos = position - mMyChannelItems.size() - COUNT_PRE_OTHER_HEADER;
+            otherHolder.textView.setText(mOtherChannelItems.get(pos).getNewsChannelName());
         } else if (holder instanceof MyChannelHeaderViewHolder) {
             MyChannelHeaderViewHolder headerHolder = (MyChannelHeaderViewHolder) holder;
-//            if (isEditMode) {
-//                headerHolder.tvBtnEdit.setText(R.string.finish);
-//            } else {
-//                headerHolder.tvBtnEdit.setText(R.string.edit);
-//            }
         }
     }
 
@@ -333,20 +342,21 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /**
      * 我的频道 移动到 其他频道
      *
-     * @param myHolder
+     * @param holder
      */
-    private void moveMyToOther(MyViewHolder myHolder) {
-        int position = myHolder.getAdapterPosition();
+    private void moveMyToOther(MyViewHolder holder) {
+        int position = holder.getAdapterPosition();
 
         int startPosition = position - COUNT_PRE_MY_HEADER;
         if (startPosition > mMyChannelItems.size() - 1) {
             return;
         }
-        NewsChannelTable item = mMyChannelItems.get(startPosition);
         mMyChannelItems.remove(startPosition);
-        mOtherChannelItems.add(0, item);
-
-        notifyItemMoved(position, mMyChannelItems.size() + COUNT_PRE_OTHER_HEADER);
+        notifyItemRemoved(startPosition + 1);
+        notifyItemRangeChanged(position + 1, mMyChannelItems.size());
+//        NewsChannelTable item = mMyChannelItems.get(startPosition);
+//        mOtherChannelItems.add(0, item);
+//        notifyItemMoved(position, mMyChannelItems.size() + COUNT_PRE_OTHER_HEADER);
     }
 
     /**
@@ -438,14 +448,15 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      */
     private void startEditMode(RecyclerView parent) {
         isEditMode = true;
-        int visibleChildCount = parent.getChildCount();
-        for (int i = 0; i < visibleChildCount; i++) {
-            View view = parent.getChildAt(i);
-            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
-            if (imgEdit != null) {
-                imgEdit.setVisibility(View.VISIBLE);
-            }
-        }
+        notifyDataSetChanged();
+//        int visibleChildCount = parent.getChildCount();
+//        for (int i = 0; i < visibleChildCount; i++) {
+//            View view = parent.getChildAt(i);
+//            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
+//            if (imgEdit != null) {
+//                imgEdit.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     /**
@@ -455,14 +466,15 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      */
     private void cancelEditMode(RecyclerView parent) {
         isEditMode = false;
-        int visibleChildCount = parent.getChildCount();
-        for (int i = 0; i < visibleChildCount; i++) {
-            View view = parent.getChildAt(i);
-            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
-            if (imgEdit != null) {
-                imgEdit.setVisibility(View.GONE);
-            }
-        }
+        notifyDataSetChanged();
+//        int visibleChildCount = parent.getChildCount();
+//        for (int i = 0; i < visibleChildCount; i++) {
+//            View view = parent.getChildAt(i);
+//            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
+//            if (imgEdit != null) {
+//                imgEdit.setVisibility(View.GONE);
+//            }
+//        }
     }
 
     /**
