@@ -15,13 +15,14 @@ import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.WXAccessBean;
 import com.sharechain.finance.bean.WXRefreshBean;
+import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
-import com.sharechain.finance.utils.ToastManager;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -54,6 +55,9 @@ public class MineActivity extends BaseActivity {
     TextView scoreTv;
     @BindView(R.id.exit_tv)
     TextView exitTv;
+    @BindView(R.id.news_red_tv)
+    TextView news_red_tv;
+
     private IWXAPI iwxapi;
     private String size;//glide缓存大小；
 
@@ -94,6 +98,9 @@ public class MineActivity extends BaseActivity {
                 break;
             case R.id.my_news_tv:
                 BaseUtils.openActivity(this, MyNewsActivity.class, null);
+                if (!EventBus.getDefault().isRegistered(this)) {
+                    EventBus.getDefault().register(this);
+                }
                 break;
             case R.id.my_follow_tv:
                 BaseUtils.openActivity(this, MyFollowActivity.class, null);
@@ -134,6 +141,15 @@ public class MineActivity extends BaseActivity {
             if (!BaseUtils.isEmpty(event.getMessage())) {
                 //登录回调
             }
+        }
+    }
+    //消息
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewsEvent(NewsEven event) {
+        if (event.getNews()==0){
+            news_red_tv.setVisibility(View.GONE);
+        }else {
+            news_red_tv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -182,5 +198,9 @@ public class MineActivity extends BaseActivity {
         });
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

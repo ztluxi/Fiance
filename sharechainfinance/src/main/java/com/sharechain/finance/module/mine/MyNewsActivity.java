@@ -11,14 +11,19 @@ import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
+import com.sharechain.finance.MainActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.fragment.main.MineFragment;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +74,8 @@ public class MyNewsActivity extends BaseActivity {
             }
         });
         mDialog = new LoadDialog().LoadProgressDialog(this);
+
+        EventBus.getDefault().post(new NewsEven(0));
     }
 
     @Override
@@ -126,7 +133,7 @@ public class MyNewsActivity extends BaseActivity {
             newsAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                    ToastManager.showShort(MyNewsActivity.this, "您点了" + position);
+
                 }
             });
         } else{

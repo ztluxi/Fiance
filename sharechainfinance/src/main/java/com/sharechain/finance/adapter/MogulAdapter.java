@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,10 @@ import com.sharechain.finance.module.mogul.DragPhotoActivity;
 import com.sharechain.finance.module.mogul.MogulCircleActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ImageGlide;
+import com.sharechain.finance.utils.MyTagHandler;
 import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.fabulos.GoodView;
-import com.youdao.sdk.ydtranslate.Translate;
-import com.zzhoujay.richtext.RichText;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,22 +47,13 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
     private int tpye;
     private boolean isLike = true;
 
-//    public interface MyItemLongClickListener {
-//        void onTranslateClick(View view, int position, List<MogulData> list);
-//    }
-
     public interface MyItemClickListener {
         void onFabulous(View view, int position, List<MogulData> list, boolean isLike);
 
         void onShare(View view, int position, List<MogulData> list);
     }
 
-//    private MyItemLongClickListener mLongClickListener;
     private MyItemClickListener mClickListener;
-
-//    public void setOnItemLongClickListener(MyItemLongClickListener listener) {
-//        this.mLongClickListener = listener;
-//    }
 
     public void setOnItemClickListener(MyItemClickListener listener) {
         this.mClickListener = listener;
@@ -120,8 +112,13 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         //评论数
         final int like = mogulData.getFabulous();
         holder.mogulFabulousNumberTv.setText(like + "");
+        ImageGlide glide = new ImageGlide(holder.mogulContentTv,mContext);
+        MyTagHandler tagHandler = new MyTagHandler(mContext);
+        holder.mogulContentTv.setText(Html.fromHtml(mogulData.getContent(), glide, tagHandler));
+        holder.mogulContentTv.setMovementMethod(LinkMovementMethod.getInstance());
         //发布内容
-        RichText.fromHtml(mogulData.getContent()).noImage(true).into(holder.mogulContentTv);
+//        RichText.fromHtml(mogulData.getContent()).imageGetter(new ImageGlide(holder.mogulContentTv,mContext)).into(holder.mogulContentTv);
+//        holder.mogulContentTv.setText(Html.fromHtml(new ImageGlide(holder.mogulContentTv,mContext), MyTagHandler);
 
         if (!BaseUtils.isEmpty(mogulData.getTranslate())){
             holder.mogulTranslateTv.setText(mogulData.getTranslate());
@@ -129,16 +126,6 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         }else{
             holder.mogulContentTranslateLl.setVisibility(View.GONE);
         }
-//        try {
-//            if (!TextUtils.isEmpty(mogulData.getTranslate().getTranslations().get(0))) {
-//                //翻译内容
-//                RichText.from(mogulData.getTranslate().getTranslations().get(0)).into(holder.mogulTranslateTv);
-////                holder.mogulTranslateTv.setText(mogulData.getTranslate().getTranslations().get(0));
-//                holder.mogulContentTranslateLl.setVisibility(View.VISIBLE);
-//            }
-//        } catch (Exception e) {
-//
-//        }
 
         if (tpye == 0) {
             holder.mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
@@ -156,19 +143,6 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
                 }
             });
         }
-
-//        //翻译
-//        if (mLongClickListener != null) {
-//            holder.mogulContentTv.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    int pos = holder.getLayoutPosition();
-//                    mLongClickListener.onTranslateClick(v, pos, mPostList);
-//                    return false;
-//                }
-//            });
-//        }
-        //点赞
         if (mClickListener != null) {
             holder.mogulFocusLl.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -283,5 +257,6 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
 
         }
     }
+
 
 }
