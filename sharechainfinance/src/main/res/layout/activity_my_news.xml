@@ -20,4 +20,9 @@
     </com.andview.refreshview.XRefreshView>
 
 
+    <include
+        android:id="@+id/no_result_ll"
+        layout="@layout/layout_empty_view"/>
+
+
 </LinearLayout>

@@ -131,7 +131,7 @@ public class PersonalCenterActivity extends BaseActivity implements TakePhoto.Ta
         createPickPicDialog();
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.history);
-        GlideUtils.loadUserImage(this,"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",user_icon_iv,options);
+        GlideUtils.getInstance().loadUserImage(this,"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",user_icon_iv,options);
 
     }
 

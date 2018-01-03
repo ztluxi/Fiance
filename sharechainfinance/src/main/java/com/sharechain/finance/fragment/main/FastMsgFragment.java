@@ -18,7 +18,9 @@ import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.BaseWebViewActivity;
+import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FastMsgDialog;
 
 import org.greenrobot.eventbus.EventBus;

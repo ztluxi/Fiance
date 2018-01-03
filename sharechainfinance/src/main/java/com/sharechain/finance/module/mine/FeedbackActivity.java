@@ -1,5 +1,6 @@
 package com.sharechain.finance.module.mine;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.AppRegex;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.NetworkManager;
+import com.sharechain.finance.utils.SharedPreferenceManager;
 import com.sharechain.finance.utils.ToastManager;
 
 import org.json.JSONException;
@@ -37,6 +39,9 @@ public class FeedbackActivity extends BaseActivity {
     @BindView(R.id.phone_et)
     EditText phoneEt;
 
+    //记录第一次进来成功反馈意见时间
+    private long firstTime = 0;
+
     @Override
     public int getLayout() {
         return R.layout.activity_feedback;
@@ -60,27 +65,30 @@ public class FeedbackActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.submit_btn:
-                String content = writeFeedbackEt.getText().toString();
-                String phone = phoneEt.getText().toString();
-                if (BaseUtils.isEmpty(content)) {
-                    ToastManager.showShort(this, getString(R.string.please_write_your_suggest));
-                    return;
-                }
-                if (BaseUtils.isEmpty(phone)) {
-                    ToastManager.showShort(this, getString(R.string.please_write_your_phone_number));
-                    return;
-                }
+                Long nowTime = System.currentTimeMillis();
+                firstTime = SharedPreferenceManager.getFeedBackTime(FeedbackActivity.this);
+                if (firstTime == 0) {
+                    String content = writeFeedbackEt.getText().toString();
+                    String phone = phoneEt.getText().toString();
+                    if (BaseUtils.isEmpty(content)) {
+                        ToastManager.showShort(this, getString(R.string.please_write_your_suggest));
+                        return;
+                    }
+                    if (!NetworkManager.isConnnected(this)) {
+                        ToastManager.showShort(this, getString(R.string.please_check_network));
+                        return;
+                    }
+                    if (phone.equals("")){
+                        phone = "未填写";
+                    }
+                    putFeedBack(content, phone);
 
-                if (!BaseUtils.valid(phone, AppRegex.MOBILEPHONEREGEX)) {
-                    ToastManager.showShort(this, R.string.please_write_true_phone_number);
-                    return;
+                } else {
+                    //如果时间小于半小时内就不能提交
+                    if ((nowTime - firstTime) < 1800000) {
+                        ToastManager.showShort(this, getString(R.string.only_once));
+                    }
                 }
-
-                if (!NetworkManager.isConnnected(this)) {
-                    ToastManager.showShort(this, getString(R.string.please_check_network));
-                    return;
-                }
-                putFeedBack(content, phone);
                 break;
         }
     }
@@ -93,13 +101,18 @@ public class FeedbackActivity extends BaseActivity {
         requestPost(UrlList.FEEDBOOK, map, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
-                String success="";
-                String msg="";
+                String success = "";
+                String msg = "";
                 try {
                     JSONObject object = new JSONObject(result);
                     success = object.getString("success");
-                    if (success.equals("1")){
-                        msg = object.getString("msg");
+                    msg = object.getString("msg");
+                    if (success.equals("1")) {
+                        ToastManager.showShort(FeedbackActivity.this, msg);
+                        firstTime = System.currentTimeMillis();
+                        SharedPreferenceManager.saveFeedBackTime(FeedbackActivity.this, firstTime);
+                        finish();
+                    } else {
                         ToastManager.showShort(FeedbackActivity.this, msg);
                     }
                 } catch (JSONException e) {

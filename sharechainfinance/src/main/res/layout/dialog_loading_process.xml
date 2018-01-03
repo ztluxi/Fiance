@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" 
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:background="@drawable/common_loading_bg">
+
+	<ProgressBar
+		android:indeterminateDrawable="@drawable/common_loading_circle"
+	    android:id="@+id/loading_process_dialog_progressBar"
+		android:layout_width="55dp" 
+		android:layout_height="55dp"
+		android:indeterminate="false"
+		android:padding="11dp"
+		/>
+	
+		<TextView
+			android:id="@+id/upload_tv"
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content" 
+		  android:text="正在加载..."
+		  android:textSize="15sp" 
+		  android:paddingTop="10dp"
+		  android:paddingRight="10dp"
+		  android:paddingBottom="10dp"
+		  android:textColor="@color/about_font"/>
+	
+</LinearLayout>

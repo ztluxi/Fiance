@@ -7,6 +7,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.HomeData;
 import com.sharechain.finance.bean.NewsData;
+import com.sharechain.finance.utils.TimeUtil;
+
+import java.util.Date;
 
 import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
@@ -29,7 +32,8 @@ public class MyNewsAdapter extends BGAAdapterViewAdapter<NewsData>{
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, NewsData model) {
-        helper.setText(R.id.my_news_time, model.getTime());
+        Date date = TimeUtil.StringToDate(model.getTime());
+        helper.setText(R.id.my_news_time,TimeUtil.RelativeDateFormat(date));
         helper.setText(R.id.my_news_title, model.getContent());
     }
 

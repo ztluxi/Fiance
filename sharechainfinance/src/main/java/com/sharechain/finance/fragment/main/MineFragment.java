@@ -11,9 +11,15 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.module.mine.AboutFinanceActivity;
 import com.sharechain.finance.module.mine.FeedbackActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
+import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.module.mine.MyNewsActivity;
 import com.sharechain.finance.module.mine.PersonalCenterActivity;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ToastManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,7 +48,8 @@ public class MineFragment extends BaseFragment {
     TextView scoreTv;
     @BindView(R.id.exit_tv)
     TextView exitTv;
-
+    @BindView(R.id.news_red_tv)
+    TextView news_red_tv;
 
     @Override
     protected int getLayout() {
@@ -54,7 +61,7 @@ public class MineFragment extends BaseFragment {
         RequestOptions options = new RequestOptions().circleCrop();
         options.placeholder(R.drawable.logo);
         options.error(R.drawable.logo);
-        GlideUtils.loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
+        GlideUtils.getInstance().loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
 
     }
 
@@ -75,6 +82,9 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.my_news_rl:
                 startActivity(new Intent(getActivity(), MyNewsActivity.class));
+                if (!EventBus.getDefault().isRegistered(this)) {
+                    EventBus.getDefault().register(this);
+                }
                 break;
             case R.id.my_follow_tv:
                 break;
@@ -93,8 +103,6 @@ public class MineFragment extends BaseFragment {
 
         }
     }
-
-
 
 
 }

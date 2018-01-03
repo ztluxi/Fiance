@@ -116,9 +116,9 @@ dependencies {
 
     //9宫图
     compile 'com.jaeger.ninegridimageview:library:1.1.1'
-
     //放大图片查看
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    compile 'com.bm.photoview:library:1.4.1'
+
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation files('libs/YoudaoBase.jar')
     implementation files('libs/YoudaoTranslateOnline.jar')
@@ -128,6 +128,5 @@ dependencies {
 
     //富文本
     compile 'com.zzhoujay.richtext:richtext:3.0.4'
-    compile 'com.zzhoujay.okhttpimagedownloader:OkHttpImageDownloader:1.0.2'
 }
 

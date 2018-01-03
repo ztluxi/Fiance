@@ -103,17 +103,22 @@ public class MogulShareDialog extends Dialog {
 
     private void setContent() {
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), headImage, headOptions);
-        text_namet.setText(mogulShareBean.getName());
-        if (mogulShareBean.getPosition().equals("")) {
+        GlideUtils.getInstance().loadUserImage(SFApplication.get(context),mogulShareBean.getUrl(),headImage, headOptions);
+        text_namet.setText(mogulShareBean.getName()+"");
+        if (mogulShareBean.getPosition().equals("")){
             text_position.setVisibility(View.GONE);
-        } else {
+        }else {
             text_position.setText(mogulShareBean.getPosition());
         }
-        text_weibo.setText(R.string.share_weibo_name + mogulShareBean.getWeibo());
+        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())){
+            text_weibo.setText(mogulShareBean.getWeibo()+"");
+            text_weibo.setVisibility(View.GONE);
+        }else {
+            text_weibo.setText(mogulShareBean.getWeibo()+"");
+            text_weibo.setVisibility(View.VISIBLE);
+        }
         RichText.fromHtml(mogulShareBean.getContent()).into(text_content);
     }
-
 
     @Override
     public void show() {
@@ -131,7 +136,7 @@ public class MogulShareDialog extends Dialog {
         shareView = LayoutInflater.from(context).inflate(R.layout.layout_share_bitmap, null);
         ImageView image_avatar = shareView.findViewById(R.id.image_avatar);
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), image_avatar, headOptions);
+        GlideUtils.getInstance().loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), image_avatar, headOptions);
         TextView text_name = shareView.findViewById(R.id.text_name);
         text_name.setText(mogulShareBean.getName());
         TextView text_tag = shareView.findViewById(R.id.text_tag);

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="100dp">
+        android:paddingTop="80dp">
 
         <LinearLayout
             android:id="@+id/content_ll"
@@ -28,6 +28,8 @@
             android:paddingTop="40dp">
 
             <ScrollView
+                android:overScrollMode="never"
+                android:fadingEdge="none"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -55,13 +57,15 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:visibility="gone"
+                            android:drawableLeft="@drawable/aite"
+                            android:drawablePadding="3dp"
                             android:id="@+id/text_weibo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:ellipsize="end"
                             android:gravity="center_vertical"
-                            android:text="@string/share_weibo_name"
                             android:textColor="@android:color/black"
                             android:textSize="12sp" />
 

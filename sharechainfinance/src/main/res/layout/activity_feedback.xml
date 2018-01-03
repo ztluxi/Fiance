@@ -16,6 +16,7 @@
         >
 
         <EditText
+            android:maxLength="300"
             android:id="@+id/write_feedback_et"
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -28,6 +29,15 @@
             android:textColorHint="@color/about_font"
             android:textSize="15sp" />
 
+        <TextView
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:hint="0/300"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textColorHint="@color/about_font"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/phone_et"

@@ -11,6 +11,7 @@ import com.sharechain.finance.R;
 
 
 /**
+ *
  * Created by ${zhoutao} on 2017/12/28 0027.
  */
 public class ExitLoginDialog extends Dialog {
