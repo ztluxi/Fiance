@@ -10,7 +10,7 @@
         <!--点赞缓存-->
         <mapping class="com.sharechain.finance.bean.LikeBean" />
         <!--搜索历史记录缓存-->
-        <mapping class="com.sharechain.finance.bean.HistoryBean" />
+        <mapping class="com.sharechain.finance.bean.HistoryData" />
         <!--首页标签缓存-->
         <mapping class="com.sharechain.finance.bean.NewsChannelTable" />
         <mapping class="com.sharechain.finance.bean.MainCacheBean" />

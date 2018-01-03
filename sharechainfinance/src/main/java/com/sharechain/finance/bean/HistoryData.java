@@ -2,13 +2,17 @@ package com.sharechain.finance.bean;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.Serializable;
-
 /**
- * Created by Chu on 2017/12/28.
+ * Created by Chu on 2018/1/3.
  */
 
-public class HistoryBean extends DataSupport implements Serializable {
+public class HistoryData extends DataSupport {
+    public static final int PARENT_TYPE = 0;
+    public static final int CHILD_TYPE = 1;
+
+    private int type;//item类型
+    private int channel_type;//频道类型
+    private String date;//记录日期
     private int tagId;
     private int ID;
     private String post_title;
@@ -19,6 +23,38 @@ public class HistoryBean extends DataSupport implements Serializable {
     private int views;
     private String image;
     private String name;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getChannel_type() {
+        return channel_type;
+    }
+
+    public void setChannel_type(int channel_type) {
+        this.channel_type = channel_type;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
     public int getID() {
         return ID;
@@ -90,13 +126,5 @@ public class HistoryBean extends DataSupport implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
     }
 }

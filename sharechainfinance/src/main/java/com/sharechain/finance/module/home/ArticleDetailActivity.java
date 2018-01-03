@@ -33,10 +33,11 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.ArticleDetailBean;
 import com.sharechain.finance.bean.ArticleListsBean;
-import com.sharechain.finance.bean.HistoryBean;
+import com.sharechain.finance.bean.HistoryData;
 import com.sharechain.finance.bean.LikeBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.fabulos.GoodView;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -60,6 +61,9 @@ import butterknife.OnClick;
  */
 
 public class ArticleDetailActivity extends BaseActivity {
+    public static final int NEWS_TYPE_HOME = 0;
+    public static final int NEWS_TYPE_ANSWER = 1;
+
     @BindView(R.id.text_article_title)
     TextView text_article_title;
     @BindView(R.id.image_avatar)
@@ -86,6 +90,7 @@ public class ArticleDetailActivity extends BaseActivity {
     private boolean isAnimStart = false;
     private int currentProgress;
     private ArticleListsBean articleBean;
+    private int newsType = 0;
 
     @Override
     public int getLayout() {
@@ -95,6 +100,7 @@ public class ArticleDetailActivity extends BaseActivity {
     @Override
     public void initView() {
         articleBean = (ArticleListsBean) getIntent().getSerializableExtra("article");
+        newsType = getIntent().getIntExtra("news_type", NEWS_TYPE_HOME);
         initTitle(getString(R.string.app_name));
         image_title_left.setImageResource(R.drawable.back);
         image_title_left.setVisibility(View.VISIBLE);
@@ -301,7 +307,7 @@ public class ArticleDetailActivity extends BaseActivity {
     }
 
     private void updateView(ArticleDetailBean bean) {
-        String avatarStr = BaseUtils.getSubImageUrl(bean.getData().getAuthor().getMeta_value(), "i:64;s:90:", ";i:52;s:90:");
+        String avatarStr = BaseUtils.getSubImageUrl(bean.getData().getAuthor().getUser_avatars(), "i:64;s:90:", ";i:52;s:90:");
         text_article_title.setText(bean.getData().getArticle().getPost_title());
         RequestOptions options = new RequestOptions().circleCrop();
         Glide.with(SFApplication.get(this)).load(avatarStr).apply(options).into(image_avatar);
@@ -352,10 +358,21 @@ public class ArticleDetailActivity extends BaseActivity {
                     //获取文章成功，将该文章存储到数据库
                     if (!BaseUtils.isEmpty(articleBean.getPost_title())) {
                         //异步查询数据库
-                        List<HistoryBean> tmpList = DataSupport.where("tagId = ?", String.valueOf(articleBean.getTagId())).find(HistoryBean.class);
+                        String curDate = TimeUtil.getCurrentTime("yyyy-MM-dd");
+                        List<HistoryData> tmpList = DataSupport.where("date = ?", curDate).find(HistoryData.class);
                         if (tmpList.size() == 0) {
-                            HistoryBean historyBean = convertToHistory(articleBean);
-                            historyBean.save();
+                            //第一次存储
+                            HistoryData parentBean = convertToHistory(articleBean, newsType, true);
+                            parentBean.save();
+                            HistoryData childBean = convertToHistory(articleBean, newsType, false);
+                            childBean.save();
+                        } else {
+                            //已存在改时间，判断是否已经存储
+                            List<HistoryData> saveList = DataSupport.where("tagId = ?", String.valueOf(articleBean.getTagId())).find(HistoryData.class);
+                            if (saveList.size() == 0) {
+                                HistoryData historyBean = convertToHistory(articleBean, newsType, false);
+                                historyBean.save();
+                            }
                         }
                     }
                     updateView(bean);

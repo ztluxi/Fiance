@@ -9,9 +9,9 @@ import android.widget.ListView;
 import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.adapter.HistoryAdapter;
+import com.sharechain.finance.adapter.HistoryMineAdapter;
 import com.sharechain.finance.bean.ArticleListsBean;
-import com.sharechain.finance.bean.HistoryBean;
+import com.sharechain.finance.bean.HistoryData;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
 
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by ${zhoutao} on 2017/12/13 0013.
@@ -38,8 +37,8 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
     @BindView(R.id.xrefreshview_content)
     XRefreshView xRefreshView;
 
-    private HistoryAdapter answerAdapter;
-    private List<HistoryBean> dataList = new ArrayList<>();
+    private HistoryMineAdapter answerAdapter;
+    private List<HistoryData> dataList = new ArrayList<>();
 
     @Override
     public int getLayout() {
@@ -55,14 +54,15 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
         clearHistoryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataSupport.deleteAll(HistoryBean.class);
+                DataSupport.deleteAll(HistoryData.class);
                 dataList.clear();
-                answerAdapter.setData(dataList);
+                answerAdapter.setListData(dataList);
+                answerAdapter.notifyDataSetChanged();
                 setEmptyView(xRefreshView, true);
             }
         });
 
-        answerAdapter = new HistoryAdapter(this, R.layout.item_answer_fragment);
+        answerAdapter = new HistoryMineAdapter(this, dataList);
         initXRefreshView(xRefreshView);
         initEmptyView(xRefreshView);
         xRefreshView.setPullRefreshEnable(true);
@@ -76,14 +76,7 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
                 getHistoryList(true);
             }
 
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                super.onLoadMore(isSilence);
-                getHistoryList(true);
-            }
-
         });
-        answerAdapter.setData(dataList);
         listView.setAdapter(answerAdapter);
         listView.setOnItemClickListener(this);
     }
@@ -94,11 +87,11 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
     }
 
     private void getHistoryList(final boolean isRefresh) {
-        DataSupport.findAllAsync(HistoryBean.class).listen(new FindMultiCallback() {
+        DataSupport.findAllAsync(HistoryData.class).listen(new FindMultiCallback() {
             @Override
             public <T> void onFinish(List<T> t) {
                 //异步查询数据库
-                List<HistoryBean> viewedList = (List<HistoryBean>) t;
+                List<HistoryData> viewedList = (List<HistoryData>) t;
                 if (isRefresh) {
                     dataList.clear();
                 }
@@ -108,7 +101,8 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
                     public void run() {
                         xRefreshView.stopRefresh();
                         xRefreshView.stopLoadMore();
-                        answerAdapter.setData(dataList);
+                        answerAdapter.setListData(dataList);
+                        answerAdapter.notifyDataSetChanged();
                         if (dataList.size() == 0) {
                             setEmptyView(xRefreshView, true);
                         } else {
@@ -120,23 +114,14 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
         });
     }
 
-    @OnClick({R.id.image_title_left, R.id.image_title_right})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.image_title_left:
-                finish();
-                break;
-            case R.id.image_title_right:
-                dataList.clear();
-                break;
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (dataList.get(i).getType() == HistoryData.CHILD_TYPE) {
+            Bundle bundle = new Bundle();
+            ArticleListsBean articleListsBean = convertToArticle(dataList.get(i));
+            bundle.putSerializable("article", articleListsBean);
+            BaseUtils.openActivity(this, ArticleDetailActivity.class, bundle);
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Bundle bundle = new Bundle();
-        ArticleListsBean articleListsBean = convertToArticle(dataList.get(i));
-        bundle.putSerializable("article", articleListsBean);
-        BaseUtils.openActivity(this, ArticleDetailActivity.class, bundle);
-    }
 }
