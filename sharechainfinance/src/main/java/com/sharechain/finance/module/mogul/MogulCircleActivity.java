@@ -2,11 +2,9 @@ package com.sharechain.finance.module.mogul;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,11 +17,10 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
-import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
@@ -47,7 +44,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
@@ -173,7 +169,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                 mRefreshLayout.endLoadingMore();
                 Logger.d(result);
 
-                if (UrlList.PAGE==1){
+                if (UrlList.PAGE == 1) {
                     mogulDataList.clear();
                 }
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
@@ -423,15 +419,14 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     @Override
     public void onShare(View view, int position, List<MogulData> list) {
-
-        String url = list.get(position).getHead();
-        String name = list.get(position).getName();
-        String weibo = list.get(position).getWeibo();
-        String zhiwei = list.get(position).getPosition();
-        String content = list.get(position).getContent();
-        MogulShareDialog mogulShareDialog = new MogulShareDialog(this);
+        MogulShareBean mogulShareBean = new MogulShareBean();
+        mogulShareBean.setContent(list.get(position).getContent());
+        mogulShareBean.setName(list.get(position).getName());
+        mogulShareBean.setPosition(list.get(position).getPosition());
+        mogulShareBean.setUrl(list.get(position).getHead());
+        mogulShareBean.setWeibo(list.get(position).getWeibo());
+        MogulShareDialog mogulShareDialog = new MogulShareDialog(this, mogulShareBean);
         mogulShareDialog.show();
-        mogulShareDialog.setContent(this, url, zhiwei, name, content, weibo);
     }
 
     //点赞

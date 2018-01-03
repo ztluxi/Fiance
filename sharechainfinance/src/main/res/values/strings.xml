@@ -102,4 +102,6 @@
     <string name="load_failed_tip">哎呀，您访问的页面丢失了~</string>
     <string name="load_refresh">刷新</string>
     <string name="load_no_data">暂无数据~</string>
+
+    <string name="manage_tip">拖拽以排序</string>
 </resources>

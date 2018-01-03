@@ -2,19 +2,24 @@ package com.sharechain.finance.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
+import com.sharechain.finance.bean.MogulShareBean;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ShareUtils;
 import com.zzhoujay.richtext.RichText;
 
 import butterknife.BindView;
@@ -36,11 +41,8 @@ public class MogulShareDialog extends Dialog {
     @BindView(R.id.text_content)
     TextView text_content;
 
-
-
     @BindView(R.id.image_qrcode)
     ImageView image_qrcode;
-
 
     @BindView(R.id.mogul_iv)
     ImageView headImage;
@@ -52,44 +54,65 @@ public class MogulShareDialog extends Dialog {
 
     @OnClick(R.id.image_weixin)
     void gotoShareWeixin() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
+        }
     }
 
     @OnClick(R.id.image_circle)
     void gotoShareWeixinCircle() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
+        }
     }
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
+            if (isSuccess) {
+                Toast.makeText(context, "图片保存成功!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "图片保存失败!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    public MogulShareDialog(@NonNull Context context) {
+    public MogulShareDialog(Context context, MogulShareBean mogulShareBean) {
         super(context, R.style.base_dialog_style);
+        this.context = context;
+        this.mogulShareBean = mogulShareBean;
+        shareUtils = new ShareUtils(context);
     }
+
+    private View shareView;
+    private MogulShareBean mogulShareBean;
+    private ShareUtils shareUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_mogul_share_dialog);
         ButterKnife.bind(this);
+        setContent();
+        initShareView();
     }
 
-
-    public void setContent(Context context,String url,String position,String name,String content,String weibo){
+    private void setContent() {
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.loadUserImage(SFApplication.get(context),url,headImage, headOptions);
-        text_namet.setText(name+"");
-        if (position.equals("")){
+        GlideUtils.loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), headImage, headOptions);
+        text_namet.setText(mogulShareBean.getName());
+        if (mogulShareBean.getPosition().equals("")) {
             text_position.setVisibility(View.GONE);
-        }else {
-            text_position.setText(position);
+        } else {
+            text_position.setText(mogulShareBean.getPosition());
         }
-        text_weibo.setText(R.string.share_weibo_name+weibo+"");
-        RichText.fromHtml(content).into(text_content);
+        text_weibo.setText(R.string.share_weibo_name + mogulShareBean.getWeibo());
+        RichText.fromHtml(mogulShareBean.getContent()).into(text_content);
     }
-
 
 
     @Override
@@ -103,4 +126,19 @@ public class MogulShareDialog extends Dialog {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
     }
+
+    private void initShareView() {
+        shareView = LayoutInflater.from(context).inflate(R.layout.layout_share_bitmap, null);
+        ImageView image_avatar = shareView.findViewById(R.id.image_avatar);
+        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
+        GlideUtils.loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), image_avatar, headOptions);
+        TextView text_name = shareView.findViewById(R.id.text_name);
+        text_name.setText(mogulShareBean.getName());
+        TextView text_tag = shareView.findViewById(R.id.text_tag);
+        text_tag.setText(mogulShareBean.getPosition());
+        TextView text_content = shareView.findViewById(R.id.text_content);
+        text_content.setText(mogulShareBean.getContent());
+        TextView text_uid = shareView.findViewById(R.id.text_uid);
+    }
+
 }

@@ -8,11 +8,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.View;
 
+import com.orhanobut.logger.Logger;
 import com.sharechain.finance.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by ${zhoutao} on 2017/12/13 0013.
@@ -193,6 +201,9 @@ public class BaseUtils {
 
     //    i:128;s:92:\"http://www.weilaicaijing.com/wp-content/uploads/2017/12/avatar_user_3_1513218915-128x128.jpg\";
     public static String getSubImageUrl(String imageUrl, String firstTag, String lastTag) {
+        if (BaseUtils.isEmpty(imageUrl)) {
+            return "";
+        }
         if (imageUrl.contains(firstTag) && imageUrl.contains(lastTag)) {
             int first = imageUrl.indexOf(firstTag) + firstTag.length();
             int last = imageUrl.indexOf(lastTag);
@@ -201,5 +212,106 @@ public class BaseUtils {
         }
         return "";
     }
+
+    /**
+     * 把View绘制到Bitmap上
+     *
+     * @param comBitmap 需要绘制的View
+     * @param width     该View的宽度
+     * @param height    该View的高度
+     * @return 返回Bitmap对象
+     * add by csj 13-11-6
+     */
+    public static Bitmap getViewBitmap(View comBitmap, int width, int height) {
+        Bitmap bitmap = null;
+        if (comBitmap != null) {
+            comBitmap.clearFocus();
+            comBitmap.setPressed(false);
+
+            boolean willNotCache = comBitmap.willNotCacheDrawing();
+            comBitmap.setWillNotCacheDrawing(false);
+
+            // Reset the drawing cache background color to fully transparent
+            // for the duration of this operation
+            int color = comBitmap.getDrawingCacheBackgroundColor();
+            comBitmap.setDrawingCacheBackgroundColor(0);
+            float alpha = comBitmap.getAlpha();
+            comBitmap.setAlpha(1.0f);
+
+            if (color != 0) {
+                comBitmap.destroyDrawingCache();
+            }
+
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
+            comBitmap.measure(widthSpec, heightSpec);
+            comBitmap.layout(0, 0, width, height);
+
+            comBitmap.buildDrawingCache();
+            Bitmap cacheBitmap = comBitmap.getDrawingCache();
+            if (cacheBitmap == null) {
+                Logger.e("view.ProcessImageToBlur", "failed getViewBitmap(" + comBitmap + ")",
+                        new RuntimeException());
+                return null;
+            }
+            bitmap = Bitmap.createBitmap(cacheBitmap);
+            // Restore the view
+            comBitmap.setAlpha(alpha);
+            comBitmap.destroyDrawingCache();
+            comBitmap.setWillNotCacheDrawing(willNotCache);
+            comBitmap.setDrawingCacheBackgroundColor(color);
+        }
+        return bitmap;
+    }
+
+    private static boolean hasExternalStoragePermission(Context context) {
+        int perm = context.checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+        return perm == 0;
+    }
+
+    public static File getOwnCacheDirectory(Context context, String cacheDir) {
+        File appCacheDir = null;
+        if ("mounted".equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
+            appCacheDir = new File(Environment.getExternalStorageDirectory(), cacheDir);
+        }
+
+        if (appCacheDir == null || !appCacheDir.exists() && !appCacheDir.mkdirs()) {
+            appCacheDir = context.getCacheDir();
+        }
+
+        return appCacheDir;
+    }
+
+    /**
+     * 保存图片到系统图库
+     *
+     * @param context
+     * @param bmp
+     * @return
+     */
+    public static boolean saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        File mFile = getOwnCacheDirectory(context, "shareImage");
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(mFile, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            fos.flush();
+            fos.close();
+
+            //把文件插入到系统图库
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+            //保存图片后发送广播通知更新数据库
+            Uri uri = Uri.fromFile(file);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            return isSuccess;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

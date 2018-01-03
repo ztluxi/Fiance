@@ -2,6 +2,7 @@ package com.sharechain.finance.view;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +26,14 @@ import java.util.Calendar;
 
 public class MyXRefreshViewHeader extends LinearLayout implements IHeaderCallBack {
     private ViewGroup mContent;
+    private Context context;
     private ImageView mArrowImageView;
     private ProgressBar mProgressBar;
     private TextView mHintTextView;
     private TextView mHeaderTimeTextView;
     private Animation mRotateUpAnim;
     private Animation mRotateDownAnim;
+    private LinearLayout xrefreshview_header_text;
     private final int ROTATE_ANIM_DURATION = 180;
 
     public MyXRefreshViewHeader(Context context) {
@@ -48,12 +51,14 @@ public class MyXRefreshViewHeader extends LinearLayout implements IHeaderCallBac
     }
 
     private void initView(Context context) {
+        this.context = context;
         mContent = (ViewGroup) LayoutInflater.from(context).inflate(
                 R.layout.layout_my_xrefresh_header, this);
-        mArrowImageView = (ImageView) findViewById(R.id.xrefreshview_header_arrow);
-        mHintTextView = (TextView) findViewById(R.id.xrefreshview_header_hint_textview);
-        mHeaderTimeTextView = (TextView) findViewById(R.id.xrefreshview_header_time);
-        mProgressBar = (ProgressBar) findViewById(R.id.xrefreshview_header_progressbar);
+        xrefreshview_header_text = findViewById(R.id.xrefreshview_header_text);
+        mArrowImageView = findViewById(R.id.xrefreshview_header_arrow);
+        mHintTextView = findViewById(R.id.xrefreshview_header_hint_textview);
+        mHeaderTimeTextView = findViewById(R.id.xrefreshview_header_time);
+        mProgressBar = findViewById(R.id.xrefreshview_header_progressbar);
 
         mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -64,6 +69,12 @@ public class MyXRefreshViewHeader extends LinearLayout implements IHeaderCallBac
                 0.5f);
         mRotateDownAnim.setDuration(0);
         mRotateDownAnim.setFillAfter(true);
+    }
+
+    public void setBlueBackground() {
+        xrefreshview_header_text.setBackgroundColor(ContextCompat.getColor(context, R.color.tint_home_color));
+        mHintTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        mHeaderTimeTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
     }
 
     public void setRefreshTime(long lastRefreshTime) {

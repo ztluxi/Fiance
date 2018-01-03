@@ -8,13 +8,13 @@
     <com.andview.refreshview.XRefreshView
         android:id="@+id/xrefreshview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/tint_home_color">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/news_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/container_background" />
+            android:layout_height="match_parent" />
 
     </com.andview.refreshview.XRefreshView>
 

@@ -20,6 +20,7 @@ import com.sharechain.finance.adapter.MogulAdapter;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
@@ -367,13 +368,13 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     @Override
     public void onShare(View view, int position, List<MogulData> list) {
-        String url = list.get(position).getHead();
-        String name = list.get(position).getName();
-        String weibo = list.get(position).getWeibo();
-        String zhiwei = list.get(position).getPosition();
-        String content = list.get(position).getContent();
-        MogulShareDialog mogulShareDialog = new MogulShareDialog(getActivity());
+        MogulShareBean mogulShareBean = new MogulShareBean();
+        mogulShareBean.setContent(list.get(position).getContent());
+        mogulShareBean.setName(list.get(position).getName());
+        mogulShareBean.setPosition(list.get(position).getPosition());
+        mogulShareBean.setUrl(list.get(position).getHead());
+        mogulShareBean.setWeibo(list.get(position).getWeibo());
+        MogulShareDialog mogulShareDialog = new MogulShareDialog(getActivity(), mogulShareBean);
         mogulShareDialog.show();
-        mogulShareDialog.setContent(getActivity(), url, zhiwei, name, content, weibo);
     }
 }

@@ -7,12 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
-import com.sharechain.finance.bean.PushMessageBean;
-import com.sharechain.finance.utils.TimeUtil;
 
 import org.json.JSONObject;
-
-import java.util.Date;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -50,15 +46,6 @@ public class MyReceiver extends BroadcastReceiver {
         String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_ALERT);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-
-        //存储通知消息
-        PushMessageBean bean = new PushMessageBean();
-        bean.setTitle(title);
-        bean.setContent(message);
-        Date date = TimeUtil.timeMillisToDate(System.currentTimeMillis());
-        String time = TimeUtil.RelativeDateFormat(date);
-        bean.setTitle(time);
-        bean.save();
     }
 
     private void openNotification(Context context, Bundle bundle) {

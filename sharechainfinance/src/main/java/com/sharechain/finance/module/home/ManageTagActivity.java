@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sharechain.finance.BaseActivity;
@@ -43,6 +44,10 @@ public class ManageTagActivity extends BaseActivity {
     TextView text_bianji;
     @BindView(R.id.image_delete)
     ImageView image_delete;
+    @BindView(R.id.ll_bottom)
+    LinearLayout ll_bottom;
+    @BindView(R.id.text_manage_tip)
+    TextView text_manage_tip;
 
     private NewsChannelAdapter mNewsChannelAdapterMine;
     private NewsChannelAdapter mNewsChannelAdapterMore;
@@ -158,7 +163,9 @@ public class ManageTagActivity extends BaseActivity {
     void manage() {
         isManage = true;
         text_bianji.setVisibility(View.GONE);
+        ll_bottom.setVisibility(View.GONE);
         image_delete.setVisibility(View.VISIBLE);
+        text_manage_tip.setText(getString(R.string.manage_tip));
         for (int i = 0; i < newsChannelsMine.size(); i++) {
             if (i == 0) {
                 newsChannelsMine.get(i).setNewsChannelFixed(true);
@@ -174,8 +181,10 @@ public class ManageTagActivity extends BaseActivity {
     @OnClick(R.id.image_delete)
     void closeManage() {
         isManage = false;
+        ll_bottom.setVisibility(View.VISIBLE);
         text_bianji.setVisibility(View.VISIBLE);
         image_delete.setVisibility(View.GONE);
+        text_manage_tip.setText(getString(R.string.search_tag_click));
         for (int i = 0; i < newsChannelsMine.size(); i++) {
             if (i == 0) {
                 newsChannelsMine.get(i).setNewsChannelFixed(true);
