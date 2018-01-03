@@ -137,7 +137,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
             ArticleListsBean bean = mList.get(position - 1);
             holder.text_content.setText(bean.getPost_title());
             Date date = TimeUtil.StringToDate(bean.getPost_date_gmt());
-            holder.text_time.setText(TimeUtil.RelativeDateFormat(date) + "  " + bean.getName());
+            holder.text_type.setText(bean.getName());
+            holder.text_time.setText(TimeUtil.RelativeDateFormat(date));
             Glide.with(context).load(bean.getUser_avatars()).into(holder.image_pic);
         }
     }
@@ -328,6 +329,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
         TextView text_content;
         @BindView(R.id.text_time)
         TextView text_time;
+        @BindView(R.id.text_type)
+        TextView text_type;
 
         public ItemViewHolder(View view) {
             super(view);
@@ -349,7 +352,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
         }
         headerViewHolder.text_header_time.setText(headerBean.getTop_news().get(switchIndex).getTime());
         headerViewHolder.text_header_title.setText(headerBean.getTop_news().get(switchIndex).getSite_content());
-        switchHandler.postDelayed(textRunnable, 3000);
+        switchHandler.postDelayed(textRunnable, 5000);
     }
 
     private void stopSwitchText() {
@@ -382,7 +385,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
             return;
         }
         headerViewHolder.viewpager.setCurrentItem(firstPosition, true);
-        switchBannerHandler.postDelayed(bannerRunnable, 3000);
+        switchBannerHandler.postDelayed(bannerRunnable, 5000);
     }
 
     private void stopBanner() {

@@ -1,6 +1,6 @@
 package com.sharechain.finance.utils;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.sharechain.finance.SFApplication;
@@ -18,16 +18,16 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  */
 
 public class ShareUtils {
-    private Activity activity;
+    private Context context;
     private IWXAPI iwxapi;
     private static final int THUMB_SIZE = 150;
 
-    private enum SHARE_TARGET_TYPE {
+    public enum SHARE_TARGET_TYPE {
         TYPE_FRIEND, TYPE_CIRCLE
     }
 
-    public ShareUtils(Activity activity) {
-        this.activity = activity;
+    public ShareUtils(Context activity) {
+        this.context = activity;
         iwxapi = WXAPIFactory.createWXAPI(activity, SFApplication.WX_APPID);
     }
 

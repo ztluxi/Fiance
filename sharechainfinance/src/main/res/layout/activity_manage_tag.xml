@@ -25,6 +25,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/text_manage_tip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
@@ -72,35 +73,43 @@
         android:layout_margin="15dp"
         android:overScrollMode="never" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="9dp"
-        android:alpha="0.2"
-        android:background="@color/color_999999" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="14dp"
-        android:text="@string/search_tag_other"
-        android:textColor="@color/colorBlack"
-        android:textSize="15sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp"
-        android:alpha="0.2"
-        android:background="@color/color_999999" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_other"
+    <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:overScrollMode="never" />
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="9dp"
+            android:alpha="0.2"
+            android:background="@color/color_999999" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/search_tag_other"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.2"
+            android:background="@color/color_999999" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
 
 </LinearLayout>

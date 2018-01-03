@@ -79,6 +79,7 @@ public class MogulCircleBean {
              * id : 18554
              * since_id : 4191326649839713
              * social_type : 2
+             * translate_content : 翻译内容
              * hits : 0
              * images : [{"url":"https://wx3.sinaimg.cn/orj360/78c7e7ebly1fn0wbj2g7dj20qo1bfjwe.jpg"}]
              */
@@ -89,12 +90,22 @@ public class MogulCircleBean {
             private String professional;
             private String text;
             private String create_at;
+            private String translate_content;
+
+
             private int id;
             private String since_id;
             private int social_type;
             private int hits;
             private List<ImagesBean> images;
 
+            public String getTranslate_content() {
+                return translate_content;
+            }
+
+            public void setTranslate_content(String translate_content) {
+                this.translate_content = translate_content;
+            }
             public String getProfile_image_url() {
                 return profile_image_url;
             }

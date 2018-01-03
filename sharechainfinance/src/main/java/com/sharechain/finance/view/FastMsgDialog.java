@@ -2,6 +2,7 @@ package com.sharechain.finance.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -11,9 +12,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.ShareUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +42,7 @@ public class FastMsgDialog extends Dialog {
     ImageView image_qrcode;
     @BindView(R.id.text_uid)
     TextView text_uid;
+    private ShareUtils shareUtils;
 
     @OnClick(R.id.image_close)
     void closeDialog() {
@@ -45,34 +51,52 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_weixin)
     void gotoShareWeixin() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
+        }
     }
 
     @OnClick(R.id.image_circle)
     void gotoShareWeixinCircle() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
+        }
     }
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        if (bitmap != null) {
+            boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
+            if (isSuccess) {
+                Toast.makeText(context, "图片保存成功!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "图片保存失败!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private FastMsgData fastMsgData;
+    private View contentView;
+    private View shareView;
 
     public FastMsgDialog(@NonNull Context context, FastMsgData fastMsgData) {
         super(context, R.style.base_dialog_style);
         this.context = context;
         this.fastMsgData = fastMsgData;
+        shareUtils = new ShareUtils(context);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fast_msg_dialog, null);
-        setContentView(view);
-        ButterKnife.bind(this, view);
+        contentView = LayoutInflater.from(context).inflate(R.layout.dialog_fast_msg_dialog, null);
+        setContentView(contentView);
+        ButterKnife.bind(this, contentView);
         initViews();
+        initShareView();
     }
 
     private void initViews() {
@@ -104,4 +128,34 @@ public class FastMsgDialog extends Dialog {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
     }
+
+    private void initShareView() {
+        shareView = LayoutInflater.from(context).inflate(R.layout.layout_share_fastmsg, null);
+        TextView share_title = shareView.findViewById(R.id.text_title);
+        TextView share_date = shareView.findViewById(R.id.text_date);
+        TextView share_content = shareView.findViewById(R.id.text_content);
+        if (fastMsgData.getMsgType() == 1) {
+            //一般消息
+            share_title.setBackgroundResource(R.drawable.icon_share_blue_bg);
+            share_title.setText(context.getString(R.string.fastmsg_normal));
+        } else if (fastMsgData.getMsgType() == 2) {
+            //重要
+            share_title.setBackgroundResource(R.drawable.icon_share_orange_bg);
+            share_title.setText(context.getString(R.string.fastmsg_important));
+        } else if (fastMsgData.getMsgType() == 3) {
+            //非常重要
+            share_title.setBackgroundResource(R.drawable.icon_share_red_bg);
+            share_title.setText(context.getString(R.string.fastmsg_important));
+        }
+        share_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
+        share_content.setText(fastMsgData.getDataText());
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        contentView = null;
+        shareView = null;
+    }
+
 }

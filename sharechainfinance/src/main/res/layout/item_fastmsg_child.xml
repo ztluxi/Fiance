@@ -76,7 +76,7 @@
                     android:id="@+id/image_share"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
                     android:layout_marginRight="6dp"
                     android:paddingTop="8dp"
                     android:scaleType="centerInside"

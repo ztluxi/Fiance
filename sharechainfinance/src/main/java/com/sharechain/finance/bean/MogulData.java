@@ -15,6 +15,16 @@ public class MogulData {
     private String content;
     private String position;
     private String time;
+    private String translate;
+
+    public String getTranslate() {
+        return translate;
+    }
+
+    public void setTranslate(String translate) {
+        this.translate = translate;
+    }
+
     private int fabulous;//点赞
     private int id;
     private String head;
@@ -36,20 +46,7 @@ public class MogulData {
         this.id = id;
     }
 
-    private Translate translate;
 
-    public Translate getTranslate() {
-        return translate;
-    }
-
-    public void setTranslate(Translate translate) {
-        this.translate = translate;
-    }
-
-    public MogulData(Translate translate) {
-        super();
-        this.translate = translate;
-    }
     public List<String> urlList = new ArrayList<>();
 
     public List<String> getUrlList() {

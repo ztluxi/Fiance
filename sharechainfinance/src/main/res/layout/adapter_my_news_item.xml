@@ -23,7 +23,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
         <TextView
+            android:drawablePadding="5dp"
             android:layout_marginLeft="15dp"
             android:lines="1"
             android:maxLength="20"
@@ -36,6 +43,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/my_news_Image_iv" />
 
+            <TextView
+                android:visibility="gone"
+                android:layout_marginLeft="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/usercenter_news_red_circle"
+                android:id="@+id/my_news_red"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                 />
+
+        </LinearLayout>
         <TextView
             android:layout_marginTop="5dp"
             android:textSize="11sp"

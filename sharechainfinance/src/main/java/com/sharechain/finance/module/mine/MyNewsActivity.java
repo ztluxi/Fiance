@@ -91,7 +91,6 @@ public class MyNewsActivity extends BaseActivity {
                         String content = bean.getData().get(i).getContent();
                         String time = bean.getData().get(i).getCreate_time();
                         int id = bean.getData().get(i).getId();
-
                         NewsData newsData = new NewsData();
                         newsData.setContent(content);
                         newsData.setTime(time);

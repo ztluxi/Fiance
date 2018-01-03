@@ -3,12 +3,10 @@ package com.sharechain.finance.module.mogul;
 import android.app.Dialog;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,11 +19,10 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
-import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.PopOptionUtil;
@@ -57,7 +54,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by ${zhoutao} on 2017/12/22 0022.
  */
 
-public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemLongClickListener, MogulAdapter.MyItemClickListener,BGARefreshLayout.BGARefreshLayoutDelegate{
+public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemClickListener,BGARefreshLayout.BGARefreshLayoutDelegate{
     @BindView(R.id.back_iv)
     ImageView back_Image;
     @BindView(R.id.mogul_top_name_tv)
@@ -171,7 +168,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     private void getMogulDetail(int mogulId) {
         mDialog.show();
         final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(104));
+        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulId));
         params.put(UrlList.LIMIT, String.valueOf(50));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(this) {
             @Override
@@ -180,7 +177,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                 mRefreshLayout.endLoadingMore();
                 Logger.d(result);
 
-                if (UrlList.PAGE==1){
+                if (UrlList.PAGE == 1) {
                     mogulDataList.clear();
                 }
                 MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
@@ -202,7 +199,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             List<String> imgs = new ArrayList<>();
                             imgs.add(user_image);
                             imgs.add(user_image);
-                            MogulData mogulData = new MogulData(null);
+                            MogulData mogulData = new MogulData();
                             mogulData.setName(mogul_name);
                             mogulData.setTranslate(null);
                             mogulData.setContent(text);
@@ -241,8 +238,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
             mDialog.dismiss();
         }
         if (mogulAdapter == null) {
-            mogulAdapter = new MogulAdapter(this, mogulDataList, null, 1);
-            mogulAdapter.setOnItemLongClickListener(this);
+            mogulAdapter = new MogulAdapter(this, mogulDataList, 1);
+//            mogulAdapter.setOnItemLongClickListener(this);
             mogulAdapter.setOnItemClickListener(this);
             mogulCircleRl.setAdapter(mogulAdapter);
         } else {
@@ -317,89 +314,89 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         });
     }
 
-    @Override
-    public void onTranslateClick(final View view, final int position, final List<MogulData> list) {
-        if (list.get(position).getTranslate() != null) {
-            isTranslate = true;
-            optionUtil.setTextView(getString(R.string.reture));
-        } else {
-            optionUtil.setTextView(getString(R.string.translate));
-            isTranslate = false;
-        }
-        view.setBackgroundColor(getResources().getColor(R.color.about_font));
-        final String content = list.get(position).getContent();
-        optionUtil.setOnPopClickEvent(new PopOptionUtil.PopClickEvent() {
-            @Override
-            public void onPreClick() {
-                BaseUtils.copyComment(content, SFApplication.get(MogulCircleActivity.this));
-                optionUtil.dismiss();
-                view.setBackgroundColor(getResources().getColor(R.color.white));
-                ToastManager.showShort(MogulCircleActivity.this, getString(R.string.copy_success));
-            }
-
-            @Override
-            public void onNextClick() {
-                query(view, list, position, content);
-                optionUtil.dismiss();
-            }
-        });
-        optionUtil.show(view);
-        view.setBackgroundColor(getResources().getColor(R.color.white));
-
-
-    }
-
-    private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
-        // 源语言或者目标语言其中之一必须为中文,目前只支持中文与其他几个语种的互译
-        String to = "中文";
-        String from = "英文";
-        Language langFrom = LanguageUtils.getLangByName(from);
-        // 若设置为自动，则查询自动识别源语言，自动识别不能保证完全正确，最好传源语言类型
-        Language langTo = LanguageUtils.getLangByName(to);
-        TranslateParameters tps = new TranslateParameters.Builder()
-                .source("youdao").from(langFrom).to(langTo).timeout(3000).build();// appkey可以省略
-        translator = Translator.getInstance(tps);
-        translator.lookup(input, "requestId", new TranslateListener() {
-            @Override
-            public void onResult(final Translate result, String input, String requestId) {
-                mHander.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.setBackgroundColor(getResources().getColor(R.color.white));
-                        MogulData mogulData = new MogulData(result);
-                        mogulData.setHead(mogulDataList1.get(position).getHead());
-                        mogulData.setWeibo(mogulDataList1.get(position).getWeibo());
-                        mogulData.setTime(mogulDataList1.get(position).getTime());
-                        mogulData.setPosition(mogulDataList1.get(position).getPosition());
-                        mogulData.setFabulous(mogulDataList1.get(position).getFabulous());
-                        mogulData.setUrlList(mogulDataList1.get(position).getUrlList());
-                        mogulData.setContent(mogulDataList1.get(position).getContent());
-                        mogulData.setName(mogulDataList1.get(position).getName());
-                        if (isTranslate) {
-                            mogulData.setTranslate(null);
-
-                        } else {
-                            mogulData.setTranslate(result);
-                        }
-                        mogulDataList.set(position, mogulData);
-                        mogulAdapter.notifyDataSetChanged();
-                        mogulCircleRl.setScrollingTouchSlop(mogulDataList.size() - position);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(final TranslateErrorCode error, String requestId) {
-                mHander.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        ToastManager.showShort(MogulCircleActivity.this, "翻译失败:" + error.name());
-                    }
-                });
-            }
-        });
-    }
+//    @Override
+//    public void onTranslateClick(final View view, final int position, final List<MogulData> list) {
+//        if (list.get(position).getTranslate() != null) {
+//            isTranslate = true;
+//            optionUtil.setTextView(getString(R.string.reture));
+//        } else {
+//            optionUtil.setTextView(getString(R.string.translate));
+//            isTranslate = false;
+//        }
+//        view.setBackgroundColor(getResources().getColor(R.color.about_font));
+//        final String content = list.get(position).getContent();
+//        optionUtil.setOnPopClickEvent(new PopOptionUtil.PopClickEvent() {
+//            @Override
+//            public void onPreClick() {
+//                BaseUtils.copyComment(content, SFApplication.get(MogulCircleActivity.this));
+//                optionUtil.dismiss();
+//                view.setBackgroundColor(getResources().getColor(R.color.white));
+//                ToastManager.showShort(MogulCircleActivity.this, getString(R.string.copy_success));
+//            }
+//
+//            @Override
+//            public void onNextClick() {
+//                query(view, list, position, content);
+//                optionUtil.dismiss();
+//            }
+//        });
+//        optionUtil.show(view);
+//        view.setBackgroundColor(getResources().getColor(R.color.white));
+//
+//
+//    }
+//
+//    private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
+//        // 源语言或者目标语言其中之一必须为中文,目前只支持中文与其他几个语种的互译
+//        String to = "中文";
+//        String from = "英文";
+//        Language langFrom = LanguageUtils.getLangByName(from);
+//        // 若设置为自动，则查询自动识别源语言，自动识别不能保证完全正确，最好传源语言类型
+//        Language langTo = LanguageUtils.getLangByName(to);
+//        TranslateParameters tps = new TranslateParameters.Builder()
+//                .source("youdao").from(langFrom).to(langTo).timeout(3000).build();// appkey可以省略
+//        translator = Translator.getInstance(tps);
+//        translator.lookup(input, "requestId", new TranslateListener() {
+//            @Override
+//            public void onResult(final Translate result, String input, String requestId) {
+//                mHander.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.setBackgroundColor(getResources().getColor(R.color.white));
+//                        MogulData mogulData = new MogulData(result);
+//                        mogulData.setHead(mogulDataList1.get(position).getHead());
+//                        mogulData.setWeibo(mogulDataList1.get(position).getWeibo());
+//                        mogulData.setTime(mogulDataList1.get(position).getTime());
+//                        mogulData.setPosition(mogulDataList1.get(position).getPosition());
+//                        mogulData.setFabulous(mogulDataList1.get(position).getFabulous());
+//                        mogulData.setUrlList(mogulDataList1.get(position).getUrlList());
+//                        mogulData.setContent(mogulDataList1.get(position).getContent());
+//                        mogulData.setName(mogulDataList1.get(position).getName());
+//                        if (isTranslate) {
+//                            mogulData.setTranslate(null);
+//
+//                        } else {
+//                            mogulData.setTranslate(result);
+//                        }
+//                        mogulDataList.set(position, mogulData);
+//                        mogulAdapter.notifyDataSetChanged();
+//                        mogulCircleRl.setScrollingTouchSlop(mogulDataList.size() - position);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onError(final TranslateErrorCode error, String requestId) {
+//                mHander.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        ToastManager.showShort(MogulCircleActivity.this, "翻译失败:" + error.name());
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
@@ -417,7 +414,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     @Override
     public void onFabulous(View view, int position, List<MogulData> list, boolean isLike) {
-        MogulData mogulData = new MogulData(null);
+        MogulData mogulData = new MogulData();
         mogulData.setHead(list.get(position).getHead());
         mogulData.setWeibo(list.get(position).getWeibo());
         mogulData.setTime(list.get(position).getTime());
@@ -436,15 +433,14 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     @Override
     public void onShare(View view, int position, List<MogulData> list) {
-
-        String url = list.get(position).getHead();
-        String name = list.get(position).getName();
-        String weibo = list.get(position).getWeibo();
-        String zhiwei = list.get(position).getPosition();
-        String content = list.get(position).getContent();
-        MogulShareDialog mogulShareDialog = new MogulShareDialog(this);
+        MogulShareBean mogulShareBean = new MogulShareBean();
+        mogulShareBean.setContent(list.get(position).getContent());
+        mogulShareBean.setName(list.get(position).getName());
+        mogulShareBean.setPosition(list.get(position).getPosition());
+        mogulShareBean.setUrl(list.get(position).getHead());
+        mogulShareBean.setWeibo(list.get(position).getWeibo());
+        MogulShareDialog mogulShareDialog = new MogulShareDialog(this, mogulShareBean);
         mogulShareDialog.show();
-        mogulShareDialog.setContent(this, url, zhiwei, name, content, weibo);
     }
 
     //点赞

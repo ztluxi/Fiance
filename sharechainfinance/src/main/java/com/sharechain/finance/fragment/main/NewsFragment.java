@@ -19,6 +19,7 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.view.MyXRefreshViewHeader;
 
 import org.litepal.crud.DataSupport;
 
@@ -80,6 +81,9 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     protected void initView() {
         mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData());
         initXRefreshView(xRefreshView);
+        MyXRefreshViewHeader header = new MyXRefreshViewHeader(getActivity());
+        header.setBlueBackground();
+        xRefreshView.setCustomHeaderView(header);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
         xRefreshView.setAutoRefresh(false);

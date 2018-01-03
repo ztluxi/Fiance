@@ -104,7 +104,8 @@ public class HomeFragment extends BaseFragment {
     private void initMagicIndicator() {
         magic_indicator.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.tint_home_color));
         CommonNavigator commonNavigator = new CommonNavigator(getActivity());
-        commonNavigator.setScrollPivotX(0.8f);
+        commonNavigator.setEnablePivotScroll(true);
+        commonNavigator.setSkimOver(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {

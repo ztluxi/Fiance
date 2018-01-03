@@ -2,10 +2,6 @@ package com.sharechain.finance.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,27 +12,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.module.mogul.DragPhotoActivity;
 import com.sharechain.finance.module.mogul.MogulCircleActivity;
-import com.sharechain.finance.module.mogul.PhotoGalleryActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.fabulos.GoodView;
 import com.youdao.sdk.ydtranslate.Translate;
-import com.zzhoujay.richtext.ImageHolder;
 import com.zzhoujay.richtext.RichText;
-import com.zzhoujay.richtext.RichTextConfig;
-import com.zzhoujay.richtext.callback.ImageGetter;
-import com.zzhoujay.richtext.callback.ImageLoadNotify;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,13 +43,12 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
     private LayoutInflater mInflater;
     private List<MogulData> mPostList;
     private Context mContext;
-    private List<Translate> trslist;
     private int tpye;
     private boolean isLike = true;
 
-    public interface MyItemLongClickListener {
-        void onTranslateClick(View view, int position, List<MogulData> list);
-    }
+//    public interface MyItemLongClickListener {
+//        void onTranslateClick(View view, int position, List<MogulData> list);
+//    }
 
     public interface MyItemClickListener {
         void onFabulous(View view, int position, List<MogulData> list, boolean isLike);
@@ -68,24 +56,23 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         void onShare(View view, int position, List<MogulData> list);
     }
 
-    private MyItemLongClickListener mLongClickListener;
+//    private MyItemLongClickListener mLongClickListener;
     private MyItemClickListener mClickListener;
 
-    public void setOnItemLongClickListener(MyItemLongClickListener listener) {
-        this.mLongClickListener = listener;
-    }
+//    public void setOnItemLongClickListener(MyItemLongClickListener listener) {
+//        this.mLongClickListener = listener;
+//    }
 
     public void setOnItemClickListener(MyItemClickListener listener) {
         this.mClickListener = listener;
     }
 
 
-    public MogulAdapter(Context context, List<MogulData> postList, List<Translate> trs, int type) {
+    public MogulAdapter(Context context, List<MogulData> postList, int type) {
         super();
         mPostList = postList;
         mInflater = LayoutInflater.from(context);
         mContext = context;
-        this.trslist = trs;
         this.tpye = type;
     }
 
@@ -135,16 +122,23 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
         holder.mogulFabulousNumberTv.setText(like + "");
         //发布内容
         RichText.fromHtml(mogulData.getContent()).noImage(true).into(holder.mogulContentTv);
-        try {
-            if (!TextUtils.isEmpty(mogulData.getTranslate().getTranslations().get(0))) {
-                //翻译内容
-                RichText.from(mogulData.getTranslate().getTranslations().get(0)).into(holder.mogulTranslateTv);
-//                holder.mogulTranslateTv.setText(mogulData.getTranslate().getTranslations().get(0));
-                holder.mogulContentTranslateLl.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
 
+        if (!BaseUtils.isEmpty(mogulData.getTranslate())){
+            holder.mogulTranslateTv.setText(mogulData.getTranslate());
+            holder.mogulContentTranslateLl.setVisibility(View.VISIBLE);
+        }else{
+            holder.mogulContentTranslateLl.setVisibility(View.GONE);
         }
+//        try {
+//            if (!TextUtils.isEmpty(mogulData.getTranslate().getTranslations().get(0))) {
+//                //翻译内容
+//                RichText.from(mogulData.getTranslate().getTranslations().get(0)).into(holder.mogulTranslateTv);
+////                holder.mogulTranslateTv.setText(mogulData.getTranslate().getTranslations().get(0));
+//                holder.mogulContentTranslateLl.setVisibility(View.VISIBLE);
+//            }
+//        } catch (Exception e) {
+//
+//        }
 
         if (tpye == 0) {
             holder.mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
@@ -163,17 +157,17 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
             });
         }
 
-        //翻译
-        if (mLongClickListener != null) {
-            holder.mogulContentTv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mLongClickListener.onTranslateClick(v, pos, mPostList);
-                    return false;
-                }
-            });
-        }
+//        //翻译
+//        if (mLongClickListener != null) {
+//            holder.mogulContentTv.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    int pos = holder.getLayoutPosition();
+//                    mLongClickListener.onTranslateClick(v, pos, mPostList);
+//                    return false;
+//                }
+//            });
+//        }
         //点赞
         if (mClickListener != null) {
             holder.mogulFocusLl.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +247,7 @@ public class MogulAdapter extends RecyclerView.Adapter<MogulAdapter.PostViewHold
 
             @Override
             protected void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
-                Intent intent = new Intent(context, PhotoGalleryActivity.class);
+                Intent intent = new Intent(context, DragPhotoActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("datas", (ArrayList<String>) list);
                 bundle.putInt("index", index);

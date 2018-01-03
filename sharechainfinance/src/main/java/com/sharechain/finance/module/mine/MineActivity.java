@@ -71,7 +71,7 @@ public class MineActivity extends BaseActivity {
         setTitlePadding(ll_top_info);
         RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         options.placeholder(R.drawable.icon_share_weixin);
-        GlideUtils.getInstance().loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
+//        GlideUtils.getInstance().loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
     }
 
     @Override

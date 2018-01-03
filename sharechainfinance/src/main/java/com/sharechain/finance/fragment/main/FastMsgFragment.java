@@ -19,6 +19,7 @@ import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.BaseWebViewActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.view.FastMsgDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -90,9 +91,7 @@ public class FastMsgFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE &&
                         !BaseUtils.isEmpty(dataList.get(i).getUrl())) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("web_url", dataList.get(i).getUrl());
-                    BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
+                    new FastMsgDialog(getActivity(), dataList.get(i)).show();
                 }
             }
         });
