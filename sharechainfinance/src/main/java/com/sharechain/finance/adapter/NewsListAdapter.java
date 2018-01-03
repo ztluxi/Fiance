@@ -165,6 +165,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                             ArticleListsBean articleListsBean = new ArticleListsBean();
                             articleListsBean.setTagId(headerBean.getBanner().get(getRealPosition(position)).getPid());
                             bundle.putSerializable("article", articleListsBean);
+                            bundle.putInt("news_type", ArticleDetailActivity.NEWS_TYPE_HOME);
                             BaseUtils.openActivity((Activity) context, ArticleDetailActivity.class, bundle);
                         }
                     });

@@ -370,7 +370,7 @@ public class ArticleDetailBean {
 
             private int ID;
             private String display_name;
-            private String meta_value;
+            private String user_avatars;
             private int count_article;
             private int count_view;
 
@@ -390,12 +390,12 @@ public class ArticleDetailBean {
                 this.display_name = display_name;
             }
 
-            public String getMeta_value() {
-                return meta_value;
+            public String getUser_avatars() {
+                return user_avatars;
             }
 
-            public void setMeta_value(String meta_value) {
-                this.meta_value = meta_value;
+            public void setUser_avatars(String user_avatars) {
+                this.user_avatars = user_avatars;
             }
 
             public int getCount_article() {

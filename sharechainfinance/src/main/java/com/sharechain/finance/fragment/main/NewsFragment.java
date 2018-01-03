@@ -172,6 +172,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         if (position > 0) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("article", dataList.get(position - 1));
+            bundle.putInt("news_type", ArticleDetailActivity.NEWS_TYPE_HOME);
             BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
         }
     }

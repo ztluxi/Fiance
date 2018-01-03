@@ -17,7 +17,8 @@ import android.widget.TextView;
 import com.andview.refreshview.XRefreshView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.sharechain.finance.bean.ArticleListsBean;
-import com.sharechain.finance.bean.HistoryBean;
+import com.sharechain.finance.bean.HistoryData;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -64,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             public void run() {
                 initData();
             }
-        },800);
+        }, 800);
     }
 
     protected void hideSoftKeyboard(EditText editText) {
@@ -180,8 +181,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .execute(callback);
     }
 
-    protected HistoryBean convertToHistory(ArticleListsBean articleBean) {
-        HistoryBean bean = new HistoryBean();
+    protected HistoryData convertToHistory(ArticleListsBean articleBean, int newsType, boolean isFirst) {
+        HistoryData bean = new HistoryData();
         bean.setID(articleBean.getID());
         bean.setImage(articleBean.getImage());
         bean.setName(articleBean.getName());
@@ -192,10 +193,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         bean.setTagId(articleBean.getTagId());
         bean.setUser_avatars(articleBean.getUser_avatars());
         bean.setViews(articleBean.getViews());
+        bean.setChannel_type(newsType);
+        bean.setDate(TimeUtil.getCurrentTime("yyyy-MM-dd"));
+        if (isFirst) {
+            bean.setType(HistoryData.PARENT_TYPE);
+        } else {
+            bean.setType(HistoryData.CHILD_TYPE);
+        }
         return bean;
     }
 
-    protected ArticleListsBean convertToArticle(HistoryBean articleBean) {
+    protected ArticleListsBean convertToArticle(HistoryData articleBean) {
         ArticleListsBean bean = new ArticleListsBean();
         bean.setID(articleBean.getID());
         bean.setImage(articleBean.getImage());

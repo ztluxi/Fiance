@@ -146,6 +146,7 @@ public class AnswerFragment extends BaseFragment implements AdapterView.OnItemCl
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("article", dataList.get(i));
+        bundle.putInt("news_type", ArticleDetailActivity.NEWS_TYPE_ANSWER);
         BaseUtils.openActivity(getActivity(), ArticleDetailActivity.class, bundle);
     }
 
