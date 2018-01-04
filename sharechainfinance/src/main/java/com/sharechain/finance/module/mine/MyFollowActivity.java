@@ -22,6 +22,7 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MyFollowAdapter;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.FollowBean;
@@ -196,68 +197,80 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     //取消大佬关注
     private void cancelMogulFollow(int mogulID, final int position, final FollowData data) {
-        mDialog.show();
-        final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
-        requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                followDataList.remove(position);
-                followAdapter.notifyDataSetChanged();
-                ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
-                Logger.d(result);
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
+        if (SFApplication.loginDataBean != null) {
+            String token = SFApplication.loginDataBean.getToken();
+            mDialog.show();
+            final Map<String, String> params = new HashMap<>();
+            params.put(UrlList.TOKEN, token);
+            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
+            requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
+                @Override
+                protected void onSuccess(String result) {
+                    followDataList.remove(position);
+                    followAdapter.notifyDataSetChanged();
+                    ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
+                    Logger.d(result);
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
-            }
 
-            @Override
-            protected void onFailed(String errStr) {
-                Logger.d(errStr);
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
+                @Override
+                protected void onFailed(String errStr) {
+                    Logger.d(errStr);
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ToastManager.showShort(this, getString(R.string.please_login));
+        }
     }
 
     //关注大佬
     private void addMogulFollow(int mogulID, final int position, final FollowData data) {
-        mDialog.show();
-        final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
-        requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
+        if (SFApplication.loginDataBean != null) {
+            String token = SFApplication.loginDataBean.getToken();
+            mDialog.show();
+            final Map<String, String> params = new HashMap<>();
+            params.put(UrlList.TOKEN, token);
+            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
+            requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
+                @Override
+                protected void onSuccess(String result) {
 //                {"success":0,"msg":"请登录","data":""}
-                try {
-                    org.json.JSONObject object = new org.json.JSONObject(result);
-                    int success = object.getInt("success");
-                    String messg = object.getString("msg");
-                    if (success == 0) {
-                        ToastManager.showShort(MyFollowActivity.this, messg);
-                    } else {
-                        followDataList.remove(position);
-                        followAdapter.notifyDataSetChanged();
-                        ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
-                        Logger.d(result);
+                    try {
+                        org.json.JSONObject object = new org.json.JSONObject(result);
+                        int success = object.getInt("success");
+                        String messg = object.getString("msg");
+                        if (success == 0) {
+                            ToastManager.showShort(MyFollowActivity.this, messg);
+                        } else {
+                            followDataList.remove(position);
+                            followAdapter.notifyDataSetChanged();
+                            ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
+                            Logger.d(result);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
-                }
-            }
 
-            @Override
-            protected void onFailed(String errStr) {
-                Logger.d(errStr);
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
+                @Override
+                protected void onFailed(String errStr) {
+                    Logger.d(errStr);
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ToastManager.showShort(this, getString(R.string.please_login));
+        }
     }
 
 

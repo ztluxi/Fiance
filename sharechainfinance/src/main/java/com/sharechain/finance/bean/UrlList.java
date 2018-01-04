@@ -14,6 +14,7 @@ public class UrlList {
     public static final String MOGUL_SEARCH_ID = "celebrity_id";
     public static final String MOGUL_CANCLE_FOLLOW_ID = "id";
     public static final String MOGUL_KEYWORD = "search_str";
+    public static final String TOKEN = "token";
 
     private static String base_url = "http://pc.weilaicaijing.com";
     //    private static String base_url = "http://www.weilaicaijing.com";

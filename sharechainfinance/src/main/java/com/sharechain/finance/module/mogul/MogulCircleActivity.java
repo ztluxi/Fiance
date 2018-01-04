@@ -17,6 +17,7 @@ import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FullLinear;
 import com.sharechain.finance.view.dialog.LoadDialog;
@@ -113,7 +114,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
             public void run() {
                 getMogulDetail(id);
             }
-        },500);
+        }, 500);
     }
 
     //获取大佬个人中心
@@ -206,51 +207,63 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     //取消大佬关注
     private void cancelMogulFollow(int mogulID) {
-        final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
-        requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_cancel) + mogul_name + getString(R.string.de_follow));
-                Logger.d(result);
-            }
+        if (SFApplication.loginDataBean!=null) {
+            String token = SFApplication.loginDataBean.getToken();
+            final Map<String, String> params = new HashMap<>();
+            params.put(UrlList.TOKEN, token);
+            params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
+            requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
+                @Override
+                protected void onSuccess(String result) {
+                    ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_cancel) + mogul_name + getString(R.string.de_follow));
+                    Logger.d(result);
+                }
 
-            @Override
-            protected void onFailed(String errStr) {
-                Logger.d(errStr);
-            }
-        });
+                @Override
+                protected void onFailed(String errStr) {
+                    Logger.d(errStr);
+                }
+            });
+        } else {
+            ToastManager.showShort(this, getString(R.string.please_login));
+        }
     }
 
     //关注大佬
     private void addMogulFollow(int mogulID) {
-        final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
-        requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
+        if (SFApplication.loginDataBean!=null) {
+            String token = SFApplication.loginDataBean.getToken();
+            final Map<String, String> params = new HashMap<>();
+            params.put(UrlList.TOKEN, token);
+            params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
+            requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
+                @Override
+                protected void onSuccess(String result) {
 //                {"success":0,"msg":"请登录","data":""}
-                try {
-                    org.json.JSONObject object = new org.json.JSONObject(result);
-                    int success = object.getInt("success");
-                    String messg = object.getString("msg");
-                    if (success == 0) {
-                        ToastManager.showShort(MogulCircleActivity.this, messg);
-                    } else {
-                        ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_follow) + mogul_name);
-                        Logger.d(result);
+                    try {
+                        org.json.JSONObject object = new org.json.JSONObject(result);
+                        int success = object.getInt("success");
+                        String messg = object.getString("msg");
+                        if (success == 0) {
+                            ToastManager.showShort(MogulCircleActivity.this, messg);
+                        } else {
+                            ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_follow) + mogul_name);
+                            Logger.d(result);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
                 }
 
-            }
-
-            @Override
-            protected void onFailed(String errStr) {
-                Logger.d(errStr);
-            }
-        });
+                @Override
+                protected void onFailed(String errStr) {
+                    Logger.d(errStr);
+                }
+            });
+        } else {
+            ToastManager.showShort(this, getString(R.string.please_login));
+        }
     }
 
 

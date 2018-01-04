@@ -204,6 +204,7 @@
                     android:visibility="visible">
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/exit_tv"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"

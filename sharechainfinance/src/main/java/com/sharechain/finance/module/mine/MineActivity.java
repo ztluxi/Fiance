@@ -21,6 +21,7 @@ import com.sharechain.finance.bean.WXRefreshBean;
 import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.view.dialog.ExitLoginDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -102,6 +103,7 @@ public class MineActivity extends BaseActivity {
             //已登录
             ll_user_info.setVisibility(View.VISIBLE);
             user_login.setVisibility(View.GONE);
+            exitTv.setVisibility(View.VISIBLE);
             userName.setText(SFApplication.loginDataBean.getNick_name());
             RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             GlideUtils.getInstance().loadUserImage(MineActivity.this.getApplicationContext(), SFApplication.loginDataBean.getHead_img(), userImage, options);
@@ -110,6 +112,7 @@ public class MineActivity extends BaseActivity {
             ll_user_info.setVisibility(View.GONE);
             user_login.setVisibility(View.VISIBLE);
             userImage.setImageResource(R.drawable.icon_share_weixin);
+            exitTv.setVisibility(View.GONE);
         }
     }
 
@@ -145,6 +148,22 @@ public class MineActivity extends BaseActivity {
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
+//                final ExitLoginDialog exitLoginDialog = new ExitLoginDialog(this,"您确定要退出登录？","是","否");
+//                exitLoginDialog.setOnNegativeListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        exitLoginDialog.dismiss();
+//                    }
+//                });
+//                exitLoginDialog.setOnPositiveListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        //退出登录
+//                        SFApplication.loginDataBean = null;
+//                        DataSupport.deleteAll(LoginDataBean.class);
+//                        updateView();
+//                    }
+//                });
                 //退出登录
                 SFApplication.loginDataBean = null;
                 DataSupport.deleteAll(LoginDataBean.class);
