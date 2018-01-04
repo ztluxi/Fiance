@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_dialog_image_height"
             android:layout_gravity="center"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/icon_share_blue_bg"
             android:gravity="center"
             android:textColor="@color/white"
@@ -33,25 +33,37 @@
             android:paddingLeft="@dimen/share_dialog_padding_left"
             android:paddingRight="@dimen/share_dialog_padding_left">
 
-            <TextView
-                android:id="@+id/text_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/share_dialog_margin_top"
                 android:layout_marginTop="@dimen/share_dialog_margin_top"
-                android:drawableLeft="@drawable/icon_share_time"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:lines="1"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/icon_share_time" />
+
+                <TextView
+                    android:id="@+id/text_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <ScrollView
-                android:overScrollMode="never"
-                android:fadingEdge="none"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:fadingEdge="none"
+                android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -98,8 +110,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:text="来自未来财经\n
-UID1233"
+                            android:text="来自未来财经"
                             android:textColor="@android:color/black"
                             android:textSize="10sp" />
 
@@ -129,21 +140,21 @@ UID1233"
                 <ImageView
                     android:id="@+id/image_weixin"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_weixin" />
 
                 <ImageView
                     android:id="@+id/image_circle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_circle" />
 
                 <ImageView
                     android:id="@+id/image_download"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_download" />
 

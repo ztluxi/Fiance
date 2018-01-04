@@ -39,15 +39,20 @@ import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sharechain.finance.MainActivity;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.ArticleListsBean;
+import com.sharechain.finance.bean.BaseNotifyBean;
+import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
-import com.sharechain.finance.module.home.BaseWebViewActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.ScaleInTransformer;
 import com.sharechain.finance.view.UserOperateCallbackViewPager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.List;
@@ -297,9 +302,24 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                 headerViewHolder.text_header_title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("web_url", headerBean.getTop_news().get(switchIndex).getSite_url());
-                        BaseUtils.openActivity((Activity) context, BaseWebViewActivity.class, bundle);
+                        //将bean转化成FastMsgData
+                        FastMsgData childData = new FastMsgData();
+                        childData.setId(headerBean.getTop_news().get(switchIndex).getId());
+                        childData.setSectionText(headerBean.getTop_news().get(switchIndex).getCreate_time());//日期
+                        childData.setType(FastMsgData.CHILD_TYPE);//子item
+                        childData.setDataText(headerBean.getTop_news().get(switchIndex).getSite_content());//内容
+                        childData.setMsgType(headerBean.getTop_news().get(switchIndex).getHot_type());//消息类型
+                        childData.setTitle(headerBean.getTop_news().get(switchIndex).getSite_name());//标题
+                        childData.setHour(headerBean.getTop_news().get(switchIndex).getTime());//时间
+                        childData.setUrl(headerBean.getTop_news().get(switchIndex).getSite_url());//url
+                        //切换至快讯界面
+                        ((MainActivity) context).switchToFastMsg();
+                        SFApplication.shareData = childData;
+                        //EventBus发送消息
+                        BaseNotifyBean bean = new BaseNotifyBean();
+                        bean.setType(BaseNotifyBean.TYPE.TYPE_SCROLL_MSG);
+                        bean.setObj(childData);
+                        EventBus.getDefault().post(bean);
                     }
                 });
                 startSwitchText();

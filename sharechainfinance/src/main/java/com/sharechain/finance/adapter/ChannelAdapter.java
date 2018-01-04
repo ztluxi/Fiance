@@ -62,6 +62,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     // 我的频道点击事件
     private OnMyChannelItemClickListener mChannelItemClickListener;
     private Context context;
+    private boolean isDataChanged = false;
 
     public ChannelAdapter(Context context, ItemTouchHelper helper, List<NewsChannelTable> mMyChannelItems, List<NewsChannelTable> mOtherChannelItems) {
         this.context = context;
@@ -94,7 +95,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 holder.text_bianji.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startEditMode((RecyclerView) parent);
+                        startEditMode();
                         holder.text_manage_tip.setText(R.string.manage_tip);
                         holder.image_delete.setVisibility(View.VISIBLE);
                         holder.text_bianji.setVisibility(View.GONE);
@@ -103,7 +104,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 holder.image_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        cancelEditMode((RecyclerView) parent);
+                        cancelEditMode();
                         holder.text_manage_tip.setText(R.string.search_tag_click);
                         holder.image_delete.setVisibility(View.GONE);
                         holder.text_bianji.setVisibility(View.VISIBLE);
@@ -118,6 +119,9 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     public void onClick(final View v) {
                         int position = myHolder.getAdapterPosition();
                         if (isEditMode) {
+                            if (mMyChannelItems.get(position - COUNT_PRE_MY_HEADER).getNewsChannelFixed()) {
+                                return;
+                            }
                             RecyclerView recyclerView = ((RecyclerView) parent);
                             View targetView = recyclerView.getLayoutManager().findViewByPosition(mMyChannelItems.size() + COUNT_PRE_OTHER_HEADER);
                             View currentView = recyclerView.getLayoutManager().findViewByPosition(position);
@@ -151,7 +155,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     public boolean onLongClick(final View v) {
                         if (!isEditMode) {
                             RecyclerView recyclerView = ((RecyclerView) parent);
-                            startEditMode(recyclerView);
+                            startEditMode();
                             // header 按钮文字 改成 "完成"
                             View view = recyclerView.getChildAt(0);
                             if (view == recyclerView.getLayoutManager().findViewByPosition(0)) {
@@ -174,6 +178,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     break;
                                 case MotionEvent.ACTION_MOVE:
                                     if (System.currentTimeMillis() - startTime > SPACE_TIME) {
+                                        isDataChanged = true;
                                         mItemTouchHelper.startDrag(myHolder);
                                     }
                                     break;
@@ -262,7 +267,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             } else {
                                 moveOtherToMy(otherHolder);
                             }
-                            startAnimation(recyclerView, currentView, targetX, targetY);
+//                            startAnimation(recyclerView, currentView, targetX, targetY);
 
                         } else {
                             moveOtherToMy(otherHolder);
@@ -342,21 +347,22 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /**
      * 我的频道 移动到 其他频道
      *
-     * @param holder
+     * @param myHolder
      */
-    private void moveMyToOther(MyViewHolder holder) {
-        int position = holder.getAdapterPosition();
+    private void moveMyToOther(MyViewHolder myHolder) {
+        int position = myHolder.getAdapterPosition();
 
         int startPosition = position - COUNT_PRE_MY_HEADER;
         if (startPosition > mMyChannelItems.size() - 1) {
             return;
         }
+        NewsChannelTable item = mMyChannelItems.get(startPosition);
+        item.setCacheType(NewsChannelTable.CACHE_TYPE_ALL);
         mMyChannelItems.remove(startPosition);
-        notifyItemRemoved(startPosition + 1);
-        notifyItemRangeChanged(position + 1, mMyChannelItems.size());
-//        NewsChannelTable item = mMyChannelItems.get(startPosition);
-//        mOtherChannelItems.add(0, item);
-//        notifyItemMoved(position, mMyChannelItems.size() + COUNT_PRE_OTHER_HEADER);
+        mOtherChannelItems.add(0, item);
+
+        isDataChanged = true;
+        notifyItemMoved(position, mMyChannelItems.size() + COUNT_PRE_OTHER_HEADER);
     }
 
     /**
@@ -369,6 +375,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (position == -1) {
             return;
         }
+        isDataChanged = true;
         notifyItemMoved(position, mMyChannelItems.size() - 1 + COUNT_PRE_MY_HEADER);
     }
 
@@ -400,6 +407,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return -1;
         }
         NewsChannelTable item = mOtherChannelItems.get(startPosition);
+        item.setCacheType(NewsChannelTable.CACHE_TYPE_MINE);
         mOtherChannelItems.remove(startPosition);
         mMyChannelItems.add(item);
         return position;
@@ -443,38 +451,18 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     /**
      * 开启编辑模式
-     *
-     * @param parent
      */
-    private void startEditMode(RecyclerView parent) {
+    private void startEditMode() {
         isEditMode = true;
         notifyDataSetChanged();
-//        int visibleChildCount = parent.getChildCount();
-//        for (int i = 0; i < visibleChildCount; i++) {
-//            View view = parent.getChildAt(i);
-//            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
-//            if (imgEdit != null) {
-//                imgEdit.setVisibility(View.VISIBLE);
-//            }
-//        }
     }
 
     /**
      * 完成编辑模式
-     *
-     * @param parent
      */
-    private void cancelEditMode(RecyclerView parent) {
+    private void cancelEditMode() {
         isEditMode = false;
         notifyDataSetChanged();
-//        int visibleChildCount = parent.getChildCount();
-//        for (int i = 0; i < visibleChildCount; i++) {
-//            View view = parent.getChildAt(i);
-//            ImageView imgEdit = (ImageView) view.findViewById(R.id.image_delete);
-//            if (imgEdit != null) {
-//                imgEdit.setVisibility(View.GONE);
-//            }
-//        }
     }
 
     /**
@@ -557,4 +545,17 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             image_delete = itemView.findViewById(R.id.image_delete);
         }
     }
+
+    public List<NewsChannelTable> getmMyChannelItems() {
+        return mMyChannelItems;
+    }
+
+    public List<NewsChannelTable> getmOtherChannelItems() {
+        return mOtherChannelItems;
+    }
+
+    public boolean isDataChanged() {
+        return isDataChanged;
+    }
+
 }

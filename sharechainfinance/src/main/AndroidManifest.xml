@@ -71,7 +71,7 @@
             android:name="com.sharechain.finance.module.mine.MyNewsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.weilai.finance.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

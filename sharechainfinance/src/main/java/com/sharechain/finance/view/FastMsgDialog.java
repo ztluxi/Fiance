@@ -55,6 +55,7 @@ public class FastMsgDialog extends Dialog {
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
         }
+        dismiss();
     }
 
     @OnClick(R.id.image_circle)
@@ -63,6 +64,7 @@ public class FastMsgDialog extends Dialog {
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
         }
+        dismiss();
     }
 
     @OnClick(R.id.image_download)
@@ -76,6 +78,7 @@ public class FastMsgDialog extends Dialog {
                 Toast.makeText(context, "图片保存失败!", Toast.LENGTH_SHORT).show();
             }
         }
+        dismiss();
     }
 
     private FastMsgData fastMsgData;
@@ -136,15 +139,15 @@ public class FastMsgDialog extends Dialog {
         TextView share_content = shareView.findViewById(R.id.text_content);
         if (fastMsgData.getMsgType() == 1) {
             //一般消息
-            share_title.setBackgroundResource(R.drawable.icon_share_blue_bg);
+            share_title.setBackgroundResource(R.drawable.icon_share_blue_bg_rect);
             share_title.setText(context.getString(R.string.fastmsg_normal));
         } else if (fastMsgData.getMsgType() == 2) {
             //重要
-            share_title.setBackgroundResource(R.drawable.icon_share_orange_bg);
-            share_title.setText(context.getString(R.string.fastmsg_important));
+            share_title.setBackgroundResource(R.drawable.icon_share_orange_bg_rect);
+            share_title.setText(context.getString(R.string.fastmsg_big));
         } else if (fastMsgData.getMsgType() == 3) {
             //非常重要
-            share_title.setBackgroundResource(R.drawable.icon_share_red_bg);
+            share_title.setBackgroundResource(R.drawable.icon_share_red_bg_rect);
             share_title.setText(context.getString(R.string.fastmsg_important));
         }
         share_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
@@ -156,6 +159,7 @@ public class FastMsgDialog extends Dialog {
         super.dismiss();
         contentView = null;
         shareView = null;
+        SFApplication.shareData = null;
     }
 
 }

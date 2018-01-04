@@ -71,10 +71,10 @@ public class MyXRefreshViewHeader extends LinearLayout implements IHeaderCallBac
         mRotateDownAnim.setFillAfter(true);
     }
 
-    public void setBlueBackground() {
-        xrefreshview_header_text.setBackgroundColor(ContextCompat.getColor(context, R.color.tint_home_color));
-        mHintTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
-        mHeaderTimeTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+    public void setBlueBackground(int bgColor, int textColor) {
+        xrefreshview_header_text.setBackgroundColor(ContextCompat.getColor(context, bgColor));
+        mHintTextView.setTextColor(ContextCompat.getColor(context, textColor));
+        mHeaderTimeTextView.setTextColor(ContextCompat.getColor(context, textColor));
     }
 
     public void setRefreshTime(long lastRefreshTime) {

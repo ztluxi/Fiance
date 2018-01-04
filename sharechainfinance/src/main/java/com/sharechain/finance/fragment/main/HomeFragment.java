@@ -199,6 +199,10 @@ public class HomeFragment extends BaseFragment {
                 titleList.add(table.getNewsChannelName());
             }
             loadData();
+            viewpager.setCurrentItem(event.getInteger(), true);
+        } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_SELECT_TAG) {
+            //仅仅是换位置
+            viewpager.setCurrentItem(event.getInteger(), true);
         }
     }
 
@@ -220,9 +224,7 @@ public class HomeFragment extends BaseFragment {
                         //第一次进入app
                         for (int i = 0; i < bean.getData().getArticle_title_lists().size(); i++) {
                             HomeIndexBean.DataBean.ArticleTitleListsBean titleListsBean = bean.getData().getArticle_title_lists().get(i);
-                            NewsChannelTable allTable = getCacheAllTable(titleListsBean, i);
                             NewsChannelTable mineTable = getCacheMineTable(titleListsBean, i);
-                            allTable.save();
                             mineTable.save();
                             //第一次进入
                             typeList.add(mineTable);

@@ -28,11 +28,11 @@
             android:paddingTop="40dp">
 
             <ScrollView
-                android:overScrollMode="never"
-                android:fadingEdge="none"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_weight="1"
+                android:fadingEdge="none"
+                android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -57,17 +57,17 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:visibility="gone"
-                            android:drawableLeft="@drawable/aite"
-                            android:drawablePadding="3dp"
                             android:id="@+id/text_weibo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
+                            android:drawableLeft="@drawable/aite"
+                            android:drawablePadding="3dp"
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:textColor="@android:color/black"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -145,21 +145,21 @@ UID1233"
                 <ImageView
                     android:id="@+id/image_weixin"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_weixin" />
 
                 <ImageView
                     android:id="@+id/image_circle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_circle" />
 
                 <ImageView
                     android:id="@+id/image_download"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     android:src="@drawable/icon_share_download" />
 

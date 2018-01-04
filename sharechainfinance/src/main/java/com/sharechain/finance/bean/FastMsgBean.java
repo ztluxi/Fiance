@@ -75,12 +75,20 @@ public class FastMsgBean {
              * hour : 15:22
              * url : https://support.okex.com/hc/zh-cn/articles/115003644751-OKEx上线DGB的公告
              */
-
+            private int id;
             private int type;
             private String title;
             private String text;
             private String hour;
             private String url;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
 
             public int getType() {
                 return type;

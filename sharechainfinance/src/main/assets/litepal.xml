@@ -13,6 +13,9 @@
         <mapping class="com.sharechain.finance.bean.HistoryData" />
         <!--首页标签缓存-->
         <mapping class="com.sharechain.finance.bean.NewsChannelTable" />
+        <!--主缓存-->
         <mapping class="com.sharechain.finance.bean.MainCacheBean" />
+        <!--用户缓存-->
+        <mapping class="com.sharechain.finance.bean.LoginDataBean" />
     </list>
 </litepal>

@@ -13,9 +13,12 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.BaseNotifyBean;
+import com.sharechain.finance.bean.LoginDataBean;
+import com.sharechain.finance.bean.NewsEven;
+import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.bean.WXAccessBean;
 import com.sharechain.finance.bean.WXRefreshBean;
-import com.sharechain.finance.bean.NewsEven;
+import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -25,6 +28,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +47,8 @@ public class MineActivity extends BaseActivity {
     ImageView userImage;
     @BindView(R.id.user_name)
     TextView userName;
+    @BindView(R.id.user_uid)
+    TextView user_uid;
     @BindView(R.id.history_tv)
     TextView historyTv;
     @BindView(R.id.my_news_tv)
@@ -57,6 +65,10 @@ public class MineActivity extends BaseActivity {
     TextView exitTv;
     @BindView(R.id.news_red_tv)
     TextView news_red_tv;
+    @BindView(R.id.ll_user_info)
+    LinearLayout ll_user_info;
+    @BindView(R.id.user_login)
+    TextView user_login;
 
     private IWXAPI iwxapi;
     private String size;//glide缓存大小；
@@ -68,20 +80,37 @@ public class MineActivity extends BaseActivity {
 
     @Override
     public void initView() {
-
-
-        iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+        iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID, true);
+        //将应用注册到微信
+        iwxapi.registerApp(SFApplication.WX_APPID);
         mImmersionBar.statusBarColor(android.R.color.transparent).init();
         setTitlePadding(ll_top_info);
-        RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        options.placeholder(R.drawable.icon_share_weixin);
-//        GlideUtils.getInstance().loadUserImage(this, "http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg", userImage, options);
+        updateView();
     }
 
     @Override
     public void initData() {
         size = GlideUtils.getInstance().getCacheSize(this);
-        clearCacheTv.setText(size+"");
+        clearCacheTv.setText(size + "");
+    }
+
+    private void updateView() {
+        if (SFApplication.loginDataBean != null) {
+            //已登录
+            ll_user_info.setVisibility(View.VISIBLE);
+            user_login.setVisibility(View.GONE);
+            userName.setText(SFApplication.loginDataBean.getNick_name());
+            RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            GlideUtils.getInstance().loadUserImage(MineActivity.this.getApplicationContext(), SFApplication.loginDataBean.getHead_img(), userImage, options);
+        } else {
+            //未登录
+            ll_user_info.setVisibility(View.GONE);
+            user_login.setVisibility(View.VISIBLE);
+            userImage.setImageResource(R.drawable.icon_share_weixin);
+        }
     }
 
     @OnClick({R.id.back_iv, R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
@@ -98,9 +127,6 @@ public class MineActivity extends BaseActivity {
                 break;
             case R.id.my_news_tv:
                 BaseUtils.openActivity(this, MyNewsActivity.class, null);
-                if (!EventBus.getDefault().isRegistered(this)) {
-                    EventBus.getDefault().register(this);
-                }
                 break;
             case R.id.my_follow_tv:
                 BaseUtils.openActivity(this, MyFollowActivity.class, null);
@@ -119,8 +145,20 @@ public class MineActivity extends BaseActivity {
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
+                //退出登录
+                SFApplication.loginDataBean = null;
+                DataSupport.deleteAll(LoginDataBean.class);
+                updateView();
                 break;
 
+        }
+    }
+
+    @OnClick(R.id.ll_user_login)
+    void login() {
+        if (SFApplication.loginDataBean == null) {
+            //未登录，点击进入登录
+            sendWxLogin();
         }
     }
 
@@ -140,17 +178,44 @@ public class MineActivity extends BaseActivity {
         if (event.getType() == BaseNotifyBean.TYPE.TYPE_LOGIN_WEIXIN) {
             if (!BaseUtils.isEmpty(event.getMessage())) {
                 //登录回调
+                loginWX(event.getMessage());
             }
         }
     }
+
     //消息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewsEvent(NewsEven event) {
-        if (event.getNews()==0){
+        if (event.getNews() == 0) {
             news_red_tv.setVisibility(View.GONE);
-        }else {
+        } else {
             news_red_tv.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void loginWX(String code) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("code", code);
+        requestGet(UrlList.WX_LOGIN, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+                WxLoginBean bean = JSON.parseObject(result, WxLoginBean.class);
+                if (bean.isSuccess()) {
+                    //先删除用户数据
+                    SFApplication.loginDataBean = bean.getData();
+                    updateView();
+                    DataSupport.deleteAll(LoginDataBean.class);
+                    LoginDataBean loginDataBean = bean.getData();
+                    //存储用户数据
+                    loginDataBean.save();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
     }
 
     /**

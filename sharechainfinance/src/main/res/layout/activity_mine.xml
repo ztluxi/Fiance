@@ -7,9 +7,9 @@
     android:orientation="vertical">
 
     <com.sharechain.finance.view.BounceScrollView
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,6 +45,7 @@
                             android:src="@drawable/back" />
 
                         <LinearLayout
+                            android:id="@+id/ll_user_login"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center|top"
@@ -60,7 +61,7 @@
                                 android:text="@string/login_privilege"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
-                                android:visibility="gone" />
+                                android:visibility="visible" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -73,29 +74,39 @@
                                 android:layout_alignParentLeft="true"
                                 android:src="@drawable/icon_share_weixin" />
 
-                            <TextView
-                                android:id="@+id/user_name"
+                            <LinearLayout
+                                android:id="@+id/ll_user_info"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/user_image"
                                 android:layout_marginTop="10dp"
-                                android:text="未来财经"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:visibility="visible" />
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
-                            <TextView
-                                android:id="@+id/user_uid"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/user_image"
-                                android:text="@string/uid"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:visibility="visible" />
+                                <TextView
+                                    android:id="@+id/user_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/user_image"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/user_uid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/user_image"
+                                    android:text="@string/uid"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
                         </LinearLayout>
-                    </LinearLayout>
 
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -145,7 +156,6 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:ellipsize="end"
                         android:id="@+id/clear_cache_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -153,6 +163,7 @@
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
                         android:drawableRight="@drawable/icon_right"
+                        android:ellipsize="end"
                         android:gravity="right|center_vertical"
                         android:text=""
                         android:textColor="@color/about_font"
@@ -206,7 +217,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:background="@color/base_bg_color" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
             <FrameLayout
@@ -235,11 +248,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:elevation="2dp"
                             android:id="@+id/my_follow_tv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawableTop="@drawable/follow"
+                            android:elevation="2dp"
                             android:gravity="center"
                             android:paddingLeft="10dp"
                             android:paddingTop="10dp"
@@ -256,10 +269,10 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:elevation="2dp"
                             android:id="@+id/my_news_rl"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
+                            android:elevation="2dp"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -296,13 +309,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:elevation="2dp"
                             android:id="@+id/history_tv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@+id/user_image"
                             android:layout_weight="1"
                             android:drawableTop="@drawable/history"
+                            android:elevation="2dp"
                             android:gravity="center"
                             android:paddingRight="10dp"
                             android:paddingTop="10dp"

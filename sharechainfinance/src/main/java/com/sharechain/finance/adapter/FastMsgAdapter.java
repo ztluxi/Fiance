@@ -85,6 +85,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
             } else if (listData.get(i).getMsgType() == 2) {
                 //重要
                 childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_orange_msg_bg);
+                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_big));
             } else if (listData.get(i).getMsgType() == 3) {
                 //非常重要
                 childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_red_msg_bg);

@@ -1,4 +1,4 @@
-package com.sharechain.finance.wxapi;
+package com.weilai.finance.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,6 +28,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         api = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID, false);
+        api.handleIntent(getIntent(), this);
     }
 
     @Override
@@ -81,6 +82,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             baseNotifyBean.setMessage(result);
             EventBus.getDefault().post(baseNotifyBean);
         }
+        finish();
     }
 
 }

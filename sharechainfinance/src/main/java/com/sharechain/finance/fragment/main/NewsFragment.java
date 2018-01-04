@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.NewsListAdapter;
 import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HomeArticleListBean;
@@ -19,7 +19,7 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.view.MyXRefreshViewHeader;
+import com.sharechain.finance.view.BGAMyRefreshViewHolder;
 
 import org.litepal.crud.DataSupport;
 
@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 import static com.sharechain.finance.bean.ArticleListsBean.CACHE_TYPE_RECOMMENT;
 
@@ -36,15 +37,16 @@ import static com.sharechain.finance.bean.ArticleListsBean.CACHE_TYPE_RECOMMENT;
  * Created by Administrator on 2017/12/15.
  */
 
-public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNewsListItemClickListener {
+public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNewsListItemClickListener
+        , BGARefreshLayout.BGARefreshLayoutDelegate {
 
     private static final String NEWS_TYPE_KEY = "NewsTypeKey";
     private static final String NEWS_TYPE_POSITION = "NewsTypePosition";
 
     @BindView(R.id.news_rv)
     RecyclerView mNewsRV;
-    @BindView(R.id.xrefreshview)
-    XRefreshView xRefreshView;
+    @BindView(R.id.rl_recyclerview_refresh)
+    BGARefreshLayout mRefreshLayout;
 
     private NewsListAdapter mNewsListAdapter;
     private HomeIndexBean homeIndexBean;
@@ -80,30 +82,8 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     @Override
     protected void initView() {
         mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData());
-        initXRefreshView(xRefreshView);
-        MyXRefreshViewHeader header = new MyXRefreshViewHeader(getActivity());
-        header.setBlueBackground();
-        xRefreshView.setCustomHeaderView(header);
-        xRefreshView.setPullRefreshEnable(true);
-        xRefreshView.setPullLoadEnable(true);
-        xRefreshView.setAutoRefresh(false);
-        xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                super.onRefresh(isPullDown);
-                page = 1;
-                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                super.onLoadMore(isSilence);
-                page++;
-                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
-            }
-
-        });
+        mRefreshLayout.setDelegate(this);
+        mRefreshLayout.setRefreshViewHolder(new BGAMyRefreshViewHolder(SFApplication.get(getActivity()), true));
 
         mNewsRV.setHasFixedSize(true);
         mNewsRV.setLayoutManager(new LinearLayoutManager(getActivity(),
@@ -133,9 +113,9 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         requestGet(UrlList.HOME_ARTICLE_LIST, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
-                if (xRefreshView != null) {
-                    xRefreshView.stopRefresh();
-                    xRefreshView.stopLoadMore();
+                if (mRefreshLayout != null) {
+                    mRefreshLayout.endRefreshing();
+                    mRefreshLayout.endLoadingMore();
                 }
                 HomeArticleListBean bean = JSON.parseObject(result, HomeArticleListBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
@@ -159,9 +139,9 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
             @Override
             protected void onFailed(String errStr) {
-                if (xRefreshView != null) {
-                    xRefreshView.stopRefresh();
-                    xRefreshView.stopLoadMore();
+                if (mRefreshLayout != null) {
+                    mRefreshLayout.endRefreshing();
+                    mRefreshLayout.endLoadingMore();
                 }
             }
         });
@@ -199,6 +179,19 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         if (mNewsListAdapter != null) {
             mNewsListAdapter.notifyCircleAll();
         }
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        page = 1;
+        getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        page++;
+        getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+        return false;
     }
 
 }

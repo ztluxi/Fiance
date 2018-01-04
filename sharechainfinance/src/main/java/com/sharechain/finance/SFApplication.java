@@ -10,10 +10,12 @@ import android.view.WindowManager;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.youdao.sdk.app.YouDaoApplication;
+import com.sharechain.finance.bean.FastMsgData;
+import com.sharechain.finance.bean.LoginDataBean;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.litepal.LitePal;
+import org.litepal.crud.DataSupport;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -40,6 +42,8 @@ public class SFApplication extends MultiDexApplication {
     public static String WX_APPID = "wx07fd5363e3b104ef";
     public static String WX_APPSECRET = "683296feadec6cfb9768e38271430238";
     public static String WX_LOGIN_STATE = "wx_login_state";
+    public static FastMsgData shareData;//首页热讯分享数据
+    public static LoginDataBean loginDataBean;//登录数据
 
     public static SFApplication get(Context context) {
         return (SFApplication) context.getApplicationContext();
@@ -68,6 +72,12 @@ public class SFApplication extends MultiDexApplication {
         OkHttpUtils.initClient(okHttpClient);
         //ActivityLifeLifeCycle
         registerActivityListener();
+        //判断是否登录
+        List<LoginDataBean> users = DataSupport.findAll(LoginDataBean.class);
+        if (users.size() > 0) {
+            //已登录
+            loginDataBean = users.get(0);
+        }
 //        YouDaoApplication.init(this, "3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
 
         Logger.addLogAdapter(new AndroidLogAdapter());

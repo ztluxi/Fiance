@@ -17,6 +17,7 @@ public class FastMsgData implements Serializable {
     private String title;//标题
     private String hour;//时间
     private String url;
+    private int id;//id
 
     public String getSectionText() {
         return sectionText;
@@ -72,5 +73,13 @@ public class FastMsgData implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -1,7 +1,6 @@
 package com.sharechain.finance.fragment.main;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -11,6 +10,7 @@ import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.FastMsgAdapter;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.FastMsgBean;
@@ -18,10 +18,9 @@ import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.BaseWebViewActivity;
-import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FastMsgDialog;
+import com.sharechain.finance.view.MyXRefreshViewHeader;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +64,9 @@ public class FastMsgFragment extends BaseFragment {
             EventBus.getDefault().register(this);
         }
         initXRefreshView(xRefreshView);
+        MyXRefreshViewHeader header = new MyXRefreshViewHeader(getActivity());
+        header.setBlueBackground(R.color.base_bg_color, R.color.colorBlack);
+        xRefreshView.setCustomHeaderView(header);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
@@ -91,8 +93,7 @@ public class FastMsgFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE &&
-                        !BaseUtils.isEmpty(dataList.get(i).getUrl())) {
+                if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE) {
                     new FastMsgDialog(getActivity(), dataList.get(i)).show();
                 }
             }
@@ -109,12 +110,19 @@ public class FastMsgFragment extends BaseFragment {
         }
         updateView();
         getDetail();
+        if (SFApplication.shareData != null) {
+            new FastMsgDialog(getActivity(), SFApplication.shareData).show();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(BaseNotifyBean event) {
         if (event.getType() == BaseNotifyBean.TYPE.TYPE_SHARE_RESULT) {
-            Snackbar.make(findViewById(R.id.cl_root), event.getMessage(), Snackbar.LENGTH_SHORT).show();
+            //分享回调
+        } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_SCROLL_MSG) {
+            //弹出分享对话框
+            FastMsgData getData = (FastMsgData) event.getObj();
+            new FastMsgDialog(getActivity(), getData).show();
         }
     }
 
@@ -168,6 +176,7 @@ public class FastMsgFragment extends BaseFragment {
                         }
                         String content = parentBean.getList().get(j).getText();
                         FastMsgData childData = new FastMsgData();
+                        childData.setId(parentBean.getList().get(j).getId());
                         childData.setSectionText(sectionText);//日期
                         childData.setType(FastMsgData.CHILD_TYPE);//子item
                         childData.setDataText(content);//内容
