@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_mogul_item_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -71,7 +72,7 @@
 
         <TextView
             android:id="@+id/mogul_content_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mogul_head_iv"
             android:layout_marginTop="18dp"
@@ -80,8 +81,8 @@
             android:paddingRight="10dp"
             android:text="比特币这东西，早买晚买都是买的！"
             android:textColor="@color/colorBlack"
-            android:textSize="14sp" />
-
+            android:textSize="14sp"
+            />
 
         <TextView
             android:paddingTop="3dp"

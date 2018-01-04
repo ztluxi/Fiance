@@ -3,8 +3,6 @@ package com.sharechain.finance.fragment.main;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,17 +24,8 @@ import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MogulFollowSearchActivity;
 import com.sharechain.finance.module.mine.MyFollowActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.utils.PopOptionUtil;
-import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
-import com.youdao.sdk.app.Language;
-import com.youdao.sdk.app.LanguageUtils;
-import com.youdao.sdk.ydonlinetranslate.Translator;
-import com.youdao.sdk.ydtranslate.Translate;
-import com.youdao.sdk.ydtranslate.TranslateErrorCode;
-import com.youdao.sdk.ydtranslate.TranslateListener;
-import com.youdao.sdk.ydtranslate.TranslateParameters;
 
 import org.litepal.crud.DataSupport;
 
@@ -166,6 +155,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setId(mogul_id);
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
+                        mogulData.setType(1);
                         mogulDataList.add(mogulData);
                     }
                 }
@@ -206,88 +196,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         }
     }
 
-//    @Override
-//    public void onTranslateClick(final View view, final int position, final List<MogulData> list) {
-//        if (list.get(position).getTranslate() != null) {
-//            isTranslate = true;
-//            optionUtil.setTextView(getString(R.string.reture));
-//        } else {
-//            optionUtil.setTextView(getString(R.string.translate));
-//            isTranslate = false;
-//        }
-//        view.setBackgroundColor(getResources().getColor(R.color.about_font));
-//        final String content = list.get(position).getContent();
-//        optionUtil.setOnPopClickEvent(new PopOptionUtil.PopClickEvent() {
-//            @Override
-//            public void onPreClick() {
-//                BaseUtils.copyComment(content, SFApplication.get(getActivity()));
-//                optionUtil.dismiss();
-//                ToastManager.showShort(getActivity(), getString(R.string.copy_success));
-//            }
-//
-//            @Override
-//            public void onNextClick() {
-//                query(view, list, position, content);
-//                optionUtil.dismiss();
-//
-//            }
-//        });
-//        optionUtil.show(view);
-//
-//    }
-
-
-//    private void query(final View view, final List<MogulData> mogulDataList1, final int position, String input) {
-//        // 源语言或者目标语言其中之一必须为中文,目前只支持中文与其他几个语种的互译
-//        String to = "中文";
-//        String from = "英文";
-//        Language langFrom = LanguageUtils.getLangByName(from);
-//        // 若设置为自动，则查询自动识别源语言，自动识别不能保证完全正确，最好传源语言类型
-//        Language langTo = LanguageUtils.getLangByName(to);
-//        TranslateParameters tps = new TranslateParameters.Builder()
-//                .source("youdao").from(langFrom).to(langTo).timeout(3000).build();// appkey可以省略
-//        translator = Translator.getInstance(tps);
-//        translator.lookup(input, "requestId", new TranslateListener() {
-//            @Override
-//            public void onResult(final Translate result, String input, String requestId) {
-//                mHander.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        view.setBackgroundColor(getResources().getColor(R.color.white));
-//                        MogulData mogulData = new MogulData();
-//                        mogulData.setHead(mogulDataList1.get(position).getHead());
-//                        mogulData.setWeibo(mogulDataList1.get(position).getWeibo());
-//                        mogulData.setTime(mogulDataList1.get(position).getTime());
-//                        mogulData.setPosition(mogulDataList1.get(position).getPosition());
-//                        mogulData.setFabulous(mogulDataList1.get(position).getFabulous());
-//                        mogulData.setUrlList(mogulDataList1.get(position).getUrlList());
-//                        mogulData.setContent(mogulDataList1.get(position).getContent());
-//                        mogulData.setName(mogulDataList1.get(position).getName());
-//                        if (isTranslate) {
-//                            mogulData.setTranslate(null);
-//
-//                        } else {
-//                            mogulData.setTranslate(result);
-//                        }
-//                        mogulDataList.set(position, mogulData);
-//                        updateAdapter(position);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onError(final TranslateErrorCode error, String requestId) {
-//                mHander.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        ToastManager.showShort(getActivity(), "翻译失败:" + error.name());
-//                    }
-//                });
-//            }
-//        });
-//    }
-
     //点赞
     private void addFabulous(int id) {
         final Map<String, String> params = new HashMap<>();
@@ -327,7 +235,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         }
         if (mogulAdapter == null) {
             mogulAdapter = new MogulAdapter(getActivity(), mogulDataList, 0);
-//            mogulAdapter.setOnItemLongClickListener(this);
             mogulAdapter.setOnItemClickListener(this);
             mRvPostLister.setAdapter(mogulAdapter);
         } else {
@@ -369,5 +276,10 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         mogulShareBean.setWeibo(list.get(position).getWeibo());
         MogulShareDialog mogulShareDialog = new MogulShareDialog(getActivity(), mogulShareBean);
         mogulShareDialog.show();
+    }
+
+    @Override
+    public void onFollow(View view, int position, List<MogulData> list) {
+
     }
 }

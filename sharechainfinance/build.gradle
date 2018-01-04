@@ -96,7 +96,7 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-refreshlayout:1.1.7@aar'
 
     //photo包含动态权限
-    compile 'com.jph.takephoto:takephoto_library:4.0.3'
+//    compile 'com.jph.takephoto:takephoto_library:4.0.3'
 
     //logger
     compile 'com.orhanobut:logger:2.1.1'
@@ -120,13 +120,8 @@ dependencies {
     compile 'com.bm.photoview:library:1.4.1'
 
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-    implementation files('libs/YoudaoBase.jar')
-    implementation files('libs/YoudaoTranslateOnline.jar')
-
     //jsoup
     compile 'org.jsoup:jsoup:1.10.1'
 
-    //富文本
-    compile 'com.zzhoujay.richtext:richtext:3.0.4'
 }
 

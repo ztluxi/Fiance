@@ -11,15 +11,10 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.module.mine.AboutFinanceActivity;
 import com.sharechain.finance.module.mine.FeedbackActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
-import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.module.mine.MyNewsActivity;
-import com.sharechain.finance.module.mine.PersonalCenterActivity;
 import com.sharechain.finance.utils.GlideUtils;
-import com.sharechain.finance.utils.ToastManager;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,7 +53,7 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        RequestOptions options = new RequestOptions().circleCrop();
+        RequestOptions options = new RequestOptions().circleCrop().transform(new GlideUtils.GlideCircleTransform(getActivity(),2,getActivity().getResources().getColor(R.color.white)));
         options.placeholder(R.drawable.logo);
         options.error(R.drawable.logo);
         GlideUtils.getInstance().loadUserImage(getActivity(),"http://img4.duitang.com/uploads/item/201208/17/20120817123857_NnPNB.thumb.600_0.jpeg",userImage,options);
@@ -75,7 +70,7 @@ public class MineFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_image:
-                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+//                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
                 break;
             case R.id.history_tv:
                 startActivity(new Intent(getActivity(), HistoryActivity.class));

@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,14 @@ import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.MyImageGetter;
 import com.sharechain.finance.utils.ShareUtils;
-import com.zzhoujay.richtext.RichText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static cn.bingoogolapple.baseadapter.BGABaseAdapterUtil.getColor;
 
 /**
  * *Created by ${zhoutao} on 2017/12/24 0013.
@@ -117,7 +121,11 @@ public class MogulShareDialog extends Dialog {
             text_weibo.setText(mogulShareBean.getWeibo()+"");
             text_weibo.setVisibility(View.VISIBLE);
         }
-        RichText.fromHtml(mogulShareBean.getContent()).into(text_content);
+        MyImageGetter glide = new MyImageGetter(text_content,context);
+        text_content.setText(Html.fromHtml(mogulShareBean.getContent(), glide, null));
+        text_content.setMovementMethod(LinkMovementMethod.getInstance());
+        text_content.setLinkTextColor(getColor(R.color.tint_home_color));
+//        RichText.fromHtml(mogulShareBean.getContent()).into(text_content);
     }
 
     @Override

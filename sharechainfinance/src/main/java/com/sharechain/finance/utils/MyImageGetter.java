@@ -16,11 +16,11 @@ import com.bumptech.glide.request.transition.Transition;
  * Created by ${zhoutao} on 2018/1/3 0003.
  */
 
-public class ImageGlide implements Html.ImageGetter {
+public class MyImageGetter implements Html.ImageGetter {
     Context c;
     TextView container;
 
-    public ImageGlide(TextView text, Context c) {
+    public MyImageGetter(TextView text, Context c) {
         this.c = c;
         this.container = text;
     }
@@ -33,8 +33,8 @@ public class ImageGlide implements Html.ImageGetter {
                 if (resource != null) {
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(String.valueOf(resource));
                     drawable.addLevel(1, 1, bitmapDrawable);
-                    drawable.setBounds(0, 0, resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
-                    drawable.setLevel(1);
+                    drawable.setBounds(0, 0, 0, 0);
+                    drawable.setLevel(0);
                     container.invalidate();
                     container.setText(container.getText());
                 }

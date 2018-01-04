@@ -72,14 +72,12 @@ public class SFApplication extends MultiDexApplication {
         OkHttpUtils.initClient(okHttpClient);
         //ActivityLifeLifeCycle
         registerActivityListener();
-        //判断是否登录
+//        YouDaoApplication.init(this, "3fb99b9987d450cf");//创建应用，每个应 //判断是否登录
         List<LoginDataBean> users = DataSupport.findAll(LoginDataBean.class);
         if (users.size() > 0) {
             //已登录
             loginDataBean = users.get(0);
         }
-//        YouDaoApplication.init(this, "3fb99b9987d450cf");//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
-
         Logger.addLogAdapter(new AndroidLogAdapter());
     }
 

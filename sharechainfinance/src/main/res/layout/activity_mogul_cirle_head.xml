@@ -1,174 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/circle_head_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<RelativeLayout-->
-
-            <!--android:id="@+id/center_rl"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/white"-->
-            <!--android:orientation="vertical"-->
-            <!--android:paddingBottom="10dp">-->
-
-            <!--<ImageView-->
-
-                <!--android:id="@+id/mogul_bg_iv"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:background="@drawable/mogul_center_bg" />-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/back_iv"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:layout_marginTop="30dp"-->
-                <!--android:src="@drawable/back" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/mogul_top_name_tv"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:layout_marginTop="30dp"-->
-                <!--android:gravity="center"-->
-                <!--android:text="大哥大"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="18sp" />-->
-
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/content_ll"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:orientation="vertical"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="155dp">-->
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/mogul_center_iv"-->
-                    <!--android:layout_width="70dp"-->
-                    <!--android:layout_height="70dp"-->
-                    <!--android:src="@drawable/user" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/mogul_name_tv"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text="王者"-->
-                    <!--android:textColor="@color/colorBlack"-->
-                    <!--android:textSize="14sp" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/mogul_position_tv"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text="比特币分析师"-->
-                    <!--android:textColor="@color/about_font"-->
-                    <!--android:textSize="12sp" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/mogul_follow_tv"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:layout_alignParentBottom="true"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:background="@drawable/my_no_follow_bg"-->
-                    <!--android:elevation="2dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/follow"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:textSize="12sp" />-->
-
-            <!--</LinearLayout>-->
-
-
-            <!--<View-->
-                <!--android:id="@+id/view_line"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="11dp"-->
-                <!--android:layout_below="@+id/content_ll"-->
-                <!--android:background="@color/base_bg_color" />-->
-
-            <!--<cn.bingoogolapple.refreshlayout.BGARefreshLayout-->
-                <!--android:id="@+id/rl_recyclerview_refresh"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_below="@+id/view_line"-->
-                <!--android:visibility="visible">-->
-
-
-                <!--<android.support.v4.widget.NestedScrollView-->
-                    <!--android:id="@+id/nsv"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent">-->
-
-
-                    <!--<android.support.v7.widget.RecyclerView-->
-                        <!--android:id="@+id/mogul_circle_rl"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:background="@color/white"-->
-                        <!--android:visibility="visible" />-->
-
-                <!--</android.support.v4.widget.NestedScrollView>-->
-
-            <!--</cn.bingoogolapple.refreshlayout.BGARefreshLayout>-->
-
-
-        <!--</RelativeLayout>-->
-
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/no_result_rl"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:visibility="gone">-->
-
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:layout_below="@+id/no_result"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="50dp"-->
-                <!--android:text="@string/load_no_data"-->
-                <!--android:textColor="@color/about_font" />-->
-
-        <!--</RelativeLayout>-->
-
-    <!--</LinearLayout>-->
-
-
-    <com.andview.refreshview.XRefreshView
-        android:visibility="visible"
-        android:id="@+id/xrefreshview_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView
-            android:id="@+id/my_news_lv"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+
+            android:id="@+id/center_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <ImageView
+
+                android:id="@+id/mogul_bg_iv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/mogul_center_bg" />
+
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/mogul_top_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="大哥大"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+            <LinearLayout
+                android:id="@+id/content_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="155dp">
+
+                <ImageView
+                    android:id="@+id/mogul_head_center_iv"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/user" />
+
+                <TextView
+                    android:id="@+id/mogul_head_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="王者"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/mogul_head_position_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="比特币分析师"
+                    android:textColor="@color/about_font"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/mogul_head_follow_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/my_no_follow_bg"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:text="@string/follow"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/no_result_rl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
-        </ListView>
-    </com.andview.refreshview.XRefreshView>
+            android:visibility="gone">
 
-    <include layout="@layout/layout_empty_view"></include>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@+id/no_result"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="@string/load_no_data"
+                android:textColor="@color/about_font" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="11dp"
+        android:layout_below="@+id/content_ll"
+        android:background="@color/base_bg_color" />
 
 </LinearLayout>
