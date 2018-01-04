@@ -127,7 +127,6 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
                     //给tagId赋值
                     for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
                         tmp.setTagId(tmp.getID());
-                        tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
                         if (page == 1) {
                             tmp.save();
                         }

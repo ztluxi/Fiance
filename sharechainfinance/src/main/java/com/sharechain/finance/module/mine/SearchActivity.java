@@ -227,7 +227,6 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
                     //给tagId赋值
                     for (ArticleListsBean tmp : bean.getData().getArticle_lists()) {
                         tmp.setTagId(tmp.getID());
-                        tmp.setUser_avatars(BaseUtils.getSubImageUrl(tmp.getUser_avatars(), "i:128;s:92:", ";i:64;s:90:"));
                     }
                     dataList.addAll(bean.getData().getArticle_lists());
                     answerAdapter.setData(dataList);
