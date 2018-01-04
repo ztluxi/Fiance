@@ -49,6 +49,12 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
     public void initView() {
         initTitle(getString(R.string.history));
         back_Image.setVisibility(View.VISIBLE);
+        back_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         clearHistoryIv.setVisibility(View.VISIBLE);
         clearHistoryIv.setImageResource(R.drawable.clear);
         clearHistoryIv.setOnClickListener(new View.OnClickListener() {

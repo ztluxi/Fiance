@@ -266,7 +266,7 @@ public class HomeFragment extends BaseFragment {
         table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
         table.setNewsChannelName(titleListsBean.getName());
         table.setCacheType(NewsChannelTable.CACHE_TYPE_MINE);//设置缓存类型为全部
-        if (i == 0) {
+        if (titleListsBean.getTerm_taxonomy_id() == -1) {
             table.setNewsChannelFixed(true);
             table.setNewsChannelSelect(false);
         } else {
