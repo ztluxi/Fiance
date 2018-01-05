@@ -51,7 +51,9 @@ public class FeedbackActivity extends BaseActivity {
     public void initView() {
         initTitle(getString((R.string.feedback)));
         back_Image.setVisibility(View.VISIBLE);
+
     }
+
 
     @Override
     public void initData() {

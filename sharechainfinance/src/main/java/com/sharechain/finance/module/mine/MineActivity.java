@@ -111,13 +111,13 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
             user_login.setVisibility(View.GONE);
             exitTv.setVisibility(View.VISIBLE);
             userName.setText(SFApplication.loginDataBean.getNick_name());
-            RequestOptions options = new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            RequestOptions options = new RequestOptions().circleCrop().placeholder(R.drawable.user_center_default).diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             GlideUtils.getInstance().loadUserImage(MineActivity.this.getApplicationContext(), SFApplication.loginDataBean.getHead_img(), userImage, options);
         } else {
             //未登录
             ll_user_info.setVisibility(View.GONE);
             user_login.setVisibility(View.VISIBLE);
-            userImage.setImageResource(R.drawable.icon_share_weixin);
+            userImage.setImageResource(R.drawable.user_center_default);
             exitTv.setVisibility(View.GONE);
         }
     }

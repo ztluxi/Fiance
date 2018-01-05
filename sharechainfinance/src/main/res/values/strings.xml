@@ -112,5 +112,7 @@
     <string name="exit_no">否</string>
     <string name="exit_login">确定退出登录</string>
     <string name="please_enter_keyword">请输入关键字!</string>
+    <string name="come_from_finance">来自未来财经</string>
+    <string name="via_finance">Via:未来财经</string>
 
 </resources>

@@ -114,8 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:text="来自未来财经\n
-UID1233"
+                            android:text="@string/come_from_finance"
                             android:textColor="@android:color/black"
                             android:textSize="10sp" />
 

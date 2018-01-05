@@ -25,7 +25,7 @@
                 <LinearLayout
                     android:id="@+id/ll_top_info"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="220dp"
                     android:background="@drawable/mine_bg"
                     android:orientation="horizontal">
 
@@ -72,7 +72,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_alignParentLeft="true"
-                                android:src="@drawable/icon_share_weixin" />
+                                android:src="@drawable/user_center_default" />
 
                             <LinearLayout
                                 android:id="@+id/ll_user_info"
@@ -112,7 +112,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="20dp"
                     android:layout_below="@+id/news_red_tv"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="32dp" />
@@ -192,11 +192,10 @@
                         android:layout_height="match_parent"
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="10dp"
                         android:drawableRight="@drawable/right"
                         android:ellipsize="end"
                         android:gravity="right|center_vertical"
-                        android:text=""
                         android:textColor="@color/about_font"
                         android:textSize="16sp" />
 
@@ -350,9 +349,9 @@
 
                             <TextView
                                 android:id="@+id/news_red_tv"
-                                android:layout_width="8dp"
-                                android:layout_height="8dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_toRightOf="@+id/my_news_tv"
                                 android:background="@drawable/usercenter_news_red_circle"
                                 android:visibility="visible" />

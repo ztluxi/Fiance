@@ -82,7 +82,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.FeedbackActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.AboutFinanceActivity"

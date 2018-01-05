@@ -30,6 +30,8 @@
             android:orientation="horizontal"
             android:visibility="visible">
             <EditText
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:drawablePadding="5dp"
                 android:background="@null"
                 android:paddingRight="5dp"
@@ -78,18 +80,18 @@
 
     </RelativeLayout>
 
-    <com.andview.refreshview.XRefreshView
-        android:visibility="visible"
-        android:id="@+id/xrefreshview_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<com.andview.refreshview.XRefreshView-->
+        <!--android:visibility="visible"-->
+        <!--android:id="@+id/xrefreshview_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
         <ListView
             android:id="@+id/my_news_lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
         </ListView>
-    </com.andview.refreshview.XRefreshView>
+    <!--</com.andview.refreshview.XRefreshView>-->
 
     <include layout="@layout/layout_empty_view"></include>
 

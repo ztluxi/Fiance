@@ -19,7 +19,7 @@
 			android:id="@+id/upload_tv"
 		  android:layout_width="fill_parent"
 		  android:layout_height="wrap_content" 
-		  android:text="正在加载..."
+		  android:text="@string/loading"
 		  android:textSize="15sp" 
 		  android:paddingTop="10dp"
 		  android:paddingRight="10dp"
