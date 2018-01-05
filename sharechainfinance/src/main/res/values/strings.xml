@@ -111,5 +111,6 @@
     <string name="exit_yes">是</string>
     <string name="exit_no">否</string>
     <string name="exit_login">确定退出登录</string>
+    <string name="please_enter_keyword">请输入关键字!</string>
 
 </resources>

@@ -70,7 +70,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
     private MyFollowAdapter followAdapter;
 
     private Dialog mDialog;
-
+    public int PAGE = 1;//页数
     @Override
     public int getLayout() {
         return R.layout.activity_my_follow;
@@ -91,15 +91,15 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
             @Override
             public void onRefresh(boolean isPullDown) {
                 super.onRefresh(isPullDown);
-                UrlList.PAGE = 1;
-                getFollow();
+                PAGE = 1;
+                getFollow(PAGE);
             }
 
             @Override
             public void onLoadMore(boolean isSilence) {
                 super.onLoadMore(isSilence);
-                UrlList.PAGE++;
-                getFollow();
+                PAGE++;
+                getFollow(PAGE);
             }
         });
 
@@ -123,7 +123,8 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     @Override
     public void initData() {
-        getFollow();
+        mDialog.show();
+        getFollow(PAGE);
     }
 
 
@@ -146,10 +147,10 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
 
     //获取我的关注列表
-    private void getFollow() {
-        mDialog.show();
+    private void getFollow(int page) {
+
         final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.PAGE_STR, String.valueOf(UrlList.PAGE));
+        params.put(UrlList.PAGE_STR, String.valueOf(page));
         requestGet(UrlList.GET_MY_FOLLOW, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
@@ -160,7 +161,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
                     empty_view.setVisibility(View.GONE);
                     refreshView.setVisibility(View.VISIBLE);
-                    if (UrlList.PAGE == 1) {
+                    if (PAGE == 1) {
                         followDataList.clear();
                     }
                     if (myFollowBean.getData().size() != 0) {
@@ -176,6 +177,9 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                         }
                     }
                 } else {
+                    if (PAGE!=1){
+                        ToastManager.showShort(MyFollowActivity.this,getString(R.string.nothing_more_data));
+                    }
                     empty_view.setVisibility(View.VISIBLE);
                     refreshView.setVisibility(View.GONE);
                 }

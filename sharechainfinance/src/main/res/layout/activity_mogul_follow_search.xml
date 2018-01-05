@@ -8,37 +8,65 @@
     <include layout="@layout/base_title" />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:id="@+id/follow_search_ll"
         android:visibility="visible"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/search_et"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/text_cancel"
+            android:layout_toStartOf="@+id/text_cancel"
             android:background="@drawable/mine_center_bg"
-            android:drawableLeft="@drawable/search"
-            android:drawablePadding="7dp"
-            android:gravity="center|left"
-            android:hint="搜索"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textColor="@color/about_font"
-            android:textColorHint="@color/about_font"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            android:visibility="visible">
+            <EditText
+                android:drawablePadding="5dp"
+                android:background="@null"
+                android:paddingRight="5dp"
+                android:layout_toLeftOf="@+id/delete_tv"
+                android:id="@+id/search_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/search"
+                android:gravity="center|left"
+                android:hint="搜索"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColor="@color/about_font"
+                android:textColorHint="@color/about_font"
+                android:textSize="15sp" />
 
+            <TextView
+                android:layout_marginRight="5dp"
+                android:id="@+id/delete_tv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignBaseline="@+id/search_et"
+                android:layout_alignBottom="@+id/search_et"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/search_delete"
+                android:gravity="center_vertical"
+                android:visibility="gone" />
+        </RelativeLayout>
         <TextView
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
             android:id="@+id/text_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/base_bg_color"
             android:gravity="center"
             android:onClick="onClick"
@@ -48,7 +76,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="14sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.andview.refreshview.XRefreshView
         android:visibility="visible"

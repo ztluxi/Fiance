@@ -59,7 +59,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     BGARefreshLayout mRefreshLayout;
     private MogulAdapter mogulAdapter;
     private List<MogulData> mogulDataList = new ArrayList<>();
-
+    public int PAGE = 1;//页数
     //转圈圈的加载框
     private Dialog mDialog;
     private MogulCircleBean bean;
@@ -122,7 +122,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
             if (bean.getSuccess() == 1 && bean.getData().getLists().size() != 0) {
                 empty_view.setVisibility(View.GONE);
                 mRefreshLayout.setVisibility(View.VISIBLE);
-                if (UrlList.PAGE == 1) {
+                if (PAGE == 1) {
                     mogulDataList.clear();
                 }
                 if (bean.getData().getLists().size() > 0) {
@@ -161,7 +161,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                     }
                 }
             } else {
-                if (UrlList.PAGE!=1){
+                if (PAGE!=1){
                     ToastManager.showShort(getActivity(),getString(R.string.nothing_more_data));
                 }
                 empty_view.setVisibility(View.VISIBLE);
@@ -182,7 +182,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         }
         updateView();
         mDialog.show();
-        getData(UrlList.PAGE);
+        getData(PAGE);
     }
 
     @OnClick({R.id.image_title_left, R.id.image_title_right})
@@ -222,15 +222,15 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        UrlList.PAGE = 1;
-        getData(UrlList.PAGE);
+        PAGE = 1;
+        getData(PAGE);
     }
 
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        UrlList.PAGE++;
-        getData(UrlList.PAGE);
+       PAGE++;
+        getData(PAGE);
         return false;
     }
 

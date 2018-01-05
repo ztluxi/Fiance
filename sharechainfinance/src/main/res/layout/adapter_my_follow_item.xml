@@ -64,11 +64,14 @@
 
 
         <TextView
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
             android:layout_marginTop="5dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:visibility="visible"
-            android:padding="3dp"
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:background="@drawable/mogul_follow_bg"

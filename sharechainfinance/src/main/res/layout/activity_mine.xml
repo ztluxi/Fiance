@@ -6,7 +6,7 @@
     android:background="@color/base_bg_color"
     android:orientation="vertical">
 
-    <com.sharechain.finance.view.BounceScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
@@ -112,7 +112,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/news_red_tv"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp" />
 
             </LinearLayout>
 
@@ -125,11 +128,27 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/suggest_tv"
-                    style="@style/user_item_style"
-                    android:drawableLeft="@drawable/suggest"
-                    android:text="@string/suggest" />
+                <LinearLayout
+                    android:background="@drawable/mine_item_touch_bg"
+                    android:paddingLeft="15dp"
+                    android:gravity="left|center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/suggest_iv"
+                        android:src="@drawable/suggest"
+                        android:text="@string/suggest" />
+
+                    <TextView
+                        android:id="@+id/suggest_tv"
+                        style="@style/user_item_style"
+                        android:text="@string/suggest" />
+
+                </LinearLayout>
 
                 <TextView
                     style="@style/user_list_line_horizontal"
@@ -142,12 +161,25 @@
                     android:background="@drawable/mine_item_touch_bg"
                     android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:background="@drawable/mine_item_touch_bg"
+                        android:paddingLeft="15dp"
+                        android:gravity="left|center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/clear_cache_iv"
+                            android:src="@drawable/clear_memory"
+                            android:text="@string/suggest" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/clear_memory"
                         android:drawablePadding="15dp"
                         android:gravity="center_vertical"
                         android:text="@string/clear_cache"
@@ -161,13 +193,14 @@
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/icon_right"
+                        android:drawableRight="@drawable/right"
                         android:ellipsize="end"
                         android:gravity="right|center_vertical"
                         android:text=""
                         android:textColor="@color/about_font"
                         android:textSize="16sp" />
 
+                    </LinearLayout>
                 </LinearLayout>
 
                 <View
@@ -175,22 +208,49 @@
                     android:layout_height="10dp"
                     android:background="@color/base_bg_color" />
 
+            <LinearLayout
+                android:background="@drawable/mine_item_touch_bg"
+                android:paddingLeft="15dp"
+                android:gravity="left|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/score_iv"
+                    android:src="@drawable/write_score"
+                    android:text="@string/suggest" />
                 <TextView
                     android:id="@+id/score_tv"
                     style="@style/user_item_style"
-                    android:drawableLeft="@drawable/write_score"
                     android:text="@string/score" />
-
+            </LinearLayout>
                 <TextView
                     style="@style/user_list_line_horizontal"
                     android:layout_marginLeft="10dp" />
 
+            <LinearLayout
+                android:background="@drawable/mine_item_touch_bg"
+                android:paddingLeft="15dp"
+                android:gravity="left|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/about_iv"
+                    android:src="@drawable/about"
+                    android:text="@string/suggest" />
                 <TextView
                     android:id="@+id/about_tv"
                     style="@style/user_item_style"
-                    android:drawableLeft="@drawable/about"
                     android:text="@string/about_app" />
 
+            </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -203,7 +263,6 @@
                     android:visibility="visible">
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/exit_tv"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
@@ -211,7 +270,8 @@
                         android:gravity="center"
                         android:text="@string/exit"
                         android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
@@ -277,7 +337,7 @@
                             android:orientation="vertical">
 
                             <TextView
-
+                                android:layout_marginLeft="5dp"
                                 android:id="@+id/my_news_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -292,7 +352,7 @@
                                 android:id="@+id/news_red_tv"
                                 android:layout_width="8dp"
                                 android:layout_height="8dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="8dp"
                                 android:layout_toRightOf="@+id/my_news_tv"
                                 android:background="@drawable/usercenter_news_red_circle"
                                 android:visibility="visible" />
@@ -328,6 +388,6 @@
 
         </RelativeLayout>
 
-    </com.sharechain.finance.view.BounceScrollView>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

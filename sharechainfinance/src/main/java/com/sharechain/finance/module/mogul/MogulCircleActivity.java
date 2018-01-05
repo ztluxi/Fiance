@@ -68,7 +68,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     public int getLayout() {
         return R.layout.activity_mogul_cirle;
     }
-
+    public int PAGE = 1;//页数
     /**
      * 是否关注
      */
@@ -117,19 +117,18 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     }
 
     //获取大佬个人中心
-    private void getMogulDetail(int mogulId) {
-
+    private void getMogulDetail(int page) {
         final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulId));
+        params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(id));
         params.put(UrlList.LIMIT, String.valueOf(10));
-        params.put(UrlList.PAGE_STR, String.valueOf(UrlList.PAGE));
+        params.put(UrlList.PAGE_STR, String.valueOf(page));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
                 Logger.d(result);
-                if (UrlList.PAGE == 1) {
+                if (PAGE == 1) {
                     mogulDataList.clear();
                     mogulDataList.add(headData);
                 }
@@ -169,7 +168,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                         }
                     }
                 } else {
-                    if (UrlList.PAGE == 1) {
+                    if (PAGE == 1) {
                         ToastManager.showShort(MogulCircleActivity.this, getString(R.string.load_no_data));
                     } else {
                         ToastManager.showShort(MogulCircleActivity.this, getString(R.string.nothing_more_data));
@@ -276,15 +275,15 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
-        UrlList.PAGE = 1;
-        getMogulDetail(UrlList.PAGE);
+        PAGE = 1;
+        getMogulDetail(PAGE);
 
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        UrlList.PAGE++;
-        getMogulDetail(UrlList.PAGE);
+        PAGE++;
+        getMogulDetail(PAGE);
         return false;
     }
 

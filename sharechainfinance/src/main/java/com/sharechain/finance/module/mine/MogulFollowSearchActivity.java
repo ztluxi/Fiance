@@ -3,6 +3,8 @@ package com.sharechain.finance.module.mine;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -55,10 +57,12 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
     TextView text_cancel;
     @BindView(R.id.search_et)
     EditText search_et;
-    @BindView(R.id.follow_search_ll)
-    LinearLayout followSearchLL;
     @BindView(R.id.empty_view)
     TextView empty_view;
+    @BindView(R.id.delete_tv)
+    TextView deleteTv;
+
+
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
     private List<FollowData> followDataList = new ArrayList<>();
@@ -69,6 +73,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
     private Dialog mDialog;
     //默认不搜索
     private boolean isSearch = false;
+    public int PAGE = 1;//页数
 
     @Override
     public int getLayout() {
@@ -85,7 +90,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
         }
         back_Image.setVisibility(View.VISIBLE);
 
-        initXRefreshView(refreshView);
+//        initXRefreshView(refreshView);
 //        refreshView.setPullRefreshEnable(true);
 //        refreshView.setPullLoadEnable(true);
 
@@ -135,13 +140,36 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                 if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     //点击搜索才出来内容
                     isSearch = true;
-                    searchMogul(search_et.getText().toString());
+                    if (search_et.getText().toString().equals("")) {
+                        ToastManager.showShort(MogulFollowSearchActivity.this, getString(R.string.please_enter_keyword));
+                    } else {
+                        searchMogul(search_et.getText().toString());
+                    }
                     return true;
                 }
                 return false;
             }
         });
+        search_et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0) {
+                    deleteTv.setVisibility(View.VISIBLE);
+                } else {
+                    deleteTv.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         myNewslv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -154,7 +182,14 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                 BaseUtils.openActivity(MogulFollowSearchActivity.this, MogulCircleActivity.class, bundle);
             }
         });
-
+        deleteTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_et.getText().clear();
+                followDataList.clear();
+                updateAdapter();
+            }
+        });
     }
 
     //2搜索大佬圈 1 搜索我的关注
@@ -163,7 +198,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
         String url = null;
         final Map<String, String> params = new HashMap<>();
         params.put("search_str", search_str);
-        params.put(UrlList.PAGE_STR, String.valueOf(UrlList.PAGE));
+        params.put(UrlList.PAGE_STR, String.valueOf(PAGE));
         params.put(UrlList.LIMIT, String.valueOf(10));
         if (type == 2) {
             url = UrlList.MOGUL_CIRCLE;
@@ -198,40 +233,32 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                         }
                     }
                 } else {
-
 //                {"success":1,"msg":"获取成功","data":[]}
-                    try {
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(result);
-                        String data = jsonObject.getString("data");
-                        if (data.equals("[]")) {
-                            empty_view.setVisibility(View.VISIBLE);
-                            refreshView.setVisibility(View.GONE);
-                        } else {
-                            MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
-                            int focus = bean.getData().getIs_focus();
-                            if (bean.getSuccess() == 1) {
-                                //如果返回数据为空
-                                if (bean.getData() == null || bean.getData().equals("")) {
-                                    empty_view.setVisibility(View.GONE);
-                                    refreshView.setVisibility(View.GONE);
-                                    return;
-                                }
-                                if (bean.getData().getLists().size() != 0) {
-                                    for (int i = 0; i < bean.getData().getLists().size(); i++) {
-                                        FollowData followData = new FollowData();
-                                        followData.setPosition(bean.getData().getLists().get(i).getProfessional());
-                                        followData.setWeibo(bean.getData().getLists().get(i).getScreen_name());
-                                        followData.setName(bean.getData().getLists().get(i).getFull_name());
-                                        followData.setImage(bean.getData().getLists().get(i).getProfile_image_url());
-                                        followData.setFacous(focus);
-                                        followDataList.add(followData);
-                                    }
+                    MogulCircleBean bean = JSON.parseObject(result, MogulCircleBean.class);
+                    if (bean.getData().getLists().size() == 0) {
+                        empty_view.setVisibility(View.VISIBLE);
+                        refreshView.setVisibility(View.GONE);
+                    } else {
+                        int focus = bean.getData().getIs_focus();
+                        if (bean.getSuccess() == 1) {
+                            //如果返回数据为空
+                            if (bean.getData() == null || bean.getData().equals("")) {
+                                empty_view.setVisibility(View.GONE);
+                                refreshView.setVisibility(View.GONE);
+                                return;
+                            }
+                            if (bean.getData().getLists().size() != 0) {
+                                for (int i = 0; i < bean.getData().getLists().size(); i++) {
+                                    FollowData followData = new FollowData();
+                                    followData.setPosition(bean.getData().getLists().get(i).getProfessional());
+                                    followData.setWeibo(bean.getData().getLists().get(i).getScreen_name());
+                                    followData.setName(bean.getData().getLists().get(i).getFull_name());
+                                    followData.setImage(bean.getData().getLists().get(i).getProfile_image_url());
+                                    followData.setFacous(focus);
+                                    followDataList.add(followData);
                                 }
                             }
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
                 updateAdapter();
@@ -422,20 +449,13 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
     }
 
 
-    @OnClick({R.id.image_title_left, R.id.image_title_right, R.id.text_cancel})
+    @OnClick({R.id.image_title_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
                 finish();
                 break;
-            case R.id.image_title_right:
-                followSearchLL.setVisibility(View.VISIBLE);
-                break;
-            case R.id.text_cancel:
-                search_et.getText().clear();
-                followDataList.clear();
-                updateAdapter();
-                break;
+
         }
     }
 

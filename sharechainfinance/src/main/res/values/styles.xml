@@ -34,16 +34,16 @@
     </style>
 
     <style name="user_item_style">
-        <item name="android:background">@drawable/mine_item_touch_bg</item>
+
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">55dp</item>
         <item name="android:paddingRight">15dp</item>
-        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingLeft">10dp</item>
         <item name="android:drawablePadding">15dp</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">16sp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:drawableRight">@drawable/icon_right</item>
+        <item name="android:drawableRight">@drawable/right</item>
     </style>
 
     <style name="news_summary_card_view">
