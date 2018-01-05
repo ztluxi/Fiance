@@ -45,10 +45,12 @@
                             android:src="@drawable/back" />
 
                         <LinearLayout
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
                             android:id="@+id/ll_user_login"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center|top"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal|top"
                             android:orientation="vertical"
                             android:paddingRight="35dp">
 

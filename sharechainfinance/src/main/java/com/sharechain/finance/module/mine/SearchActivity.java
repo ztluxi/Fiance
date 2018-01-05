@@ -168,6 +168,7 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
     //提供数据源
     @Override
     public void initData() {
+        showSoftKeyboard();
         DataSupport.findAllAsync(SearchTagBean.class).listen(new FindMultiCallback() {
             @Override
             public <T> void onFinish(List<T> t) {

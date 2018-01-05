@@ -24,6 +24,7 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -48,12 +49,15 @@ import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.TimeUtil;
+import com.sharechain.finance.view.FixedSpeedScroller;
 import com.sharechain.finance.view.ScaleInTransformer;
 import com.sharechain.finance.view.UserOperateCallbackViewPager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -89,9 +93,6 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                 initPoints();
                 setHeaderHotData();
                 return headerViewHolder;
-            case TYPE_FOOTER:
-                view = getView(parent, R.layout.item_news_footer);
-                return new FooterViewHolder(view);
             case TYPE_ITEM:
                 view = getView(parent, R.layout.item_news);
                 final ItemViewHolder itemViewHolder = new ItemViewHolder(view);
@@ -118,8 +119,6 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
     public int getItemViewType(int position) {
         if (mIsShowHeader && isHeaderPosition(position)) {
             return TYPE_HEADER;
-        } else if (mIsShowFooter && isFooterPosition(position)) {
-            return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
         }
@@ -128,7 +127,6 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         setValues(holder, position);
-//        setItemAppearAnimation(holder, position, R.anim.anim_bottom_in);
     }
 
     private void setValues(RecyclerView.ViewHolder holder, int position) {
@@ -144,7 +142,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
             Date date = TimeUtil.StringToDate(bean.getPost_date_gmt());
             holder.text_type.setText(bean.getName());
             holder.text_time.setText(TimeUtil.RelativeDateFormat(date));
-            Glide.with(context).load(bean.getUser_avatars()).into(holder.image_pic);
+            GlideUtils.getInstance().loadUserImage(context, bean.getImage(), holder.image_pic, R.drawable.home_default);
         }
     }
 
@@ -159,8 +157,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                     ImageView image_banner = view.findViewById(R.id.image_banner);
                     TextView text_banner = view.findViewById(R.id.text_banner);
                     Glide.with(context).load(headerBean.getBanner().get(getRealPosition(position)).getUrl()).
-                            apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 8), 0))
-                                    .placeholder(R.drawable.ic_launcher_background)).into(image_banner);
+                            apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 5), 0))
+                                    .placeholder(R.drawable.icon_banner_default)).into(image_banner);
                     text_banner.setText(headerBean.getBanner().get(getRealPosition(position)).getPost_title());
                     container.addView(view);
                     view.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +182,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
 
                 @Override
                 public void destroyItem(ViewGroup container, int position, Object object) {
-                    container.removeView((View) object);
+//                    container.removeView((View) object);
                 }
 
                 @Override
@@ -207,6 +205,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
 
             });
             headerViewHolder.viewpager.setPageTransformer(true, new ScaleInTransformer());
+            initViewPagerAnimationDuration();
             headerViewHolder.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -391,7 +390,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
         }
     };
 
-    //热点新闻循环播放handler
+    //banner循环播放handler
     public Handler switchBannerHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -427,6 +426,21 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
             startBanner();
         }
     };
+
+    /**
+     * 通过反射来修改 ViewPager的mScroller属性
+     */
+    private void initViewPagerAnimationDuration() {
+        try {
+            Field f = UserOperateCallbackViewPager.class.getDeclaredField("mScroller");
+            FixedSpeedScroller fixedSpeedScroller = new FixedSpeedScroller(context, new LinearOutSlowInInterpolator());
+            fixedSpeedScroller.setmDuration(10000);
+            f.setAccessible(true);
+            f.set(headerViewHolder.viewpager, fixedSpeedScroller);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //暂停循环
     public void waitCircleAll() {

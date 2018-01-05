@@ -81,6 +81,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
     public int getLayout() {
         return R.layout.activity_mine;
     }
+
     private ExitLoginDialog mDialog;
     private Dialog dialog;
 
@@ -122,14 +123,11 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    @OnClick({R.id.back_iv, R.id.user_image, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
+    @OnClick({R.id.back_iv, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
                 finish();
-                break;
-            case R.id.user_image:
-//                BaseUtils.openActivity(this, PersonalCenterActivity.class, null);
                 break;
             case R.id.history_tv:
                 BaseUtils.openActivity(this, HistoryActivity.class, null);
@@ -154,7 +152,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
-                displayDialog(this,getString(R.string.exit_login),getString(R.string.exit_yes),getString(R.string.exit_no));
+                displayDialog(this, getString(R.string.exit_login), getString(R.string.exit_yes), getString(R.string.exit_no));
                 break;
 
         }

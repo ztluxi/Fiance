@@ -95,6 +95,7 @@ public class BGAMyRefreshViewHolder extends BGARefreshViewHolder {
             mHeaderChrysanthemumAd = (AnimationDrawable) mHeaderChrysanthemumIv.getDrawable();
             mHeaderStatusTv.setText(mPullDownRefreshText);
             mHeaderStatusTv.setTextColor(ContextCompat.getColor(context, statusColor));
+            mHeaderArrowIv.setImageResource(R.drawable.refresh_head_arrow_white);
         }
         return mRefreshHeaderView;
     }

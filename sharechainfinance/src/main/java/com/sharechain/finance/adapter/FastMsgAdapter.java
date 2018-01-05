@@ -142,7 +142,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
         @BindView(R.id.text_content)
         TextView text_content;
         @BindView(R.id.text_view_article)
-        TextView text_view_article;
+        ImageView text_view_article;
         @BindView(R.id.image_share)
         ImageView image_share;
         @BindView(R.id.card_fast_msg)

@@ -45,7 +45,8 @@ public class ManageTagActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        initTitle("");
+        initTitle(getString(R.string.title_manage_tag));
+        text_title.setTextColor(ContextCompat.getColor(this, R.color.colorBlack));
         mImmersionBar.statusBarColor(R.color.colorBlack).init();
         view_status_bar.setVisibility(View.GONE);
         rl_base_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));

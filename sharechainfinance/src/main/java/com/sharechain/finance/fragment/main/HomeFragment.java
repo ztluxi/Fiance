@@ -22,6 +22,7 @@ import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ManageTagActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
 import com.sharechain.finance.module.mine.MineActivity;
+import com.sharechain.finance.module.mine.MyNewsActivity;
 import com.sharechain.finance.module.mine.SearchActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.ScaleTransitionPagerTitleView;
@@ -177,6 +178,7 @@ public class HomeFragment extends BaseFragment {
         Bundle data = new Bundle();
         data.putSerializable("list", (Serializable) typeList);
         BaseUtils.openActivityBottomAnim(getActivity(), ManageTagActivity.class, data);
+//        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagFixedActivity.class, data);
     }
 
     @OnClick(R.id.text_search)
@@ -187,6 +189,11 @@ public class HomeFragment extends BaseFragment {
     @OnClick(R.id.image_history)
     void getHistory() {
         BaseUtils.openActivity(getActivity(), HistoryActivity.class, null);
+    }
+
+    @OnClick(R.id.image_notification)
+    void goMessage() {
+        BaseUtils.openActivity(getActivity(), MyNewsActivity.class, null);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

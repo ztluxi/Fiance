@@ -1,6 +1,5 @@
 package com.sharechain.finance.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -10,8 +9,6 @@ import android.graphics.Paint;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +17,6 @@ import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.RequestOptions;
-import com.sharechain.finance.SFApplication;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,7 +27,6 @@ import java.security.MessageDigest;
  */
 
 public class GlideUtils {
-
 
 
     private static GlideUtils inst;
@@ -46,15 +41,35 @@ public class GlideUtils {
 
     /**
      * 加载图像
+     *
      * @param context
      * @param url
      * @param imageView
      * @param options
      */
     public void loadUserImage(Context context,
-                                     String url,
-                                     ImageView imageView,
-                                     RequestOptions options) {
+                              String url,
+                              ImageView imageView,
+                              RequestOptions options) {
+        Glide.with(context)
+                .load(url)
+                .apply(options)
+                .into(imageView);
+    }
+
+    /**
+     * 加载图像
+     *
+     * @param context
+     * @param url
+     * @param imageView
+     * @param defaultImageId
+     */
+    public void loadUserImage(Context context,
+                              String url,
+                              ImageView imageView,
+                              int defaultImageId) {
+        RequestOptions options = new RequestOptions().placeholder(defaultImageId);
         Glide.with(context)
                 .load(url)
                 .apply(options)
@@ -101,7 +116,7 @@ public class GlideUtils {
     public void clearImageAllCache(Context context) {
         clearImageDiskCache(context);
         clearImageMemoryCache(context);
-        String ImageExternalCatchDir=context.getExternalCacheDir()+ ExternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR;
+        String ImageExternalCatchDir = context.getExternalCacheDir() + ExternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR;
         deleteFolderFile(ImageExternalCatchDir, true);
     }
 
@@ -113,7 +128,7 @@ public class GlideUtils {
     public String getCacheSize(Context context) {
         String size = null;
         try {
-             size =  getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+ InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR)));
+            size = getFormatSize(getFolderSize(new File(context.getCacheDir() + "/" + InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,7 +251,7 @@ public class GlideUtils {
 //    }
 
 
-   public static class GlideCircleTransform extends BitmapTransformation {
+    public static class GlideCircleTransform extends BitmapTransformation {
 
         private Paint mBorderPaint;
         private float mBorderWidth;
@@ -244,17 +259,19 @@ public class GlideUtils {
         public GlideCircleTransform(Context context) {
             super(context);
         }
-       public GlideCircleTransform(Context context, int borderWidth, int borderColor) {
-           super(context);
-           mBorderWidth = Resources.getSystem().getDisplayMetrics().density * borderWidth;
 
-           mBorderPaint = new Paint();
-           mBorderPaint.setDither(true);
-           mBorderPaint.setAntiAlias(true);
-           mBorderPaint.setColor(borderColor);
-           mBorderPaint.setStyle(Paint.Style.STROKE);
-           mBorderPaint.setStrokeWidth(mBorderWidth);
-       }
+        public GlideCircleTransform(Context context, int borderWidth, int borderColor) {
+            super(context);
+            mBorderWidth = Resources.getSystem().getDisplayMetrics().density * borderWidth;
+
+            mBorderPaint = new Paint();
+            mBorderPaint.setDither(true);
+            mBorderPaint.setAntiAlias(true);
+            mBorderPaint.setColor(borderColor);
+            mBorderPaint.setStyle(Paint.Style.STROKE);
+            mBorderPaint.setStrokeWidth(mBorderWidth);
+        }
+
         @Override
         protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
             return null;

@@ -1,24 +1,20 @@
 package com.sharechain.finance.module.mine;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.andview.refreshview.XRefreshView;
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
@@ -65,7 +61,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
     TextView deleteTv;
 
 
-//    @BindView(R.id.xrefreshview_content)
+    //    @BindView(R.id.xrefreshview_content)
 //    XRefreshView refreshView;
     private List<FollowData> followDataList = new ArrayList<>();
     private int type;//1表示我的关注  2表示大佬搜索
@@ -132,6 +128,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
 
     @Override
     public void initData() {
+        showSoftKeyboard();
 //        getFollow(type);
     }
 
@@ -457,7 +454,14 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                finish();
+                hideSoftKeyboard(search_et);
+                //取消
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 10);
                 break;
 
         }

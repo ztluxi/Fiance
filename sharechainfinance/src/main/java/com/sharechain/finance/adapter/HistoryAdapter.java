@@ -27,8 +27,7 @@ public class HistoryAdapter extends BGAAdapterViewAdapter<HistoryData> {
         helper.getTextView(R.id.text_content).setText(model.getPost_title());
         helper.getTextView(R.id.text_comment_num).setText(model.getViews() + mContext.getString(R.string.home_item_comment));
         helper.getTextView(R.id.text_praise_num).setText(model.getPost_view_rand() + mContext.getString(R.string.home_item_praise));
-        RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        GlideUtils.getInstance().loadUserImage(mContext, model.getUser_avatars(), helper.getImageView(R.id.image_pic), headOptions);
-    }
+		RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        GlideUtils.getInstance().loadUserImage(mContext, model.getUser_avatars(), helper.getImageView(R.id.image_pic), headOptions);    }
 
 }

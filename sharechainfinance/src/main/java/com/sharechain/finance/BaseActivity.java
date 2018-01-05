@@ -65,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             public void run() {
                 initData();
             }
-        }, 800);
+        }, 100);
     }
 
     protected void hideSoftKeyboard(EditText editText) {
@@ -73,6 +73,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             // 隐藏软键盘
             inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0); //强制隐藏键盘
         }
+    }
+
+    protected void showSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     /**

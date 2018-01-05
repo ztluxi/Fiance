@@ -8,12 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.HistoryData;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
+import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.TimeUtil;
 
 import java.util.Date;
@@ -81,7 +80,7 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
                 childViewHolder.text_type.setText(listData.get(i).getName());
                 Date date = TimeUtil.StringToDate(listData.get(i).getPost_date_gmt());
                 childViewHolder.text_time.setText(TimeUtil.RelativeDateFormat(date));
-                Glide.with(SFApplication.get(context)).load(listData.get(i).getUser_avatars()).into(childViewHolder.image_pic);
+                GlideUtils.getInstance().loadUserImage(context, listData.get(i).getImage(), childViewHolder.image_pic, R.drawable.home_default);
             } else if (listData.get(i).getChannel_type() == ArticleDetailActivity.NEWS_TYPE_ANSWER) {
                 HistoryMineAdapter.AnswerChildViewHolder childViewHolder;
                 if (view == null) {
@@ -91,7 +90,7 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
                 childViewHolder.text_content.setText(listData.get(i).getPost_title());
                 childViewHolder.text_comment_num.setText(listData.get(i).getViews() + context.getString(R.string.home_item_comment));
                 childViewHolder.text_praise_num.setText(listData.get(i).getPost_view_rand() + context.getString(R.string.home_item_praise));
-                Glide.with(SFApplication.get(context)).load(listData.get(i).getUser_avatars()).into(childViewHolder.image_pic);
+                GlideUtils.getInstance().loadUserImage(context, listData.get(i).getImage(), childViewHolder.image_pic, R.drawable.home_default);
             }
         }
         return view;
