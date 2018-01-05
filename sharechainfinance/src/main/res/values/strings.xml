@@ -83,7 +83,7 @@
     <string name="reture">还原</string>
     <string name="copy">复制</string>
     <string name="translate">翻译</string>
-    <string name="nothing_new_data">没有最新数据了</string>
+    <string name="nothing_new_data">没有最新数据</string>
     <string name="nothing_more_data">没有更多数据了</string>
 
     <string name="home_item_comment">评论</string>
@@ -107,4 +107,9 @@
 
     <string name="manage_tip">拖拽以排序</string>
     <string name="only_once">半小时内只能提交一次</string>
+    <string name="again_exit">再按一次退出程序</string>
+    <string name="exit_yes">是</string>
+    <string name="exit_no">否</string>
+    <string name="exit_login">确定退出登录</string>
+
 </resources>

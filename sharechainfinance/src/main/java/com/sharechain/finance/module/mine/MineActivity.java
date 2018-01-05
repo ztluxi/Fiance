@@ -1,5 +1,7 @@
 package com.sharechain.finance.module.mine;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.view.dialog.ExitLoginDialog;
+import com.sharechain.finance.view.dialog.LoadDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -40,7 +43,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/12/13.
  */
 
-public class MineActivity extends BaseActivity {
+public class MineActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.ll_top_info)
     LinearLayout ll_top_info;
@@ -78,6 +81,8 @@ public class MineActivity extends BaseActivity {
     public int getLayout() {
         return R.layout.activity_mine;
     }
+    private ExitLoginDialog mDialog;
+    private Dialog dialog;
 
     @Override
     public void initView() {
@@ -90,6 +95,7 @@ public class MineActivity extends BaseActivity {
         mImmersionBar.statusBarColor(android.R.color.transparent).init();
         setTitlePadding(ll_top_info);
         updateView();
+        dialog = new LoadDialog().LoadProgressDialog(this);
     }
 
     @Override
@@ -148,28 +154,31 @@ public class MineActivity extends BaseActivity {
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
-//                final ExitLoginDialog exitLoginDialog = new ExitLoginDialog(this,"您确定要退出登录？","是","否");
-//                exitLoginDialog.setOnNegativeListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        exitLoginDialog.dismiss();
-//                    }
-//                });
-//                exitLoginDialog.setOnPositiveListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //退出登录
-//                        SFApplication.loginDataBean = null;
-//                        DataSupport.deleteAll(LoginDataBean.class);
-//                        updateView();
-//                    }
-//                });
-                //退出登录
-                SFApplication.loginDataBean = null;
-                DataSupport.deleteAll(LoginDataBean.class);
-                updateView();
+                displayDialog(this,getString(R.string.exit_login),getString(R.string.exit_yes),getString(R.string.exit_no));
                 break;
 
+        }
+    }
+
+    /**
+     * 显示对话框
+     *
+     * @param ctx     上下文
+     * @param title   标题
+     * @param cancel  左边显示的文本
+     * @param confirm 右边显示的文本
+     */
+    private void displayDialog(Context ctx, String title, String cancel, String confirm) {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null; // 对话框的dismiss的资源释放但内容不会变
+        }
+        if (mDialog == null) {
+            mDialog = new ExitLoginDialog(ctx, title, cancel, confirm);
+            mDialog.setCanceledOnTouchOutside(true);
+            mDialog.setOnNegativeListener(this);
+            mDialog.setOnPositiveListener(this);
+            mDialog.show();
         }
     }
 
@@ -287,4 +296,26 @@ public class MineActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.negativeButton:// 对话框右边按钮监听
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                exitTv.setVisibility(View.GONE);
+                //退出登录
+                SFApplication.loginDataBean = null;
+                DataSupport.deleteAll(LoginDataBean.class);
+                updateView();
+                break;
+            case R.id.positiveButton: // 对话框左边按钮监听
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                break;
+        }
+    }
+
 }

@@ -23,7 +23,9 @@ import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MogulFollowSearchActivity;
 import com.sharechain.finance.module.mine.MyFollowActivity;
+import com.sharechain.finance.module.mogul.MogulCircleActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 
@@ -85,7 +87,6 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     //获取大佬圈列表
     private void getData(int page) {
-        mDialog.show();
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.PAGE_STR, String.valueOf(page));
         params.put(UrlList.LIMIT, String.valueOf(10));
@@ -124,7 +125,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 if (UrlList.PAGE == 1) {
                     mogulDataList.clear();
                 }
-                if (bean.getData().getLists().size() > 1) {
+                if (bean.getData().getLists().size() > 0) {
                     for (int i = 0; i < bean.getData().getLists().size(); i++) {
                         String user_image = bean.getData().getLists().get(i).getProfile_image_url();
                         String create_time = bean.getData().getLists().get(i).getCreate_at();
@@ -160,6 +161,9 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                     }
                 }
             } else {
+                if (UrlList.PAGE!=1){
+                    ToastManager.showShort(getActivity(),getString(R.string.nothing_more_data));
+                }
                 empty_view.setVisibility(View.VISIBLE);
                 mRefreshLayout.setVisibility(View.GONE);
             }
@@ -177,6 +181,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
             bean = JSON.parseObject(cacheJson, MogulCircleBean.class);
         }
         updateView();
+        mDialog.show();
         getData(UrlList.PAGE);
     }
 

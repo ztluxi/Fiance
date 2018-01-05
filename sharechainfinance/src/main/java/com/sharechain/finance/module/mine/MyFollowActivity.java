@@ -225,6 +225,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
             });
         } else {
             ToastManager.showShort(this, getString(R.string.please_login));
+            startActivity(new Intent(this, MineActivity.class));
         }
     }
 
@@ -270,6 +271,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
             });
         } else {
             ToastManager.showShort(this, getString(R.string.please_login));
+            startActivity(new Intent(this, MineActivity.class));
         }
     }
 

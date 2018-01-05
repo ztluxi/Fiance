@@ -1,6 +1,7 @@
 package com.sharechain.finance.module.mogul;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FullLinear;
@@ -105,24 +107,22 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
         mDialog = new LoadDialog().LoadProgressDialog(this);
         updateAdapter();
+        mDialog.show();
+        getMogulDetail(id);
     }
 
     @Override
     public void initData() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getMogulDetail(id);
-            }
-        }, 500);
+
     }
 
     //获取大佬个人中心
     private void getMogulDetail(int mogulId) {
-        mDialog.show();
+
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulId));
-        params.put(UrlList.LIMIT, String.valueOf(5));
+        params.put(UrlList.LIMIT, String.valueOf(10));
+        params.put(UrlList.PAGE_STR, String.valueOf(UrlList.PAGE));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
@@ -138,7 +138,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                     no_result_rl.setVisibility(View.GONE);
                     mogulCircleRl.setVisibility(View.VISIBLE);
                     int focus = bean.getData().getIs_focus();
-                    if (bean.getData().getLists().size() > 1) {
+                    if (bean.getData().getLists().size() > 0) {
                         for (int i = 0; i < bean.getData().getLists().size(); i++) {
                             String user_image = bean.getData().getLists().get(i).getProfile_image_url();
                             String create_time = bean.getData().getLists().get(i).getCreate_at();
@@ -169,6 +169,11 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                         }
                     }
                 } else {
+                    if (UrlList.PAGE == 1) {
+                        ToastManager.showShort(MogulCircleActivity.this, getString(R.string.load_no_data));
+                    } else {
+                        ToastManager.showShort(MogulCircleActivity.this, getString(R.string.nothing_more_data));
+                    }
                     no_result_rl.setVisibility(View.VISIBLE);
 //                    mogulCircleRl.setVisibility(View.GONE);
                 }
@@ -207,7 +212,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     //取消大佬关注
     private void cancelMogulFollow(int mogulID) {
-        if (SFApplication.loginDataBean!=null) {
+        if (SFApplication.loginDataBean != null) {
             String token = SFApplication.loginDataBean.getToken();
             final Map<String, String> params = new HashMap<>();
             params.put(UrlList.TOKEN, token);
@@ -226,12 +231,13 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
             });
         } else {
             ToastManager.showShort(this, getString(R.string.please_login));
+            startActivity(new Intent(this, MineActivity.class));
         }
     }
 
     //关注大佬
     private void addMogulFollow(int mogulID) {
-        if (SFApplication.loginDataBean!=null) {
+        if (SFApplication.loginDataBean != null) {
             String token = SFApplication.loginDataBean.getToken();
             final Map<String, String> params = new HashMap<>();
             params.put(UrlList.TOKEN, token);
@@ -263,6 +269,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
             });
         } else {
             ToastManager.showShort(this, getString(R.string.please_login));
+            startActivity(new Intent(this, MineActivity.class));
         }
     }
 

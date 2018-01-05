@@ -2,6 +2,7 @@ package com.sharechain.finance;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.sharechain.finance.fragment.main.FastMsgFragment;
 import com.sharechain.finance.fragment.main.FriendCircleFragment;
 import com.sharechain.finance.fragment.main.HomeFragment;
+import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FragmentTabHost;
 
 import butterknife.BindView;
@@ -25,7 +27,7 @@ public class MainActivity extends BaseActivity {
     private enum BOTTOM_ITEM {
         HOME, FAST_MSG, FRIEND_CIRCLE
     }
-
+    private long backTime; // 记录用户点击的时间
     private BOTTOM_ITEM curItem = BOTTOM_ITEM.HOME;
 
     @BindView(android.R.id.tabhost)
@@ -130,4 +132,19 @@ public class MainActivity extends BaseActivity {
         iv.startAnimation(animation);
     }
 
+    // 添加系统监听的返回
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - backTime) > 2000) {
+                backTime = System.currentTimeMillis();
+                ToastManager.showShort(this, getString(R.string.again_exit));
+            } else if ((System.currentTimeMillis() - backTime) < 2000) {
+                backTime = System.currentTimeMillis();
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
