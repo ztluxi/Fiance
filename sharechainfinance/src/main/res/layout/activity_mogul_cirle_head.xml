@@ -72,25 +72,31 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/mogul_head_position_tv"
+                    android:id="@+id/mogul_head_weibo_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="比特币分析师"
+                    android:text="微博"
                     android:textColor="@color/about_font"
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/mogul_head_follow_tv"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="8dp"
+                    android:paddingLeft="8dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:visibility="visible"
+                    android:background="@drawable/mogul_follow_bg"
+                    android:id="@+id/mogul_head_position_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/my_no_follow_bg"
-                    android:elevation="2dp"
                     android:gravity="center"
-                    android:text="@string/follow"
-                    android:textColor="@color/white"
+                    android:text="@string/permission_open"
+                    android:textColor="@color/tint_home_color"
                     android:textSize="12sp" />
 
             </LinearLayout>

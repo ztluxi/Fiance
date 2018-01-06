@@ -25,11 +25,11 @@ public class UrlList {
     public static final String MSG_GET_LIST = base_url + "/api_app/Fastnews/lists";
     public static final String FEEDBOOK = base_url + "/api_app/My/feedback";
     public static final String MOGUL_CIRCLE = base_url + "/api_app/Celebrity/lists";
-    public static final String MOGUL_FOLLOW = base_url + "/api_app/Celebrity/focus";
     public static final String MOGUL_LIKE = base_url + "/api_app/Celebrity/like";
     public static final String GET_NEWS = base_url + "/api_app/My/message_lists";
     public static final String GET_MY_FOLLOW = base_url + "/api_app/My/focus_lists";
-    public static final String CANCLE_FOLLOW = base_url + "/api_app/My/focus_cancel";
+    public static final String MOGUL_FOLLOW = base_url + "/api_app/My/focus";
+    public static final String CANCLE_FOLLOW = base_url + "/api_app/My/unfocus";
     public static final String WX_LOGIN = base_url + "/api_app/Login/wechat";//微信登录
 
 

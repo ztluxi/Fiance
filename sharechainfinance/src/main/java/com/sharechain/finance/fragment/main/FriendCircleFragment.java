@@ -136,7 +136,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         String translate = bean.getData().getLists().get(i).getTranslate_content();
                         int fabulous = bean.getData().getLists().get(i).getHits();
 
-                        int mogul_id = bean.getData().getLists().get(i).getId();
+                        int mogul_id = bean.getData().getLists().get(i).getCelebrity_id();
                         List<String> imgs = new ArrayList<>();
                         if (bean.getData().getLists().get(i).getImages().size() != 0) {
                             for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
@@ -189,14 +189,18 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
-                break;
-            case R.id.image_title_right:
                 Intent intent = new Intent(getActivity(), MogulFollowSearchActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("type", 2);
+                bundle.putInt("type", 1);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                break;
+            case R.id.image_title_right:
+                Intent intentMogul = new Intent(getActivity(), MogulFollowSearchActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("type", 2);
+                intentMogul.putExtras(bundle1);
+                startActivity(intentMogul);
                 break;
         }
     }
@@ -283,8 +287,4 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         mogulShareDialog.show();
     }
 
-    @Override
-    public void onFollow(View view, int position, List<MogulData> list) {
-
-    }
 }

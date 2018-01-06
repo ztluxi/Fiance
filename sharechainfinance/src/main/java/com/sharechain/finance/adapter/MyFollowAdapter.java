@@ -73,7 +73,7 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
         }
         positionTv.setText(professional+"");
         //如果已关注了显示已关注背景，反正则显示蓝色未关注
-        if (model.getFacous()==1){
+        if (model.getState()==1){
             follow.setText(R.string.has_follow);
             follow.setBackgroundResource(R.drawable.my_has_follow_bg);
         }else {

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.R;
@@ -30,6 +31,25 @@ public class BaseUtils {
 
     private static final String NEWS_ITEM_SPECIAL = "special";
     private static final String NEWS_ITEM_PHOTO_SET = "photoset";
+
+
+
+    /**
+     * 根据应用包名，跳转到应用市场
+     *
+     * @param activity    承载跳转的Activity
+     * @param packageName 所需下载（评论）的应用包名
+     */
+    public static void shareAppShop(Activity activity, String packageName) {
+        try {
+            Uri uri = Uri.parse("market://details?id="+ packageName);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(activity, R.string.no_app_store, Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     /**

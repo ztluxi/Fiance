@@ -71,6 +71,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     private Dialog mDialog;
     public int PAGE = 1;//页数
+
     @Override
     public int getLayout() {
         return R.layout.activity_my_follow;
@@ -107,7 +108,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
         initListen();
     }
 
-    private void updateAdapter() {
+    private void updateAdapter(int position) {
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
@@ -138,7 +139,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 bundle.putString("head", followDataList.get(i).getImage());
                 bundle.putString("name", followDataList.get(i).getName());
                 bundle.putString("position", followDataList.get(i).getPosition());
-                bundle.putInt("focus", followDataList.get(i).getFacous());
+                bundle.putInt("focus", followDataList.get(i).getState());
                 BaseUtils.openActivity(MyFollowActivity.this, MogulCircleActivity.class, bundle);
             }
         });
@@ -148,58 +149,67 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     //获取我的关注列表
     private void getFollow(int page) {
-
-        final Map<String, String> params = new HashMap<>();
-        params.put(UrlList.PAGE_STR, String.valueOf(page));
-        requestGet(UrlList.GET_MY_FOLLOW, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                refreshView.stopRefresh();
-                refreshView.stopLoadMore();
-                Logger.d(result);
-                FollowBean myFollowBean = JSON.parseObject(result, FollowBean.class);
-                if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
-                    empty_view.setVisibility(View.GONE);
-                    refreshView.setVisibility(View.VISIBLE);
-                    if (PAGE == 1) {
-                        followDataList.clear();
-                    }
-                    if (myFollowBean.getData().size() != 0) {
-                        for (int i = 0; i < myFollowBean.getData().size(); i++) {
-                            FollowData followData = new FollowData();
-                            followData.setPosition(myFollowBean.getData().get(i).getProfessional());
-                            followData.setWeibo(myFollowBean.getData().get(i).getScreen_name());
-                            followData.setName(myFollowBean.getData().get(i).getFull_name());
-                            followData.setImage(myFollowBean.getData().get(i).getProfile_image_url());
-                            followData.setMogulID(myFollowBean.getData().get(i).getId());
-                            followData.setFacous(1);
-                            followDataList.add(followData);
+        if (SFApplication.loginDataBean != null) {
+            String token = SFApplication.loginDataBean.getToken();
+            final Map<String, String> params = new HashMap<>();
+            params.put(UrlList.TOKEN, token);
+            params.put(UrlList.PAGE_STR, String.valueOf(page));
+            requestGet(UrlList.GET_MY_FOLLOW, params, new MyStringCallback(this) {
+                @Override
+                protected void onSuccess(String result) {
+                    refreshView.stopRefresh();
+                    refreshView.stopLoadMore();
+                    Logger.d(result);
+                    FollowBean myFollowBean = JSON.parseObject(result, FollowBean.class);
+                    if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
+                        empty_view.setVisibility(View.GONE);
+                        refreshView.setVisibility(View.VISIBLE);
+                        if (PAGE == 1) {
+                            followDataList.clear();
                         }
+                        if (myFollowBean.getData().size() != 0) {
+                            for (int i = 0; i < myFollowBean.getData().size(); i++) {
+                                FollowData followData = new FollowData();
+                                followData.setPosition(myFollowBean.getData().get(i).getProfessional());
+                                followData.setWeibo(myFollowBean.getData().get(i).getScreen_name());
+                                followData.setName(myFollowBean.getData().get(i).getFull_name());
+                                followData.setImage(myFollowBean.getData().get(i).getProfile_image_url());
+                                followData.setMogulID(myFollowBean.getData().get(i).getCelebrity_id());
+                                followData.setState(myFollowBean.getData().get(i).getState());
+                                followDataList.add(followData);
+                            }
+                        }
+                    } else {
+                        if (PAGE != 1) {
+                            ToastManager.showShort(MyFollowActivity.this, getString(R.string.nothing_more_data));
+                        }
+                        empty_view.setVisibility(View.VISIBLE);
+                        refreshView.setVisibility(View.GONE);
                     }
-                } else {
-                    if (PAGE!=1){
-                        ToastManager.showShort(MyFollowActivity.this,getString(R.string.nothing_more_data));
+                    updateAdapter(0);
+                }
+
+                @Override
+                protected void onFailed(String errStr) {
+                    refreshView.stopRefresh();
+                    refreshView.stopLoadMore();
+                    Logger.d(errStr);
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
                     }
-                    empty_view.setVisibility(View.VISIBLE);
-                    refreshView.setVisibility(View.GONE);
                 }
-                updateAdapter();
+            });
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
             }
-
-            @Override
-            protected void onFailed(String errStr) {
-                refreshView.stopRefresh();
-                refreshView.stopLoadMore();
-                Logger.d(errStr);
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
-                }
-            }
-        });
-
+            ToastManager.showShort(this, getString(R.string.please_login));
+            startActivity(new Intent(this, MineActivity.class));
+        }
     }
 
     //取消大佬关注
+
     private void cancelMogulFollow(int mogulID, final int position, final FollowData data) {
         if (SFApplication.loginDataBean != null) {
             String token = SFApplication.loginDataBean.getToken();
@@ -210,8 +220,15 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
             requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
                 @Override
                 protected void onSuccess(String result) {
-                    followDataList.remove(position);
-                    followAdapter.notifyDataSetChanged();
+                    FollowData data1 = new FollowData();
+                    data1.setState(2);
+                    data1.setMogulID(data.getMogulID());
+                    data1.setImage(data.getImage());
+                    data1.setName(data.getName());
+                    data1.setPosition(data.getPosition());
+                    data1.setWeibo(data.getWeibo());
+                    followDataList.set(position, data1);
+                    updateAdapter(position);
                     ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
                     Logger.d(result);
                     if (mDialog != null && mDialog.isShowing()) {
@@ -245,21 +262,28 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 @Override
                 protected void onSuccess(String result) {
 //                {"success":0,"msg":"请登录","data":""}
-                    try {
-                        org.json.JSONObject object = new org.json.JSONObject(result);
-                        int success = object.getInt("success");
-                        String messg = object.getString("msg");
-                        if (success == 0) {
-                            ToastManager.showShort(MyFollowActivity.this, messg);
-                        } else {
-                            followDataList.remove(position);
-                            followAdapter.notifyDataSetChanged();
-                            ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
-                            Logger.d(result);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        org.json.JSONObject object = new org.json.JSONObject(result);
+//                        int success = object.getInt("success");
+//                        String messg = object.getString("msg");
+//                        if (success == 0) {
+//                            ToastManager.showShort(MyFollowActivity.this, messg);
+//                        } else {
+                    FollowData data1 = new FollowData();
+                    data1.setState(1);
+                    data1.setMogulID(data.getMogulID());
+                    data1.setImage(data.getImage());
+                    data1.setName(data.getName());
+                    data1.setPosition(data.getPosition());
+                    data1.setWeibo(data.getWeibo());
+                    followDataList.set(position, data1);
+                    updateAdapter(position);
+                    ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
+                    Logger.d(result);
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
                     if (mDialog != null && mDialog.isShowing()) {
                         mDialog.dismiss();
                     }
@@ -298,7 +322,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     @Override
     public void cancelFollow(View view, int position, FollowData data) {
-        if (data.getFacous() == 1) {
+        if (data.getState() == 1) {
             cancelMogulFollow(data.getMogulID(), position, data);
         } else {
             addMogulFollow(data.getMogulID(), position, data);

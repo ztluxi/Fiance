@@ -88,6 +88,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.MineActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sharechain.finance.module.mine.MyFollowActivity"

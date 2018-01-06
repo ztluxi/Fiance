@@ -131,6 +131,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/suggest_ll"
                     android:background="@drawable/mine_item_touch_bg"
                     android:paddingLeft="15dp"
                     android:gravity="left|center_vertical"
@@ -164,6 +165,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/clear_memory_ll"
                         android:background="@drawable/mine_item_touch_bg"
                         android:paddingLeft="15dp"
                         android:gravity="left|center_vertical"
@@ -210,6 +212,7 @@
                     android:background="@color/base_bg_color" />
 
             <LinearLayout
+                android:id="@+id/score_ll"
                 android:background="@drawable/mine_item_touch_bg"
                 android:paddingLeft="15dp"
                 android:gravity="left|center_vertical"
@@ -233,6 +236,7 @@
                     android:layout_marginLeft="10dp" />
 
             <LinearLayout
+                android:id="@+id/about_ll"
                 android:background="@drawable/mine_item_touch_bg"
                 android:paddingLeft="15dp"
                 android:gravity="left|center_vertical"
@@ -250,6 +254,8 @@
                     android:id="@+id/about_tv"
                     style="@style/user_item_style"
                     android:text="@string/about_app" />
+
+
 
             </LinearLayout>
                 <View

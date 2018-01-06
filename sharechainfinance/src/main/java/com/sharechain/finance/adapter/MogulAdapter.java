@@ -57,7 +57,6 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         void onShare(View view, int position, List<MogulData> list);
 
-        void onFollow(View view, int position, List<MogulData> list);
     }
 
     private MyItemClickListener mClickListener;
@@ -80,14 +79,35 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((HeadViewHolder) holder).mogulHeadTopNameTv.setText(mPostList.get(position).getName() + "");
             ((HeadViewHolder) holder).mogulHeadNameTv.setText(mPostList.get(position).getName() + "");
             ((HeadViewHolder) holder).mogulHeadPositionTv.setText(mPostList.get(position).getPosition() + "");
+            ((HeadViewHolder) holder).mogulHeadWeiboTv.setText(mPostList.get(position).getPosition() + "");
 
-            if (mPostList.get(position).getFocus() == 1) {
-                ((HeadViewHolder) holder).mogulHeadFollowTv.setBackgroundResource(R.drawable.my_has_follow_bg);
-                ((HeadViewHolder) holder).mogulHeadFollowTv.setText(R.string.has_follow);
+
+
+//            if (mPostList.get(position).getFocus() == 1) {
+//                ((HeadViewHolder) holder).mogulHeadFollowTv.setBackgroundResource(R.drawable.my_has_follow_bg);
+//                ((HeadViewHolder) holder).mogulHeadFollowTv.setText(R.string.has_follow);
+//            } else {
+//                ((HeadViewHolder) holder).mogulHeadFollowTv.setBackgroundResource(R.drawable.my_no_follow_bg);
+//                ((HeadViewHolder) holder).mogulHeadFollowTv.setText(R.string.follow);
+//            }
+
+
+            if (!BaseUtils.isEmpty(mPostList.get(position).getWeibo())) {
+                ((HeadViewHolder) holder).mogulHeadWeiboTv.setVisibility(View.VISIBLE);
+                ((HeadViewHolder) holder).mogulHeadWeiboTv.setText(mPostList.get(position).getWeibo() + "");
             } else {
-                ((HeadViewHolder) holder).mogulHeadFollowTv.setBackgroundResource(R.drawable.my_no_follow_bg);
-                ((HeadViewHolder) holder).mogulHeadFollowTv.setText(R.string.follow);
+                ((HeadViewHolder) holder).mogulHeadWeiboTv.setVisibility(View.GONE);
+                ((HeadViewHolder) holder).mogulHeadWeiboTv.setText(mPostList.get(position).getWeibo() + "");
             }
+            if (!BaseUtils.isEmpty(mPostList.get(position).getPosition())) {
+                ((HeadViewHolder) holder).mogulHeadPositionTv.setVisibility(View.VISIBLE);
+                ((HeadViewHolder) holder).mogulHeadPositionTv.setText(mPostList.get(position).getPosition() + "");
+            } else {
+                ((HeadViewHolder) holder).mogulHeadPositionTv.setVisibility(View.GONE);
+                ((HeadViewHolder) holder).mogulHeadPositionTv.setText(mPostList.get(position).getPosition() + "");
+            }
+
+
             //大佬图像
             RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             GlideUtils.getInstance().loadUserImage(mContext, mPostList.get(position).getHead(), ((HeadViewHolder) holder).mogulHeadImageTv, headOptions);
@@ -104,14 +124,14 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 });
 //            }
             //点击关注或取消关注
-            if (mClickListener!=null){
-                ((HeadViewHolder) holder).mogulHeadFollowTv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mClickListener.onFollow(view,position,mPostList);
-                    }
-                });
-            }
+//            if (mClickListener!=null){
+//                ((HeadViewHolder) holder).mogulHeadFollowTv.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mClickListener.onFollow(view,position,mPostList);
+//                    }
+//                });
+//            }
         }
 
         if (holder instanceof PostViewHolder) {
@@ -308,7 +328,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class HeadViewHolder extends RecyclerView.ViewHolder {
         public TextView mogulHeadTopNameTv;
         public TextView mogulHeadNameTv;
-        public TextView mogulHeadFollowTv;
+        public TextView mogulHeadWeiboTv;
         public TextView mogulHeadPositionTv;
         public ImageView mogulHeadImageTv;
         public ImageView mogulHeadBackTv;
@@ -318,7 +338,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(inflate);
             mogulHeadTopNameTv = inflate.findViewById(R.id.mogul_top_name_tv);
             mogulHeadNameTv = inflate.findViewById(R.id.mogul_head_name_tv);
-            mogulHeadFollowTv = inflate.findViewById(R.id.mogul_head_follow_tv);
+            mogulHeadWeiboTv = inflate.findViewById(R.id.mogul_head_weibo_tv);
             mogulHeadPositionTv = inflate.findViewById(R.id.mogul_head_position_tv);
             mogulHeadImageTv = inflate.findViewById(R.id.mogul_head_center_iv);
             mogulHeadBackTv = inflate.findViewById(R.id.back_iv);

@@ -1,7 +1,10 @@
 package com.sharechain.finance.module.mine;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +26,7 @@ import com.sharechain.finance.bean.WXRefreshBean;
 import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.ExitLoginDialog;
 import com.sharechain.finance.view.dialog.LoadDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -123,7 +127,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    @OnClick({R.id.back_iv, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_tv, R.id.clear_cache_tv, R.id.score_tv, R.id.exit_tv, R.id.about_tv})
+    @OnClick({R.id.back_iv, R.id.history_tv, R.id.my_news_tv, R.id.my_follow_tv, R.id.suggest_ll, R.id.clear_memory_ll, R.id.score_ll, R.id.exit_tv, R.id.about_ll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
@@ -138,10 +142,10 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
             case R.id.my_follow_tv:
                 BaseUtils.openActivity(this, MyFollowActivity.class, null);
                 break;
-            case R.id.suggest_tv:
+            case R.id.suggest_ll:
                 BaseUtils.openActivity(this, FeedbackActivity.class, null);
                 break;
-            case R.id.clear_cache_tv:
+            case R.id.clear_memory_ll:
                 final ExitLoginDialog exitLoginDialog = new ExitLoginDialog(this, getString(R.string.sure_clear_memory), getString(R.string.exit_yes), getString(R.string.exit_no));
                 exitLoginDialog.setOnPositiveListener(new View.OnClickListener() {
                     @Override
@@ -159,10 +163,10 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 });
                 exitLoginDialog.show();
                 break;
-            case R.id.score_tv:
-//                BaseUtils.openActivity(this, SearchActivity.class, null);
+            case R.id.score_ll:
+                BaseUtils.shareAppShop(this,getPackageName());
                 break;
-            case R.id.about_tv:
+            case R.id.about_ll:
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
                 break;
             case R.id.exit_tv:
@@ -171,6 +175,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
 
     /**
      * 显示对话框

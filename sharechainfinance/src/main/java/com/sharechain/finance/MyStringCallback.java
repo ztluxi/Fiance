@@ -1,8 +1,19 @@
 package com.sharechain.finance;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
+import com.alibaba.fastjson.JSON;
+import com.sharechain.finance.bean.FollowBean;
+import com.sharechain.finance.bean.LoginDataBean;
+import com.sharechain.finance.bean.LoginManagerBean;
+import com.sharechain.finance.module.mine.MineActivity;
+import com.sharechain.finance.utils.ToastManager;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -24,7 +35,20 @@ public abstract class MyStringCallback extends StringCallback {
 
     @Override
     public void onResponse(String response, int id) {
-        onSuccess(response);
+        try {
+            JSONObject object = new JSONObject(response);
+            if (object.has("code") && object.optInt("code") == 1000) {
+                ToastManager.showShort(context, object.optString("msg"));
+                context.startActivity(new Intent(context, MineActivity.class));
+                Activity activity = (Activity) context;
+                activity.finish();
+            } else {
+                onSuccess(response);
+            }
+        } catch (JSONException e) {
+            onSuccess(response);
+            e.printStackTrace();
+        }
     }
 
     protected abstract void onSuccess(String result);

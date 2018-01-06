@@ -47,11 +47,15 @@ public class FastMsgFragment extends BaseFragment {
     PinnedSectionListView listView;
     @BindView(R.id.text_big_news)
     TextView text_big_news;
+    @BindView(R.id.first_title_tv)
+    TextView first_title_tv;
+
 
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
     private FastMsgBean.DataBean.ListBean headData;
     private FastMsgBean bean;
+    private String time = "";//第一条星期时间
 
     @Override
     protected int getLayout() {
@@ -160,7 +164,20 @@ public class FastMsgFragment extends BaseFragment {
                     //取出头部数据
                     if (bean.getData().size() > 0 && bean.getData().get(0).getList().size() > 0) {
                         headData = bean.getData().get(0).getList().get(0);
+                        time = bean.getData().get(0).getTime();
                         text_big_news.setText(headData.getText());
+                        int type = headData.getType();
+                        switch (type) {
+                            case 1:
+                                first_title_tv.setText(getString(R.string.fastmsg_normal));
+                                break;
+                            case 2:
+                                first_title_tv.setText(getString(R.string.fastmsg_big));
+                                break;
+                            case 3:
+                                first_title_tv.setText(getString(R.string.fastmsg_important));
+                                break;
+                        }
                     }
                 }
                 for (int i = 0; i < bean.getData().size(); i++) {
@@ -195,9 +212,19 @@ public class FastMsgFragment extends BaseFragment {
     @OnClick(R.id.btn_view_detail)
     void viewDetail() {
         if (headData != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("web_url", headData.getUrl());
-            BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
+            FastMsgData fastMsgData = new FastMsgData();
+            fastMsgData.setMsgType(headData.getType());
+            fastMsgData.setDataText(headData.getText());
+            fastMsgData.setTitle(headData.getTitle());
+            fastMsgData.setUrl(headData.getUrl());
+            fastMsgData.setId(headData.getId());
+            fastMsgData.setHour(headData.getHour());
+            fastMsgData.setSectionText(time);
+
+            new FastMsgDialog(getActivity(), fastMsgData).show();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("web_url", headData.getUrl());
+//            BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
         }
     }
 

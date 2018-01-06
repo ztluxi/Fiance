@@ -53,19 +53,28 @@ public class FollowBean {
          * professional : Coinbase联合创始人
          */
 
-        private int id;
+        private int celebrity_id;
         private int uid;
         private String profile_image_url;
         private String full_name;
         private String screen_name;
         private String professional;
+        private int state;
 
-        public int getId() {
-            return id;
+        public int getCelebrity_id() {
+            return celebrity_id;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setCelebrity_id(int celebrity_id) {
+            this.celebrity_id = celebrity_id;
+        }
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
         }
 
         public int getUid() {

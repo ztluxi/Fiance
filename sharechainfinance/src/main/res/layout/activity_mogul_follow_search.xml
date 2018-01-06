@@ -94,6 +94,15 @@
         </ListView>
     <!--</com.andview.refreshview.XRefreshView>-->
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_post_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone" />
+
+
+
     <include
         layout="@layout/layout_empty_view"></include>
 

@@ -10,14 +10,14 @@ public class FollowData {
     private String position;
     private String image;
     private int MogulID;
-    private int Facous;
+    private int state;
 
-    public int getFacous() {
-        return Facous;
+    public int getState() {
+        return state;
     }
 
-    public void setFacous(int facous) {
-        Facous = facous;
+    public void setState(int state) {
+        this.state = state;
     }
 
     public int getMogulID() {

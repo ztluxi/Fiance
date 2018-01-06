@@ -15,6 +15,10 @@ public class MogulData {
     private String time;
     private String translate;
     private int Type;
+    private int fabulous;//点赞
+    private int id;
+    private String head;
+    private int focus;
 
     public int getType() {
         return Type;
@@ -31,12 +35,6 @@ public class MogulData {
     public void setTranslate(String translate) {
         this.translate = translate;
     }
-
-    private int fabulous;//点赞
-    private int id;
-    private String head;
-    private int focus;
-
     public int getFocus() {
         return focus;
     }

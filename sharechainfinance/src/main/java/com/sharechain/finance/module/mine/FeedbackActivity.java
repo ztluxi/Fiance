@@ -143,10 +143,10 @@ public class FeedbackActivity extends BaseActivity {
                         phone = "未填写";
                     }
                     putFeedBack(content, phone);
-
                 } else {
+                    long result =  nowTime - firstTime;
                     //如果时间小于半小时内就不能提交
-                    if ((nowTime - firstTime) < 1800000) {
+                    if (result  < 1800000) {
                         ToastManager.showShort(this, getString(R.string.only_once));
                     }
                 }

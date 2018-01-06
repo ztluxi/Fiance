@@ -108,7 +108,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         mDialog = new LoadDialog().LoadProgressDialog(this);
         updateAdapter();
         mDialog.show();
-        getMogulDetail(id);
+        getMogulDetail();
     }
 
     @Override
@@ -117,11 +117,11 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     }
 
     //获取大佬个人中心
-    private void getMogulDetail(int page) {
+    private void getMogulDetail() {
         final Map<String, String> params = new HashMap<>();
         params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(id));
         params.put(UrlList.LIMIT, String.valueOf(10));
-        params.put(UrlList.PAGE_STR, String.valueOf(page));
+        params.put(UrlList.PAGE_STR, String.valueOf(PAGE));
         requestGet(UrlList.MOGUL_CIRCLE, params, new MyStringCallback(this) {
             @Override
             protected void onSuccess(String result) {
@@ -136,7 +136,6 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                 if (bean.getSuccess() == 1 && bean.getData().getLists().size() != 0) {
                     no_result_rl.setVisibility(View.GONE);
                     mogulCircleRl.setVisibility(View.VISIBLE);
-                    int focus = bean.getData().getIs_focus();
                     if (bean.getData().getLists().size() > 0) {
                         for (int i = 0; i < bean.getData().getLists().size(); i++) {
                             String user_image = bean.getData().getLists().get(i).getProfile_image_url();
@@ -147,10 +146,13 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             String text = bean.getData().getLists().get(i).getText();
                             int mogul_id = bean.getData().getLists().get(i).getId();
                             int fabulous = bean.getData().getLists().get(i).getHits();
-
                             List<String> imgs = new ArrayList<>();
-                            imgs.add(user_image);
-                            imgs.add(user_image);
+                            if (bean.getData().getLists().get(i).getImages().size() != 0) {
+                                for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
+                                    imgs.add(bean.getData().getLists().get(i).getImages().get(j).getUrl());
+                                }
+                            }
+
                             MogulData mogulData = new MogulData();
                             mogulData.setName(mogul_name);
                             mogulData.setTranslate(null);
@@ -162,7 +164,6 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             mogulData.setWeibo(weibo_name);
                             mogulData.setFabulous(fabulous);
                             mogulData.setId(mogul_id);
-                            mogulData.setFocus(focus);
                             mogulData.setType(1);
                             mogulDataList.add(mogulData);
                         }
@@ -276,14 +277,14 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     @Override
     public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
         PAGE = 1;
-        getMogulDetail(PAGE);
+        getMogulDetail();
 
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         PAGE++;
-        getMogulDetail(PAGE);
+        getMogulDetail();
         return false;
     }
 
@@ -304,7 +305,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         mogulData.setName(list.get(position).getName());
         mogulData.setTranslate(list.get(position).getTranslate());
 
-        addFabulous(list.get(position).getId());
+//        addFabulous(list.get(position).getId());
     }
 
     @Override
@@ -320,32 +321,32 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     }
 
 
-    //关注
-    @Override
-    public void onFollow(View view, int position, List<MogulData> list) {
-        if (list.get(position).getFocus() == 1) {
-            cancelMogulFollow(list.get(position).getId());
-        } else {
-            addMogulFollow(list.get(position).getId());
-        }
-    }
-
-    //点赞
-    private void addFabulous(int id) {
-        final Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(id));
-        requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(this) {
-            @Override
-            protected void onSuccess(String result) {
-                Logger.d(result);
-            }
-
-            @Override
-            protected void onFailed(String errStr) {
-                Logger.d(errStr);
-            }
-        });
-
-    }
+//    //关注
+//    @Override
+//    public void onFollow(View view, int position, List<MogulData> list) {
+//        if (list.get(position).getFocus() == 1) {
+//            cancelMogulFollow(list.get(position).getId());
+//        } else {
+//            addMogulFollow(list.get(position).getId());
+//        }
+//    }
+//
+//    //点赞
+//    private void addFabulous(int id) {
+//        final Map<String, String> params = new HashMap<>();
+//        params.put("id", String.valueOf(id));
+//        requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(this) {
+//            @Override
+//            protected void onSuccess(String result) {
+//                Logger.d(result);
+//            }
+//
+//            @Override
+//            protected void onFailed(String errStr) {
+//                Logger.d(errStr);
+//            }
+//        });
+//
+//    }
 
 }

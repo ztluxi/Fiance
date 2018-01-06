@@ -69,36 +69,12 @@ public class MyFollowBean {
         }
 
         public static class ListsBean {
-            /**
-             * profile_image_url : https://tvax1.sinaimg.cn/crop.0.0.512.512.180/78c7e7ebly8ffqkcl9edij20e80e83z1.jpg
-             * full_name : 孙宇晨
-             * screen_name : 孙宇晨
-             * professional :
-             * text : 【明日开源直播，转发抽奖！】<br/><a class='k' href='https://m.weibo.cn/k/%E6%B3%A2%E5%9C%BAtron?from=feed'>#波场tron#</a> 波场TRON明日开源，怎么少的了波场团队技术总监，前阿里的大数据专家陈志强老师和技术负责人赵懿老师呢？宇晨重磅携手两位技术大牛做汇报，记住明日2017年12月29日（周五）11：00。<br/>转发此微博<span class="url-icon"><img src="//h5.sinaimg.cn/m/emoticon/icon/default/d_huaixiao-bb5966dcc6.png" style="width:1em;height:1em;" alt="[坏笑]"></span>，关注<a href='https://m.weibo.cn/n/波场TRON'>@波场TRON</a> 和 <a href='https://m.weibo.cn/n/孙宇晨'>@孙宇晨</a> 转发并<a href='https://m.weibo.cn/n/三名好友'>@三名好友</a> ，我们将通过 <a href='https://m.weibo.cn/n/微博抽奖平台'>@微博抽奖平台</a> 平台 抽出6名幸运朋友。<br/>一等奖：宇晨签名书《这世界既残酷也温柔》（三名）<br/>二等奖：波场TRON文化T恤（3名）！<br/>开奖时间：2017年12月29日中午12:00（截止）<br/>抽奖结束后，我们将在3日内私信获奖者，发放奖品，3日后未回复者，将视为自动放弃奖品<br/>本次抽奖活动最终解释权归波场所有。
-             * create_at : 2017-12-28 18:56:07
-             * id : 17116
-             * since_id : 4190005213024059
-             * social_type : 2
-             * images : [{"url":"https://wx3.sinaimg.cn/orj360/78c7e7ebly1fmwoh35wgyj20yi1n3nfx.jpg"}]
-             */
-
-            private String profile_image_url;
-            private String full_name;
-            private String screen_name;
-            private String professional;
-            private String text;
-            private String create_at;
-            private int id;
-            private String since_id;
-            private int social_type;
-            private List<ImagesBean> images;
-
-            public String getProfile_image_url() {
-                return profile_image_url;
+            public String getCelebrity_id() {
+                return celebrity_id;
             }
 
-            public void setProfile_image_url(String profile_image_url) {
-                this.profile_image_url = profile_image_url;
+            public void setCelebrity_id(String celebrity_id) {
+                this.celebrity_id = celebrity_id;
             }
 
             public String getFull_name() {
@@ -125,36 +101,12 @@ public class MyFollowBean {
                 this.professional = professional;
             }
 
-            public String getText() {
-                return text;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public String getCreate_at() {
-                return create_at;
-            }
-
-            public void setCreate_at(String create_at) {
-                this.create_at = create_at;
-            }
-
             public int getId() {
                 return id;
             }
 
             public void setId(int id) {
                 this.id = id;
-            }
-
-            public String getSince_id() {
-                return since_id;
-            }
-
-            public void setSince_id(String since_id) {
-                this.since_id = since_id;
             }
 
             public int getSocial_type() {
@@ -165,29 +117,42 @@ public class MyFollowBean {
                 this.social_type = social_type;
             }
 
-            public List<ImagesBean> getImages() {
-                return images;
+            public String getProfile_image_url() {
+                return profile_image_url;
             }
 
-            public void setImages(List<ImagesBean> images) {
-                this.images = images;
+            public void setProfile_image_url(String profile_image_url) {
+                this.profile_image_url = profile_image_url;
             }
 
-            public static class ImagesBean {
-                /**
-                 * url : https://wx3.sinaimg.cn/orj360/78c7e7ebly1fmwoh35wgyj20yi1n3nfx.jpg
-                 */
-
-                private String url;
-
-                public String getUrl() {
-                    return url;
-                }
-
-                public void setUrl(String url) {
-                    this.url = url;
-                }
+            public int getState() {
+                return state;
             }
+
+            public void setState(int state) {
+                this.state = state;
+            }
+
+            /**
+             * profile_image_url : https://tvax1.sinaimg.cn/crop.0.0.512.512.180/78c7e7ebly8ffqkcl9edij20e80e83z1.jpg
+             * full_name : 孙宇晨
+             * screen_name : 孙宇晨
+             * professional :
+             * text : 【明日开源直播，转发抽奖！】<br/><a class='k' href='https://m.weibo.cn/k/%E6%B3%A2%E5%9C%BAtron?from=feed'>#波场tron#</a> 波场TRON明日开源，怎么少的了波场团队技术总监，前阿里的大数据专家陈志强老师和技术负责人赵懿老师呢？宇晨重磅携手两位技术大牛做汇报，记住明日2017年12月29日（周五）11：00。<br/>转发此微博<span class="url-icon"><img src="//h5.sinaimg.cn/m/emoticon/icon/default/d_huaixiao-bb5966dcc6.png" style="width:1em;height:1em;" alt="[坏笑]"></span>，关注<a href='https://m.weibo.cn/n/波场TRON'>@波场TRON</a> 和 <a href='https://m.weibo.cn/n/孙宇晨'>@孙宇晨</a> 转发并<a href='https://m.weibo.cn/n/三名好友'>@三名好友</a> ，我们将通过 <a href='https://m.weibo.cn/n/微博抽奖平台'>@微博抽奖平台</a> 平台 抽出6名幸运朋友。<br/>一等奖：宇晨签名书《这世界既残酷也温柔》（三名）<br/>二等奖：波场TRON文化T恤（3名）！<br/>开奖时间：2017年12月29日中午12:00（截止）<br/>抽奖结束后，我们将在3日内私信获奖者，发放奖品，3日后未回复者，将视为自动放弃奖品<br/>本次抽奖活动最终解释权归波场所有。
+             * state : 1 是关注 2是未关注
+             * id : 17116
+             * since_id : 4190005213024059
+             * social_type : 2
+             */
+
+            private String celebrity_id;
+            private String full_name;
+            private String screen_name;
+            private String professional;
+            private int id;
+            private int social_type;
+            private String profile_image_url;
+            private int state;
         }
     }
 }
