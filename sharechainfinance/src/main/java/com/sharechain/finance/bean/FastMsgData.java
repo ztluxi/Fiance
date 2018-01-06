@@ -18,6 +18,7 @@ public class FastMsgData implements Serializable {
     private String hour;//时间
     private String url;
     private int id;//id
+    private String source;
 
     public String getSectionText() {
         return sectionText;
@@ -82,4 +83,13 @@ public class FastMsgData implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
 }

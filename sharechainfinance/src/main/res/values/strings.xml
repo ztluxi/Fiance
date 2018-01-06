@@ -120,4 +120,6 @@
     <string name="please_browse_the_article">您还没有去浏览文章！</string>
     <string name="no_app_store">您没有安装应用市场</string>
 
+    <string name="str_fastmsg_content">【%1$s】</string>
+
 </resources>

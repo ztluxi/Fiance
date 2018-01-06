@@ -77,7 +77,13 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
             }
             childViewHolder = new ChildViewHolder(view);
             childViewHolder.text_time.setText(listData.get(i).getHour());
-            childViewHolder.text_content.setText(listData.get(i).getDataText());
+            String content = "";
+            if (BaseUtils.isEmpty(listData.get(i).getSource())) {
+                content = listData.get(i).getDataText();
+            } else {
+                content = context.getString(R.string.str_fastmsg_content, listData.get(i).getSource()) + listData.get(i).getDataText();
+            }
+            childViewHolder.text_content.setText(content);
             if (listData.get(i).getMsgType() == 1) {
                 //一般消息
                 childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_blue_msg_bg);
