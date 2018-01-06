@@ -184,6 +184,7 @@ public class FastMsgFragment extends BaseFragment {
                         childData.setTitle(parentBean.getList().get(j).getTitle());//标题
                         childData.setHour(parentBean.getList().get(j).getHour());//时间
                         childData.setUrl(parentBean.getList().get(j).getUrl());//url
+                        childData.setSource(parentBean.getList().get(j).getSource());//来源
                         dataList.add(childData);
                     }
                 }

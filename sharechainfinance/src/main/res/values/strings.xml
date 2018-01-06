@@ -119,4 +119,6 @@
     <string name="title_manage_tag">频道编辑</string>
     <string name="please_browse_the_article">您还没有去浏览文章！</string>
 
+    <string name="str_fastmsg_content">【%1$s】</string>
+
 </resources>

@@ -81,6 +81,7 @@ public class FastMsgBean {
             private String text;
             private String hour;
             private String url;
+            private String source;
 
             public int getId() {
                 return id;
@@ -129,6 +130,15 @@ public class FastMsgBean {
             public void setUrl(String url) {
                 this.url = url;
             }
+
+            public String getSource() {
+                return source;
+            }
+
+            public void setSource(String source) {
+                this.source = source;
+            }
+
         }
     }
 }

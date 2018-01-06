@@ -10,10 +10,23 @@
 
     <include layout="@layout/base_title" />
 
+    <include layout="@layout/item_my_channel_header" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_selected"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:overScrollMode="never" />
+
+    <include
+        android:id="@+id/layout_other_header"
+        layout="@layout/item_other_channel_header" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:overScrollMode="never" />
 

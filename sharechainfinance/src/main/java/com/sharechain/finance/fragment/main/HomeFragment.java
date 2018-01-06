@@ -19,7 +19,7 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.NewsChannelTable;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.home.ManageTagActivity;
+import com.sharechain.finance.module.home.ManageTagFixedActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
 import com.sharechain.finance.module.mine.MineActivity;
 import com.sharechain.finance.module.mine.MyNewsActivity;
@@ -177,8 +177,8 @@ public class HomeFragment extends BaseFragment {
     void addTag() {
         Bundle data = new Bundle();
         data.putSerializable("list", (Serializable) typeList);
-        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagActivity.class, data);
-//        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagFixedActivity.class, data);
+//        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagActivity.class, data);
+        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagFixedActivity.class, data);
     }
 
     @OnClick(R.id.text_search)
