@@ -64,6 +64,8 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
     ListView listView;
     @BindView(R.id.xrefreshview)
     XRefreshView xRefreshView;
+    @BindView(R.id.delete_tv)
+    TextView deleteTv;
     private Unregistrar unregistrar;
     private LayoutInflater mInflater;
 
@@ -150,7 +152,11 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    if (charSequence.length()>0){
+                        deleteTv.setVisibility(View.VISIBLE);
+                    }else {
+                        deleteTv.setVisibility(View.GONE);
+                    }
             }
 
             @Override
@@ -161,6 +167,14 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
                     dataList.clear();
                     answerAdapter.setData(dataList);
                 }
+            }
+        });
+        deleteTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_et.getText().clear();
+                dataList.clear();
+                answerAdapter.setData(dataList);
             }
         });
     }

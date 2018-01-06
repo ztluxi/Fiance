@@ -215,11 +215,14 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                     if (myFollowBean.getData().size() == 0) {
                         empty_view.setVisibility(View.VISIBLE);
                         myNewslv.setVisibility(View.GONE);
-                    }
-                    if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
-                        if (UrlList.PAGE == 1) {
-                            followDataList.clear();
-                        }
+                    }else {
+                        empty_view.setVisibility(View.GONE);
+                        myNewslv.setVisibility(View.VISIBLE);
+//                    }
+//                    if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
+//                        if (UrlList.PAGE == 1) {
+//                            followDataList.clear();
+//                        }
                         if (myFollowBean.getData().size() != 0) {
                             for (int i = 0; i < myFollowBean.getData().size(); i++) {
                                 FollowData followData = new FollowData();
@@ -240,14 +243,16 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                         empty_view.setVisibility(View.VISIBLE);
                         myNewslv.setVisibility(View.GONE);
                     } else {
+                        empty_view.setVisibility(View.GONE);
+                        myNewslv.setVisibility(View.VISIBLE);
                         int focus = bean.getData().getIs_focus();
                         if (bean.getSuccess() == 1) {
                             //如果返回数据为空
-                            if (bean.getData() == null || bean.getData().equals("")) {
-                                empty_view.setVisibility(View.GONE);
-                                myNewslv.setVisibility(View.GONE);
-                                return;
-                            }
+//                            if (bean.getData() == null || bean.getData().equals("")) {
+//                                empty_view.setVisibility(View.GONE);
+//                                myNewslv.setVisibility(View.GONE);
+//                                return;
+//                            }
                             if (bean.getData().getLists().size() != 0) {
                                 for (int i = 0; i < bean.getData().getLists().size(); i++) {
                                     FollowData followData = new FollowData();

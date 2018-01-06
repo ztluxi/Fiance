@@ -86,6 +86,7 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent">-->
         <ListView
+            android:visibility="visible"
             android:id="@+id/my_news_lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,7 +94,8 @@
         </ListView>
     <!--</com.andview.refreshview.XRefreshView>-->
 
-    <include layout="@layout/layout_empty_view"></include>
+    <include
+        layout="@layout/layout_empty_view"></include>
 
 
 </LinearLayout>

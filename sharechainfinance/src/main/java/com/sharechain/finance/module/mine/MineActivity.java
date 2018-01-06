@@ -142,8 +142,22 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 BaseUtils.openActivity(this, FeedbackActivity.class, null);
                 break;
             case R.id.clear_cache_tv:
-                GlideUtils.getInstance().clearImageAllCache(this);
-                clearCacheTv.setText("");
+                final ExitLoginDialog exitLoginDialog = new ExitLoginDialog(this, getString(R.string.sure_clear_memory), getString(R.string.exit_yes), getString(R.string.exit_no));
+                exitLoginDialog.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GlideUtils.getInstance().clearImageAllCache(MineActivity.this);
+                        clearCacheTv.setText("");
+                        exitLoginDialog.dismiss();
+                    }
+                });
+                exitLoginDialog.setOnNegativeListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        exitLoginDialog.dismiss();
+                    }
+                });
+                exitLoginDialog.show();
                 break;
             case R.id.score_tv:
 //                BaseUtils.openActivity(this, SearchActivity.class, null);

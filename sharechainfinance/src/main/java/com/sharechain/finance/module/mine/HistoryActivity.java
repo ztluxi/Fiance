@@ -14,6 +14,9 @@ import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HistoryData;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
+import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ToastManager;
+import com.sharechain.finance.view.dialog.ExitLoginDialog;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.crud.callback.FindMultiCallback;
@@ -60,11 +63,30 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
         clearHistoryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataSupport.deleteAll(HistoryData.class);
-                dataList.clear();
-                answerAdapter.setListData(dataList);
-                answerAdapter.notifyDataSetChanged();
-                setEmptyView(xRefreshView, true);
+                if (dataList.size()==0){
+                    ToastManager.showShort(HistoryActivity.this,getString(R.string.please_browse_the_article));
+                    return;
+                }
+                final ExitLoginDialog historyDialog = new ExitLoginDialog(HistoryActivity.this, getString(R.string.sure_clear_history), getString(R.string.exit_yes), getString(R.string.exit_no));
+                historyDialog.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DataSupport.deleteAll(HistoryData.class);
+                        dataList.clear();
+                        answerAdapter.setListData(dataList);
+                        answerAdapter.notifyDataSetChanged();
+                        setEmptyView(xRefreshView, true);
+                        historyDialog.dismiss();
+                    }
+                });
+                historyDialog.setOnNegativeListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        historyDialog.dismiss();
+                    }
+                });
+                historyDialog.show();
+
             }
         });
 
@@ -85,6 +107,7 @@ public class HistoryActivity extends BaseActivity implements AdapterView.OnItemC
         });
         listView.setAdapter(answerAdapter);
         listView.setOnItemClickListener(this);
+
     }
 
     @Override

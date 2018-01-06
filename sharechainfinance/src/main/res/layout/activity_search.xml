@@ -7,46 +7,78 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:gravity="center"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="6dp"
-        android:paddingTop="7dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:id="@+id/follow_search_ll"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/search_et"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/text_cancel"
             android:background="@drawable/search_bg"
-            android:drawableLeft="@drawable/search"
-            android:drawablePadding="7dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center|left"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textColor="@color/about_font"
-            android:textColorHint="@color/about_font"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:background="@null"
+                android:layout_toLeftOf="@+id/delete_tv"
+                android:id="@+id/search_et"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/search"
+                android:drawablePadding="7dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center|left"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textColor="@color/about_font"
+                android:textColorHint="@color/about_font"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/delete_tv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/search_delete"
+                android:gravity="center_vertical"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
 
         <TextView
+            android:paddingLeft="12dp"
+            android:paddingRight="13dp"
+            android:layout_alignParentRight="true"
             android:id="@+id/text_cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:onClick="onClick"
-            android:paddingLeft="12dp"
-            android:paddingRight="13dp"
             android:text="@string/cancel"
             android:textColor="@color/colorBlack"
             android:textSize="14sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView style="@style/user_list_line_horizontal" />
 
