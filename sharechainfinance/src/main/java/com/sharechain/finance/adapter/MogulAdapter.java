@@ -50,7 +50,6 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<MogulData> mPostList;
     private Context mContext;
     private int tpye;
-    private boolean isLike = true;
 
     public interface MyItemClickListener {
         void onFabulous(View view, int position, List<MogulData> list, boolean isLike);
@@ -80,7 +79,6 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((HeadViewHolder) holder).mogulHeadNameTv.setText(mPostList.get(position).getName() + "");
             ((HeadViewHolder) holder).mogulHeadPositionTv.setText(mPostList.get(position).getPosition() + "");
             ((HeadViewHolder) holder).mogulHeadWeiboTv.setText(mPostList.get(position).getPosition() + "");
-
 
 
 //            if (mPostList.get(position).getFocus() == 1) {
@@ -114,14 +112,14 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             //返回
 //            if (mClickListener!=null){
-                ((HeadViewHolder) holder).mogulHeadBackTv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Activity activity = (Activity) mContext;
-                        activity.finish();
+            ((HeadViewHolder) holder).mogulHeadBackTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Activity activity = (Activity) mContext;
+                    activity.finish();
 //                        mClickListener.onBack();
-                    }
-                });
+                }
+            });
 //            }
             //点击关注或取消关注
 //            if (mClickListener!=null){
@@ -137,19 +135,19 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof PostViewHolder) {
             final MogulData mogulData = mPostList.get(position);
             holder.itemView.setTag(mogulData);
-            ((PostViewHolder) holder).mogulContentTv.setText("");
-            ((PostViewHolder) holder).mogulName.setText("");
-            ((PostViewHolder) holder).mogulTime.setText("");
-            ((PostViewHolder) holder).mogulWeibo.setText("");
-            ((PostViewHolder) holder).mogulPositionTv.setText("");
-            ((PostViewHolder) holder).mogulPositionTv.setVisibility(View.GONE);
-            ((PostViewHolder) holder).mogulTranslateTv.setText("");
-            ((PostViewHolder) holder).mogulHeadIvs.setImageResource(R.drawable.logo);
-            ((PostViewHolder) holder).mogulContentTranslateLl.setVisibility(View.GONE);
-            ((PostViewHolder) holder).mogulFabulousNumberTv.setText("");
-            ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
-            ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
-
+//            ((PostViewHolder) holder).mogulContentTv.setText("");
+//            ((PostViewHolder) holder).mogulName.setText("");
+//            ((PostViewHolder) holder).mogulTime.setText("");
+//            ((PostViewHolder) holder).mogulWeibo.setText("");
+//            ((PostViewHolder) holder).mogulPositionTv.setText("");
+//            ((PostViewHolder) holder).mogulPositionTv.setVisibility(View.GONE);
+//            ((PostViewHolder) holder).mogulTranslateTv.setText("");
+//            ((PostViewHolder) holder).mogulHeadIvs.setImageResource(R.drawable.mogul_default);
+//            ((PostViewHolder) holder).mogulContentTranslateLl.setVisibility(View.GONE);
+//            ((PostViewHolder) holder).mogulFabulousNumberTv.setText("");
+//            ((PostViewHolder) holder).mogulFabulousNumberTv.setText("");
+//            ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
+//            ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
 
             //9宫格图片
             ((PostViewHolder) holder).mNglContent.setImagesData(mogulData.getUrlList());
@@ -189,6 +187,16 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ((PostViewHolder) holder).mogulContentTranslateLl.setVisibility(View.GONE);
             }
 
+            if (mPostList.get(position).isLike()) {
+                ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
+                ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_sel);
+                ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.colorRed));
+            } else {
+                ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
+                ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
+                ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
+            }
+
             if (tpye == 0) {
                 ((PostViewHolder) holder).mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -210,22 +218,20 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         int pos = ((PostViewHolder) holder).getLayoutPosition();
-                        if (isLike) {
+                        if (!mPostList.get(position).isLike()) {
                             GoodView goodView = new GoodView(mContext);
                             goodView.setImage(R.drawable.fabulous_sel);
                             goodView.show(v);
                             ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + 1 + "");
                             ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_sel);
                             ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.colorRed));
-                            isLike = false;
                         } else {
                             ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
                             ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
                             ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
-                            isLike = true;
                         }
 
-                        mClickListener.onFabulous(v, pos, mPostList, isLike);
+                        mClickListener.onFabulous(v, pos, mPostList, mPostList.get(position).isLike());
                     }
                 });
             }

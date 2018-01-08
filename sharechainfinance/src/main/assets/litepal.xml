@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="demo" />
-    <version value="1" />
+    <version value="2" />
     <list>
         <!--首页列表缓存-->
         <mapping class="com.sharechain.finance.bean.ArticleListsBean" />
@@ -17,5 +17,7 @@
         <mapping class="com.sharechain.finance.bean.MainCacheBean" />
         <!--用户缓存-->
         <mapping class="com.sharechain.finance.bean.LoginDataBean" />
+        <!--点赞缓存-->
+        <mapping class="com.sharechain.finance.bean.MogulLikeBean" />
     </list>
 </litepal>

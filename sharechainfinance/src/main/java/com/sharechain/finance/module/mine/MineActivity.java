@@ -113,7 +113,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         if (SFApplication.loginDataBean != null) {
             //已登录
             ll_user_info.setVisibility(View.VISIBLE);
-            user_login.setVisibility(View.GONE);
+            user_login.setVisibility(View.INVISIBLE);
             exitTv.setVisibility(View.VISIBLE);
             userName.setText(SFApplication.loginDataBean.getNick_name());
             RequestOptions options = new RequestOptions().circleCrop().placeholder(R.drawable.user_center_default).diskCacheStrategy(DiskCacheStrategy.RESOURCE);
@@ -321,16 +321,16 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
-                exitTv.setVisibility(View.GONE);
-                //退出登录
-                SFApplication.loginDataBean = null;
-                DataSupport.deleteAll(LoginDataBean.class);
-                updateView();
                 break;
             case R.id.positiveButton: // 对话框左边按钮监听
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
+                exitTv.setVisibility(View.GONE);
+                //退出登录
+                SFApplication.loginDataBean = null;
+                DataSupport.deleteAll(LoginDataBean.class);
+                updateView();
                 break;
         }
     }

@@ -200,6 +200,8 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 }
             });
         } else {
+            refreshView.stopRefresh();
+            refreshView.stopLoadMore();
             if (mDialog != null && mDialog.isShowing()) {
                 mDialog.dismiss();
             }

@@ -20,6 +20,16 @@ public class MogulData {
     private String head;
     private int focus;
 
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
+    }
+
+    private boolean isLike;
+
     public int getType() {
         return Type;
     }

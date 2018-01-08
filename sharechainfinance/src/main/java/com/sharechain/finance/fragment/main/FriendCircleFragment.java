@@ -16,9 +16,11 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
+import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.MogulLikeBean;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MogulFollowSearchActivity;
@@ -63,6 +65,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     //转圈圈的加载框
     private Dialog mDialog;
     private MogulCircleBean bean;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_mogul_cirle;
@@ -110,7 +113,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
                 Logger.d(errStr);
-                if (mDialog!=null && mDialog.isShowing()){
+                if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
             }
@@ -157,12 +160,19 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
                         mogulData.setType(1);
+                        List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(mogul_id)).find(MogulLikeBean.class);
+                        if (likeList.size() > 0) {
+                            mogulData.setLike(true);
+                        } else {
+                            mogulData.setLike(false);
+                        }
                         mogulDataList.add(mogulData);
+
                     }
                 }
             } else {
-                if (PAGE!=1){
-                    ToastManager.showShort(getActivity(),getString(R.string.nothing_more_data));
+                if (PAGE != 1) {
+                    ToastManager.showShort(getActivity(), getString(R.string.nothing_more_data));
                 }
                 empty_view.setVisibility(View.VISIBLE);
                 mRefreshLayout.setVisibility(View.GONE);
@@ -189,10 +199,10 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                Intent intent = new Intent(getActivity(), MogulFollowSearchActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", 1);
-                intent.putExtras(bundle);
+                Intent intent = new Intent(getActivity(), MyFollowActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("type", 1);
+//                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             case R.id.image_title_right:
@@ -206,12 +216,26 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     }
 
     //点赞
-    private void addFabulous(int id) {
+    private void addFabulous(final int id, final boolean isLike) {
         final Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(id));
         requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
+                LoginManagerBean bean = JSON.parseObject(result, LoginManagerBean.class);
+                if (bean.getSuccess() == 1) {
+                    MogulLikeBean likeBean = new MogulLikeBean();
+                    if (isLike) {
+                        likeBean.setLike(false);
+                    } else {
+                        likeBean.setLike(true);
+                    }
+                    likeBean.setMogulID(id);
+                    likeBean.save();
+                } else {
+                    ToastManager.showShort(getActivity(), bean.getMsg());
+                }
+//                updateAdapter(position);
                 Logger.d(result);
             }
 
@@ -233,7 +257,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-       PAGE++;
+        PAGE++;
         getData(PAGE);
         return false;
     }
@@ -260,19 +284,22 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         mogulData.setWeibo(list.get(position).getWeibo());
         mogulData.setTime(list.get(position).getTime());
         mogulData.setPosition(list.get(position).getPosition());
-        if (isLike) {
+        if (!isLike) {
             mogulData.setFabulous(list.get(position).getFabulous() + 1);
+            mogulData.setLike(true);
         } else {
-            mogulData.setFabulous(list.get(position).getFabulous());
+            mogulData.setFabulous(list.get(position).getFabulous() - 1);
+            mogulData.setLike(false);
         }
         mogulData.setUrlList(list.get(position).getUrlList());
         mogulData.setContent(list.get(position).getContent());
         mogulData.setName(list.get(position).getName());
+        mogulData.setType(list.get(position).getType());
+        mogulData.setId(list.get(position).getId());
         mogulData.setTranslate(list.get(position).getTranslate());
+        mogulDataList.set(position, mogulData);
+        addFabulous(list.get(position).getId(), isLike);
 
-        addFabulous(list.get(position).getId());
-//        mogulDataList.set(position, mogulData);
-//        updateAdapter(position, mogulDataList);
     }
 
     @Override

@@ -14,8 +14,10 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
+import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
+import com.sharechain.finance.bean.MogulLikeBean;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MineActivity;
@@ -41,18 +43,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  */
 
 public class MogulCircleActivity extends BaseActivity implements MogulAdapter.MyItemClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
-    //    @BindView(R.id.back_iv)
-//    ImageView back_Image;
-//    @BindView(R.id.mogul_top_name_tv)
-//    TextView mogul_top_name_tv;
-//    @BindView(R.id.mogul_name_tv)
-//    TextView mogul_name_tv;
-//    @BindView(R.id.mogul_position_tv)
-//    TextView mogul_position_tv;
-//    @BindView(R.id.mogul_follow_tv)
-//    TextView mogul_follow_tv;
-//    @BindView(R.id.mogul_center_iv)
-//    ImageView mogul_center_iv;
+
     @BindView(R.id.mogul_circle_rl)
     RecyclerView mogulCircleRl;
     @BindView(R.id.rl_recyclerview_refresh)
@@ -68,6 +59,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     public int getLayout() {
         return R.layout.activity_mogul_cirle;
     }
+
     public int PAGE = 1;//页数
     /**
      * 是否关注
@@ -295,17 +287,22 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         mogulData.setWeibo(list.get(position).getWeibo());
         mogulData.setTime(list.get(position).getTime());
         mogulData.setPosition(list.get(position).getPosition());
-        if (isLike) {
+        if (!isLike) {
             mogulData.setFabulous(list.get(position).getFabulous() + 1);
+            mogulData.setLike(true);
         } else {
-            mogulData.setFabulous(list.get(position).getFabulous());
+            mogulData.setFabulous(list.get(position).getFabulous() - 1);
+            mogulData.setLike(false);
         }
         mogulData.setUrlList(list.get(position).getUrlList());
         mogulData.setContent(list.get(position).getContent());
         mogulData.setName(list.get(position).getName());
+        mogulData.setType(list.get(position).getType());
+        mogulData.setId(list.get(position).getId());
         mogulData.setTranslate(list.get(position).getTranslate());
+        mogulDataList.set(position, mogulData);
+        addFabulous(list.get(position).getId(), isLike);
 
-//        addFabulous(list.get(position).getId());
     }
 
     @Override
@@ -321,7 +318,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     }
 
 
-//    //关注
+    //    //关注
 //    @Override
 //    public void onFollow(View view, int position, List<MogulData> list) {
 //        if (list.get(position).getFocus() == 1) {
@@ -331,22 +328,35 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 //        }
 //    }
 //
-//    //点赞
-//    private void addFabulous(int id) {
-//        final Map<String, String> params = new HashMap<>();
-//        params.put("id", String.valueOf(id));
-//        requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(this) {
-//            @Override
-//            protected void onSuccess(String result) {
-//                Logger.d(result);
-//            }
-//
-//            @Override
-//            protected void onFailed(String errStr) {
-//                Logger.d(errStr);
-//            }
-//        });
-//
-//    }
+    //点赞
+    private void addFabulous(final int id, final boolean isLike) {
+        final Map<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(id));
+        requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(this) {
+            @Override
+            protected void onSuccess(String result) {
+                LoginManagerBean bean = JSON.parseObject(result, LoginManagerBean.class);
+                if (bean.getSuccess() == 1) {
+                    MogulLikeBean likeBean = new MogulLikeBean();
+                    if (isLike) {
+                        likeBean.setLike(false);
+                    } else {
+                        likeBean.setLike(true);
+                    }
+                    likeBean.setMogulID(id);
+                    likeBean.save();
+                } else {
+                    ToastManager.showShort(MogulCircleActivity.this, bean.getMsg());
+                }
+                Logger.d(result);
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+                Logger.d(errStr);
+            }
+        });
+
+    }
 
 }
