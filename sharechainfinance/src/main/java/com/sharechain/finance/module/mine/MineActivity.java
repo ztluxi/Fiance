@@ -95,6 +95,9 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void initView() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID, true);
         //将应用注册到微信
         iwxapi.registerApp(SFApplication.WX_APPID);
@@ -102,6 +105,12 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         setTitlePadding(ll_top_info);
         updateView();
         dialog = new LoadDialog().LoadProgressDialog(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
