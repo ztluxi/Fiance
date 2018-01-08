@@ -16,9 +16,18 @@ public class MogulData {
     private String translate;
     private int Type;
     private int fabulous;//点赞
-    private int id;
+    private int id;//大佬id
     private String head;
     private int focus;
+    private int mogulCircleID;//内容id
+
+    public int getMogulCircleID() {
+        return mogulCircleID;
+    }
+
+    public void setMogulCircleID(int mogulCircleID) {
+        this.mogulCircleID = mogulCircleID;
+    }
 
     public boolean isLike() {
         return isLike;

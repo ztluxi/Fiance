@@ -138,6 +138,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         String text = bean.getData().getLists().get(i).getText();
                         String translate = bean.getData().getLists().get(i).getTranslate_content();
                         int fabulous = bean.getData().getLists().get(i).getHits();
+                        int circleID = bean.getData().getLists().get(i).getId();
 
                         int mogul_id = bean.getData().getLists().get(i).getCelebrity_id();
                         List<String> imgs = new ArrayList<>();
@@ -160,7 +161,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
                         mogulData.setType(1);
-                        List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(mogul_id)).find(MogulLikeBean.class);
+                        mogulData.setId(circleID);
+                        List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circleID)).find(MogulLikeBean.class);
                         if (likeList.size() > 0) {
                             mogulData.setLike(true);
                         } else {
@@ -199,24 +201,20 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                Intent intent = new Intent(getActivity(), MyFollowActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("type", 1);
-//                intent.putExtras(bundle);
-                startActivity(intent);
+                BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
                 break;
             case R.id.image_title_right:
                 Intent intentMogul = new Intent(getActivity(), MogulFollowSearchActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("type", 2);
                 intentMogul.putExtras(bundle1);
-                startActivity(intentMogul);
+                BaseUtils.openActivity(getActivity(), MogulFollowSearchActivity.class, bundle1);
                 break;
         }
     }
 
     //点赞
-    private void addFabulous(final int id, final boolean isLike) {
+    private void addFabulous(final int id, final int circleID, final boolean isLike, final int position) {
         final Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(id));
         requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(getActivity()) {
@@ -230,12 +228,21 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                     } else {
                         likeBean.setLike(true);
                     }
-                    likeBean.setMogulID(id);
-                    likeBean.save();
+                    likeBean.setMogulID(circleID);
+                    boolean isSave = likeBean.save();
+                    MogulData tmp = mogulAdapter.getmPostList().get(position);
+                    if (isLike) {
+                        tmp.setLike(false);
+                        tmp.setFabulous(tmp.getFabulous() - 1);
+                    } else {
+                        tmp.setLike(true);
+                        tmp.setFabulous(tmp.getFabulous() + 1);
+                    }
+                    mogulAdapter.getmPostList().set(position, tmp);
+                    mogulAdapter.notifyDataSetChanged();
                 } else {
                     ToastManager.showShort(getActivity(), bean.getMsg());
                 }
-//                updateAdapter(position);
                 Logger.d(result);
             }
 
@@ -279,26 +286,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     //点赞
     @Override
     public void onFabulous(View view, int position, List<MogulData> list, boolean isLike) {
-        MogulData mogulData = new MogulData();
-        mogulData.setHead(list.get(position).getHead());
-        mogulData.setWeibo(list.get(position).getWeibo());
-        mogulData.setTime(list.get(position).getTime());
-        mogulData.setPosition(list.get(position).getPosition());
-        if (!isLike) {
-            mogulData.setFabulous(list.get(position).getFabulous() + 1);
-            mogulData.setLike(true);
-        } else {
-            mogulData.setFabulous(list.get(position).getFabulous() - 1);
-            mogulData.setLike(false);
-        }
-        mogulData.setUrlList(list.get(position).getUrlList());
-        mogulData.setContent(list.get(position).getContent());
-        mogulData.setName(list.get(position).getName());
-        mogulData.setType(list.get(position).getType());
-        mogulData.setId(list.get(position).getId());
-        mogulData.setTranslate(list.get(position).getTranslate());
-        mogulDataList.set(position, mogulData);
-        addFabulous(list.get(position).getId(), isLike);
+
+        addFabulous(list.get(position).getId(), list.get(position).getMogulCircleID(), isLike, position);
 
     }
 

@@ -58,6 +58,10 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
+    public List<MogulData> getmPostList() {
+        return mPostList;
+    }
+
     private MyItemClickListener mClickListener;
 
     public void setOnItemClickListener(MyItemClickListener listener) {
@@ -222,15 +226,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             GoodView goodView = new GoodView(mContext);
                             goodView.setImage(R.drawable.fabulous_sel);
                             goodView.show(v);
-                            ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + 1 + "");
-                            ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_sel);
-                            ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.colorRed));
-                        } else {
-                            ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
-                            ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
-                            ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
                         }
-
                         mClickListener.onFabulous(v, pos, mPostList, mPostList.get(position).isLike());
                     }
                 });
