@@ -1,5 +1,6 @@
 package com.sharechain.finance;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
@@ -10,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.fragment.main.FastMsgFragment;
 import com.sharechain.finance.fragment.main.FriendCircleFragment;
 import com.sharechain.finance.fragment.main.HomeFragment;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FragmentTabHost;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,8 +31,10 @@ public class MainActivity extends BaseActivity {
     private enum BOTTOM_ITEM {
         HOME, FAST_MSG, FRIEND_CIRCLE
     }
+
     private long backTime; // 记录用户点击的时间
     private BOTTOM_ITEM curItem = BOTTOM_ITEM.HOME;
+    private boolean isSwitchFastMsg = false;//是否切换到快讯界面
 
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabhost;
@@ -63,12 +69,29 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isSwitchFastMsg = getIntent().getIntExtra("type", 0) == 2;
         tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         tabhost.getTabWidget().setVisibility(View.GONE);
         tabhost.setCurrentTabByTag(TAB_HOME);
         tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
         tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
         tabHostAddTab();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        isSwitchFastMsg = intent.getIntExtra("type", 0) == 2;
+        if (isSwitchFastMsg) {
+            tabhost.setCurrentTabByTag(TAB_FAST_MSG);
+            //EventBus发送消息
+            BaseNotifyBean bean = new BaseNotifyBean();
+            bean.setType(BaseNotifyBean.TYPE.TYPE_REFRESH_FASTMSG_DATA);
+            EventBus.getDefault().post(bean);
+        } else {
+            tabhost.setCurrentTabByTag(TAB_HOME);
+        }
     }
 
     @Override
@@ -83,7 +106,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        if (isSwitchFastMsg) {
+            curItem = BOTTOM_ITEM.FAST_MSG;
+            setBottom();
+        }
     }
 
     private void tabHostAddTab() {
@@ -130,6 +156,11 @@ public class MainActivity extends BaseActivity {
         animation.setDuration(200);
         animation.setFillAfter(true);
         iv.startAnimation(animation);
+    }
+
+    //是否是从推送消息打开
+    public boolean isSwitchFastMsg() {
+        return isSwitchFastMsg;
     }
 
     // 添加系统监听的返回

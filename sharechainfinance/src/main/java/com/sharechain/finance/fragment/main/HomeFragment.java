@@ -123,7 +123,8 @@ public class HomeFragment extends BaseFragment {
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewpager.setCurrentItem(index);
+                        viewpager.setCurrentItem(index, false);
+//                        viewpager.setCurrentItem(index);
                     }
                 });
                 return simplePagerTitleView;

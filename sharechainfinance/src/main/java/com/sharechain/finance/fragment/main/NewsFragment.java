@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.NewsListAdapter;
 import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HomeArticleListBean;
@@ -19,7 +19,7 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
-import com.sharechain.finance.view.BGAMyRefreshViewHolder;
+import com.sharechain.finance.view.MyXRefreshViewHeader;
 
 import org.litepal.crud.DataSupport;
 
@@ -45,8 +45,8 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
     @BindView(R.id.news_rv)
     RecyclerView mNewsRV;
-    @BindView(R.id.rl_recyclerview_refresh)
-    BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.xrefreshview)
+    XRefreshView xRefreshView;
 
     private NewsListAdapter mNewsListAdapter;
     private HomeIndexBean homeIndexBean;
@@ -82,8 +82,30 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     @Override
     protected void initView() {
         mNewsListAdapter = new NewsListAdapter(getActivity(), dataList, homeIndexBean.getData());
-        mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGAMyRefreshViewHolder(SFApplication.get(getActivity()), true));
+        initXRefreshView(xRefreshView);
+        MyXRefreshViewHeader header = new MyXRefreshViewHeader(getActivity());
+        header.setBlueBackground(R.color.tint_home_color, R.color.white);
+        xRefreshView.setCustomHeaderView(header);
+        xRefreshView.setPullRefreshEnable(true);
+        xRefreshView.setPullLoadEnable(true);
+        xRefreshView.setAutoRefresh(false);
+        xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
+
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                page = 1;
+                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page++;
+                getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+            }
+
+        });
 
         mNewsRV.setHasFixedSize(true);
         mNewsRV.setLayoutManager(new LinearLayoutManager(getActivity(),
@@ -113,9 +135,9 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         requestGet(UrlList.HOME_ARTICLE_LIST, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
-                if (mRefreshLayout != null) {
-                    mRefreshLayout.endRefreshing();
-                    mRefreshLayout.endLoadingMore();
+                if (xRefreshView != null) {
+                    xRefreshView.stopRefresh();
+                    xRefreshView.stopLoadMore();
                 }
                 HomeArticleListBean bean = JSON.parseObject(result, HomeArticleListBean.class);
                 if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
@@ -138,9 +160,9 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
 
             @Override
             protected void onFailed(String errStr) {
-                if (mRefreshLayout != null) {
-                    mRefreshLayout.endRefreshing();
-                    mRefreshLayout.endLoadingMore();
+                if (xRefreshView != null) {
+                    xRefreshView.stopRefresh();
+                    xRefreshView.stopLoadMore();
                 }
             }
         });

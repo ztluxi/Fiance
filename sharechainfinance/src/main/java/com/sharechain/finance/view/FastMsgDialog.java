@@ -51,7 +51,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_weixin)
     void gotoShareWeixin() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
         }
@@ -60,7 +60,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_circle)
     void gotoShareWeixinCircle() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
         }
@@ -69,7 +69,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
         if (bitmap != null) {
             boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
             if (isSuccess) {
@@ -152,6 +152,18 @@ public class FastMsgDialog extends Dialog {
         }
         share_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
         share_content.setText(fastMsgData.getDataText());
+    }
+
+    //    计算view高度
+    private int getMeasureHeight() {
+        if (shareView != null) {
+            int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            shareView.measure(width, height);
+            int viewHeight = shareView.getMeasuredHeight();
+            return viewHeight;
+        }
+        return SFApplication.screen_height;
     }
 
     @Override

@@ -6,7 +6,7 @@ package com.sharechain.finance.bean;
 
 public class BaseNotifyBean {
     public enum TYPE {
-        TYPE_SHARE_RESULT, TYPE_MANAGE_TAG_RESULT, TYPE_LOGIN_WEIXIN, TYPE_SELECT_TAG, TYPE_SCROLL_MSG
+        TYPE_SHARE_RESULT, TYPE_MANAGE_TAG_RESULT, TYPE_LOGIN_WEIXIN, TYPE_SELECT_TAG, TYPE_SCROLL_MSG, TYPE_REFRESH_FASTMSG_DATA
     }
 
     private TYPE type;

@@ -1,6 +1,5 @@
 package com.sharechain.finance.fragment.main;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -17,8 +16,6 @@ import com.sharechain.finance.bean.FastMsgBean;
 import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.home.BaseWebViewActivity;
-import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.FastMsgDialog;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 
@@ -127,6 +124,11 @@ public class FastMsgFragment extends BaseFragment {
             //弹出分享对话框
             FastMsgData getData = (FastMsgData) event.getObj();
             new FastMsgDialog(getActivity(), getData).show();
+        } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_REFRESH_FASTMSG_DATA) {
+            //刷新
+            //刷新列表
+            page = 1;
+            getDetail();
         }
     }
 

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
+import com.sharechain.finance.MainActivity;
+import com.sharechain.finance.module.mine.MyNewsActivity;
 
 import org.json.JSONObject;
 
@@ -50,25 +52,25 @@ public class MyReceiver extends BroadcastReceiver {
 
     private void openNotification(Context context, Bundle bundle) {
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        String myValue = "";
+        int type = 1;
         try {
             JSONObject extrasJson = new JSONObject(extras);
-            myValue = extrasJson.optString("myKey");
+            type = extrasJson.optInt("type");
+            //type==1消息  type==2快讯
+            Intent intent = new Intent();
+            if (type == 1) {
+                intent.setClass(context, MyNewsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            } else if (type == 2) {
+                intent.setClass(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("type", type);//类型为2，跳转到款讯页面并且刷新
+                context.startActivity(intent);
+            }
         } catch (Exception e) {
             Logger.w(TAG, "Unexpected: extras is not a valid json", e);
             return;
         }
-        Logger.d("chu", "type--" + myValue);
-//        if (TYPE_THIS.equals(myValue)) {
-//            Intent mIntent = new Intent(context, ThisActivity.class);
-//            mIntent.putExtras(bundle);
-//            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(mIntent);
-//        } else if (TYPE_ANOTHER.equals(myValue)) {
-//            Intent mIntent = new Intent(context, AnotherActivity.class);
-//            mIntent.putExtras(bundle);
-//            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(mIntent);
-//        }
     }
 }

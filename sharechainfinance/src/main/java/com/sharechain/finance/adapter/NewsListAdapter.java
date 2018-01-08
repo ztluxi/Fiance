@@ -40,22 +40,18 @@ import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.sharechain.finance.MainActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.ArticleListsBean;
-import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.TimeUtil;
+import com.sharechain.finance.view.FastMsgDialog;
 import com.sharechain.finance.view.FixedSpeedScroller;
 import com.sharechain.finance.view.ScaleInTransformer;
 import com.sharechain.finance.view.UserOperateCallbackViewPager;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -311,14 +307,17 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                         childData.setTitle(headerBean.getTop_news().get(switchIndex).getSite_name());//标题
                         childData.setHour(headerBean.getTop_news().get(switchIndex).getTime());//时间
                         childData.setUrl(headerBean.getTop_news().get(switchIndex).getSite_url());//url
-                        //切换至快讯界面
-                        ((MainActivity) context).switchToFastMsg();
-                        SFApplication.shareData = childData;
-                        //EventBus发送消息
-                        BaseNotifyBean bean = new BaseNotifyBean();
-                        bean.setType(BaseNotifyBean.TYPE.TYPE_SCROLL_MSG);
-                        bean.setObj(childData);
-                        EventBus.getDefault().post(bean);
+
+                        //弹出分享对话框
+                        new FastMsgDialog(context, childData).show();
+//                        //切换至快讯界面
+//                        ((MainActivity) context).switchToFastMsg();
+//                        SFApplication.shareData = childData;
+//                        //EventBus发送消息
+//                        BaseNotifyBean bean = new BaseNotifyBean();
+//                        bean.setType(BaseNotifyBean.TYPE.TYPE_SCROLL_MSG);
+//                        bean.setObj(childData);
+//                        EventBus.getDefault().post(bean);
                     }
                 });
                 startSwitchText();

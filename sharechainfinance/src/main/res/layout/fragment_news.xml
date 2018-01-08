@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        android:id="@+id/rl_recyclerview_refresh"
-        style="@style/MatchMatch"
-        android:background="@color/tint_home_color"
-        android:visibility="visible">
+    <com.andview.refreshview.XRefreshView
+        android:id="@+id/xrefreshview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/news_rv"
@@ -18,6 +17,6 @@
             android:layout_weight="1"
             android:visibility="visible" />
 
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </com.andview.refreshview.XRefreshView>
 
 </FrameLayout>
