@@ -84,6 +84,8 @@ public class MainActivity extends BaseActivity {
         setIntent(intent);
         isSwitchFastMsg = intent.getIntExtra("type", 0) == 2;
         if (isSwitchFastMsg) {
+            curItem = BOTTOM_ITEM.FAST_MSG;
+            unCheckAllBottom();
             tabhost.setCurrentTabByTag(TAB_FAST_MSG);
             //EventBus发送消息
             BaseNotifyBean bean = new BaseNotifyBean();

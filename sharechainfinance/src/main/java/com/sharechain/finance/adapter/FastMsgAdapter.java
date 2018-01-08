@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sharechain.finance.R;
@@ -86,23 +87,22 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
             childViewHolder.text_content.setText(content);
             if (listData.get(i).getMsgType() == 1) {
                 //一般消息
-                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_blue_msg_bg);
-                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_normal));
+                childViewHolder.ll_red_fire.setVisibility(View.GONE);
+                childViewHolder.image_orange_fire.setVisibility(View.GONE);
             } else if (listData.get(i).getMsgType() == 2) {
                 //重要
-                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_orange_msg_bg);
-                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_big));
+                childViewHolder.ll_red_fire.setVisibility(View.GONE);
+                childViewHolder.image_orange_fire.setVisibility(View.VISIBLE);
             } else if (listData.get(i).getMsgType() == 3) {
                 //非常重要
-                childViewHolder.text_msg_type.setBackgroundResource(R.drawable.common_red_msg_bg);
-                childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_important));
+                childViewHolder.ll_red_fire.setVisibility(View.VISIBLE);
+                childViewHolder.image_orange_fire.setVisibility(View.GONE);
             }
             if (BaseUtils.isEmpty(listData.get(i).getUrl())) {
                 childViewHolder.text_view_article.setVisibility(View.GONE);
             } else {
                 childViewHolder.text_view_article.setVisibility(View.VISIBLE);
             }
-            childViewHolder.text_msg_type.setText(context.getString(R.string.fastmsg_important));
             childViewHolder.image_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -141,8 +141,6 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
     }
 
     class ChildViewHolder {
-        @BindView(R.id.text_msg_type)
-        TextView text_msg_type;
         @BindView(R.id.text_time)
         TextView text_time;
         @BindView(R.id.text_content)
@@ -153,6 +151,10 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
         ImageView image_share;
         @BindView(R.id.card_fast_msg)
         CardView card_fast_msg;
+        @BindView(R.id.ll_red_fire)
+        LinearLayout ll_red_fire;
+        @BindView(R.id.image_orange_fire)
+        ImageView image_orange_fire;
 
         public ChildViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);

@@ -162,7 +162,7 @@ public class HomeFragment extends BaseFragment {
                 if (i == 0) {
                     fragments.add(NewsFragment.newInstance(homeIndexBean, i));
                 } else {
-                    fragments.add(AnswerFragment.newInstance(homeIndexBean, i));
+                    fragments.add(HomeOtherFragment.newInstance(homeIndexBean, i));
                 }
             }
             mPagerAdapter.setItems(fragments, titleList);

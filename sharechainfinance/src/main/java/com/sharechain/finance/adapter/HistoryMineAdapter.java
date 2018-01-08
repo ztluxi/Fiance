@@ -80,7 +80,8 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
                 childViewHolder.text_type.setText(listData.get(i).getName());
                 Date date = TimeUtil.StringToDate(listData.get(i).getPost_date_gmt());
                 childViewHolder.text_time.setText(TimeUtil.RelativeDateFormat(date));
-                GlideUtils.getInstance().loadUserImage(context, listData.get(i).getImage(), childViewHolder.image_pic, R.drawable.home_default);
+                childViewHolder.text_views.setText(String.format("%1$d阅读", listData.get(i).getViews()));
+                GlideUtils.getInstance().loadRoundImage(context, listData.get(i).getImage(), childViewHolder.image_pic, 5, R.drawable.home_default);
             } else if (listData.get(i).getChannel_type() == ArticleDetailActivity.NEWS_TYPE_ANSWER) {
                 HistoryMineAdapter.AnswerChildViewHolder childViewHolder;
                 if (view == null) {
@@ -90,7 +91,7 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
                 childViewHolder.text_content.setText(listData.get(i).getPost_title());
                 childViewHolder.text_comment_num.setText(listData.get(i).getViews() + context.getString(R.string.home_item_comment));
                 childViewHolder.text_praise_num.setText(listData.get(i).getPost_view_rand() + context.getString(R.string.home_item_praise));
-                GlideUtils.getInstance().loadUserImage(context, listData.get(i).getImage(), childViewHolder.image_pic, R.drawable.home_default);
+                GlideUtils.getInstance().loadRoundImage(context, listData.get(i).getImage(), childViewHolder.image_pic, 5, R.drawable.home_default);
             }
         }
         return view;
@@ -137,6 +138,8 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
         TextView text_time;
         @BindView(R.id.text_type)
         TextView text_type;
+        @BindView(R.id.text_views)
+        TextView text_views;
         @BindView(R.id.image_pic)
         ImageView image_pic;
 

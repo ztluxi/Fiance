@@ -47,7 +47,6 @@ public class FastMsgFragment extends BaseFragment {
     @BindView(R.id.first_title_tv)
     TextView first_title_tv;
 
-
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
     private FastMsgBean.DataBean.ListBean headData;

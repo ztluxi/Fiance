@@ -25,7 +25,6 @@ import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mine.MogulFollowSearchActivity;
 import com.sharechain.finance.module.mine.MyFollowActivity;
-import com.sharechain.finance.module.mogul.MogulCircleActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
@@ -161,7 +160,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
                         mogulData.setType(1);
-                        mogulData.setId(circleID);
+                        mogulData.setMogulCircleID(circleID);
                         List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circleID)).find(MogulLikeBean.class);
                         if (likeList.size() > 0) {
                             mogulData.setLike(true);
