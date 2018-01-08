@@ -33,7 +33,6 @@ public class BaseUtils {
     private static final String NEWS_ITEM_PHOTO_SET = "photoset";
 
 
-
     /**
      * 根据应用包名，跳转到应用市场
      *
@@ -42,7 +41,7 @@ public class BaseUtils {
      */
     public static void shareAppShop(Activity activity, String packageName) {
         try {
-            Uri uri = Uri.parse("market://details?id="+ packageName);
+            Uri uri = Uri.parse("market://details?id=" + packageName);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
@@ -311,7 +310,7 @@ public class BaseUtils {
      */
     public static boolean saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
-        File mFile = getOwnCacheDirectory(context, "shareImage");
+        File mFile = getOwnCacheDirectory(context, context.getString(R.string.app_name));
         String fileName = System.currentTimeMillis() + ".jpg";
         File file = new File(mFile, fileName);
         try {

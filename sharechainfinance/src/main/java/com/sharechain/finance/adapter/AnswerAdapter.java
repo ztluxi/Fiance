@@ -24,7 +24,8 @@ public class AnswerAdapter extends BGAAdapterViewAdapter<ArticleListsBean> {
         helper.getTextView(R.id.text_content).setText(model.getPost_title());
         helper.getTextView(R.id.text_comment_num).setText(model.getViews() + mContext.getString(R.string.home_item_comment));
         helper.getTextView(R.id.text_comment_num).setText(model.getPost_view_rand() + mContext.getString(R.string.home_item_praise));
-        GlideUtils.getInstance().loadUserImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), R.drawable.home_default);
+        GlideUtils.getInstance().loadRoundImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), 5,
+                R.drawable.home_default);
     }
 
 }

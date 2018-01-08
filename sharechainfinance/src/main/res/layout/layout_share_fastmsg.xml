@@ -79,8 +79,8 @@
 
             <ImageView
                 android:id="@+id/image_qrcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
                 android:src="@drawable/icon_share_qrcode" />
 
             <TextView

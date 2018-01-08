@@ -312,7 +312,7 @@ public class ArticleDetailActivity extends BaseActivity {
         Glide.with(SFApplication.get(this)).load(bean.getData().getAuthor().getUser_avatars()).apply(options).into(image_avatar);
         text_name.setText(bean.getData().getAuthor().getDisplay_name());
         text_time.setText(bean.getData().getArticle().getPost_date_gmt());
-        text_view_count.setText(String.valueOf(bean.getData().getAuthor().getCount_view()));
+        text_view_count.setText(String.valueOf(bean.getData().getArticle().getViews()));
         if (bean.getData().getPost_tag().size() == 0) {
             flow_tags.setVisibility(View.GONE);
         }
@@ -336,7 +336,7 @@ public class ArticleDetailActivity extends BaseActivity {
             }
         });
         //赞数目
-        text_praise_num.setText(String.valueOf(bean.getData().getAuthor().getCount_article()));
+        text_praise_num.setText(String.valueOf(bean.getData().getArticle().getHits()));
         //图文详情
         Document doc = Jsoup.parse(bean.getData().getArticle().getPost_content());
         Elements elements = doc.getElementsByTag("img");
