@@ -153,11 +153,12 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         mogulData.setTime(create_time);
                         mogulData.setWeibo(weibo_name);
                         mogulData.setFabulous(fabulous);
-                        mogulData.setMogulCircleID(circleID);
+                        mogulData.setId(mogul_id);
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
                         mogulData.setType(1);
-                         mogulData.setMogulCircleID(circleID);                        List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circleID)).find(MogulLikeBean.class);
+                         mogulData.setMogulCircleID(circleID);
+                         List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circleID)).find(MogulLikeBean.class);
                         if (likeList.size() > 0) {
                             mogulData.setLike(true);
                         } else {
