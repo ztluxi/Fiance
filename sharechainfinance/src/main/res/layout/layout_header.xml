@@ -80,7 +80,7 @@
             android:layout_height="37dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="6dp"
             android:layout_toRightOf="@id/text_head_line"
             android:alpha="0.2"
             android:background="@color/color_999999" />

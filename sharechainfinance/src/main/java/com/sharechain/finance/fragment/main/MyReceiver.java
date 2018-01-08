@@ -8,8 +8,10 @@ import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.MainActivity;
+import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.module.mine.MyNewsActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import cn.jpush.android.api.JPushInterface;
@@ -48,6 +50,8 @@ public class MyReceiver extends BroadcastReceiver {
         String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_ALERT);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        NewsEven event = new NewsEven(1);
+        EventBus.getDefault().post(event);
     }
 
     private void openNotification(Context context, Bundle bundle) {

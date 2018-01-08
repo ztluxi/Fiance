@@ -75,14 +75,28 @@
                 android:text="比特币"
                 android:textColor="@color/color_7c7c7c" />
 
-            <ImageView
-                android:id="@+id/image_notification"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="24dp"
-                android:paddingRight="12dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_home_msg" />
+                android:paddingRight="12dp">
+
+                <ImageView
+                    android:id="@+id/image_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_home_msg" />
+
+                <ImageView
+                    android:id="@+id/image_dot"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_toRightOf="@id/image_notification"
+                    android:src="@drawable/usercenter_news_red_circle"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/image_history"

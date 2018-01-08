@@ -18,6 +18,7 @@ import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.bean.MainCacheBean;
 import com.sharechain.finance.bean.NewsChannelTable;
+import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ManageTagFixedActivity;
 import com.sharechain.finance.module.mine.HistoryActivity;
@@ -62,6 +63,8 @@ public class HomeFragment extends BaseFragment {
     ImageView add_channel;
     @BindView(R.id.rl_top)
     RelativeLayout rl_top;
+    @BindView(R.id.image_dot)
+    ImageView image_dot;
     private ViewPagerAdapter mPagerAdapter;
     //频道列表
     private List<String> titleList = new ArrayList<>();
@@ -211,6 +214,16 @@ public class HomeFragment extends BaseFragment {
         } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_SELECT_TAG) {
             //仅仅是换位置
             viewpager.setCurrentItem(event.getInteger(), true);
+        }
+    }
+
+    //消息
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewsEvent(NewsEven event) {
+        if (event.getNews() == 0) {
+            image_dot.setVisibility(View.GONE);
+        } else {
+            image_dot.setVisibility(View.VISIBLE);
         }
     }
 
