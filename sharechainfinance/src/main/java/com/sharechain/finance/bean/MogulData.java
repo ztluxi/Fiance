@@ -15,10 +15,10 @@ public class MogulData {
     private String time;
     private String translate;
     private int Type;
-    private int fabulous;//点赞
+    private int fabulous;//点赞数
     private int id;//大佬id
     private String head;
-    private int focus;
+    private int focus;//是否关注大佬
     private int mogulCircleID;//内容id
 
     public int getMogulCircleID() {

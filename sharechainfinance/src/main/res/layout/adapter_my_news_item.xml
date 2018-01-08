@@ -7,17 +7,27 @@
     android:orientation="horizontal"
     android:id="@+id/my_news_item_rl">
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/my_news_Image_ll"
         android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+    <ImageView
         android:paddingLeft="15dp"
         android:id="@+id/my_news_Image_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/my_news"
          />
+    </LinearLayout>
+
 
     <LinearLayout
-        android:layout_toRightOf="@+id/my_news_Image_iv"
+        android:layout_toRightOf="@+id/my_news_Image_ll"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

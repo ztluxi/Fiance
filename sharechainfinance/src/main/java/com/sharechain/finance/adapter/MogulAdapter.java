@@ -115,43 +115,19 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             GlideUtils.getInstance().loadUserImage(mContext, mPostList.get(position).getHead(), ((HeadViewHolder) holder).mogulHeadImageTv, headOptions);
 
             //返回
-//            if (mClickListener!=null){
             ((HeadViewHolder) holder).mogulHeadBackTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Activity activity = (Activity) mContext;
                     activity.finish();
-//                        mClickListener.onBack();
                 }
             });
-//            }
-            //点击关注或取消关注
-//            if (mClickListener!=null){
-//                ((HeadViewHolder) holder).mogulHeadFollowTv.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        mClickListener.onFollow(view,position,mPostList);
-//                    }
-//                });
-//            }
+
         }
 
         if (holder instanceof PostViewHolder) {
             final MogulData mogulData = mPostList.get(position);
             holder.itemView.setTag(mogulData);
-//            ((PostViewHolder) holder).mogulContentTv.setText("");
-//            ((PostViewHolder) holder).mogulName.setText("");
-//            ((PostViewHolder) holder).mogulTime.setText("");
-//            ((PostViewHolder) holder).mogulWeibo.setText("");
-//            ((PostViewHolder) holder).mogulPositionTv.setText("");
-//            ((PostViewHolder) holder).mogulPositionTv.setVisibility(View.GONE);
-//            ((PostViewHolder) holder).mogulTranslateTv.setText("");
-//            ((PostViewHolder) holder).mogulHeadIvs.setImageResource(R.drawable.mogul_default);
-//            ((PostViewHolder) holder).mogulContentTranslateLl.setVisibility(View.GONE);
-//            ((PostViewHolder) holder).mogulFabulousNumberTv.setText("");
-//            ((PostViewHolder) holder).mogulFabulousNumberTv.setText("");
-//            ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_nor);
-//            ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.about_font));
 
             //9宫格图片
             ((PostViewHolder) holder).mNglContent.setImagesData(mogulData.getUrlList());
@@ -192,7 +168,11 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
             if (mPostList.get(position).isLike()) {
-                ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
+                if (mPostList.get(position).getFabulous() == 0) {
+                    ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + 1+"");
+                } else {
+                    ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
+                }
                 ((PostViewHolder) holder).mogulFabulousIv.setImageResource(R.drawable.fabulous_sel);
                 ((PostViewHolder) holder).mogulFabulousNumberTv.setTextColor(mContext.getResources().getColor(R.color.colorRed));
             } else {

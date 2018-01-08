@@ -63,9 +63,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.sharechain.finance.module.home.HomeDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.sharechain.finance.module.mine.HistoryActivity"
             android:screenOrientation="portrait" />
         <activity

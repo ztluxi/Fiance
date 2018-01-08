@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
@@ -42,6 +43,9 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 /**
  * Created by Administrator on 2017/12/13.
@@ -79,7 +83,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
     TextView user_login;
 
     private IWXAPI iwxapi;
-    private String size;//glide缓存大小；
+    private String size="";//glide缓存大小；
 
     @Override
     public int getLayout() {
@@ -91,9 +95,6 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void initView() {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         iwxapi = WXAPIFactory.createWXAPI(this, SFApplication.WX_APPID, true);
         //将应用注册到微信
         iwxapi.registerApp(SFApplication.WX_APPID);
@@ -104,9 +105,19 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (SFApplication.mineNews){
+            news_red_tv.setVisibility(View.VISIBLE);
+        }else {
+            news_red_tv.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void initData() {
         size = GlideUtils.getInstance().getCacheSize(this);
-        clearCacheTv.setText(size + "");
+        clearCacheTv.setText(size);
     }
 
     private void updateView() {
@@ -228,16 +239,6 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    //消息
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewsEvent(NewsEven event) {
-        if (event.getNews() == 0) {
-            news_red_tv.setVisibility(View.GONE);
-        } else {
-            news_red_tv.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void loginWX(String code) {
         HashMap<String, String> params = new HashMap<>();
         params.put("code", code);
@@ -308,11 +309,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+
 
     @Override
     public void onClick(View view) {

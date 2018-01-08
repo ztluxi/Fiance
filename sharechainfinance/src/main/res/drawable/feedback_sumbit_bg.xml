@@ -5,4 +5,6 @@
     <gradient
         android:endColor="@color/tint_home_color"
         android:startColor="@color/title_start_color" />
+
+    
 </shape>

@@ -34,6 +34,11 @@ public class SFApplication extends MultiDexApplication {
     public static int screen_width = 0;
     public static int screen_height = 0;
     public static float density = 0;
+
+    /**
+     * 设置我的主页消息小红点
+     */
+    public static boolean mineNews = false;
     /**
      * 维护Activity 的list
      */

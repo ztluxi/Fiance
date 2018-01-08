@@ -1,9 +1,11 @@
 package com.sharechain.finance.module.mogul;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -28,6 +30,7 @@ import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 
 import org.json.JSONException;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +61,9 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     @Override
     public int getLayout() {
         return R.layout.activity_mogul_cirle;
+
     }
+
 
     public int PAGE = 1;//页数
     /**
@@ -136,7 +141,9 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             String weibo_name = bean.getData().getLists().get(i).getScreen_name();
                             String positon = bean.getData().getLists().get(i).getProfessional();
                             String text = bean.getData().getLists().get(i).getText();
-                            int mogul_id = bean.getData().getLists().get(i).getId();
+                            String translate = bean.getData().getLists().get(i).getTranslate_content();
+                            int mogul_id = bean.getData().getLists().get(i).getCelebrity_id();
+                            int circle_id = bean.getData().getLists().get(i).getId();
                             int fabulous = bean.getData().getLists().get(i).getHits();
                             List<String> imgs = new ArrayList<>();
                             if (bean.getData().getLists().get(i).getImages().size() != 0) {
@@ -144,10 +151,9 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                                     imgs.add(bean.getData().getLists().get(i).getImages().get(j).getUrl());
                                 }
                             }
-
                             MogulData mogulData = new MogulData();
                             mogulData.setName(mogul_name);
-                            mogulData.setTranslate(null);
+                            mogulData.setTranslate(translate);
                             mogulData.setContent(text);
                             mogulData.setPosition(positon);
                             mogulData.setUrlList(imgs);
@@ -157,6 +163,13 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                             mogulData.setFabulous(fabulous);
                             mogulData.setId(mogul_id);
                             mogulData.setType(1);
+                            mogulData.setMogulCircleID(circle_id);
+                            List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circle_id)).find(MogulLikeBean.class);
+                            if (likeList.size() > 0) {
+                                mogulData.setLike(true);
+                            } else {
+                                mogulData.setLike(false);
+                            }
                             mogulDataList.add(mogulData);
                         }
                     }
@@ -167,7 +180,6 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                         ToastManager.showShort(MogulCircleActivity.this, getString(R.string.nothing_more_data));
                     }
                     no_result_rl.setVisibility(View.VISIBLE);
-//                    mogulCircleRl.setVisibility(View.GONE);
                 }
                 updateAdapter();
             }
@@ -202,70 +214,6 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
     }
 
 
-    //取消大佬关注
-    private void cancelMogulFollow(int mogulID) {
-        if (SFApplication.loginDataBean != null) {
-            String token = SFApplication.loginDataBean.getToken();
-            final Map<String, String> params = new HashMap<>();
-            params.put(UrlList.TOKEN, token);
-            params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
-            requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
-                @Override
-                protected void onSuccess(String result) {
-                    ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_cancel) + mogul_name + getString(R.string.de_follow));
-                    Logger.d(result);
-                }
-
-                @Override
-                protected void onFailed(String errStr) {
-                    Logger.d(errStr);
-                }
-            });
-        } else {
-            ToastManager.showShort(this, getString(R.string.please_login));
-            startActivity(new Intent(this, MineActivity.class));
-        }
-    }
-
-    //关注大佬
-    private void addMogulFollow(int mogulID) {
-        if (SFApplication.loginDataBean != null) {
-            String token = SFApplication.loginDataBean.getToken();
-            final Map<String, String> params = new HashMap<>();
-            params.put(UrlList.TOKEN, token);
-            params.put(UrlList.MOGUL_SEARCH_ID, String.valueOf(mogulID));
-            requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
-                @Override
-                protected void onSuccess(String result) {
-//                {"success":0,"msg":"请登录","data":""}
-                    try {
-                        org.json.JSONObject object = new org.json.JSONObject(result);
-                        int success = object.getInt("success");
-                        String messg = object.getString("msg");
-                        if (success == 0) {
-                            ToastManager.showShort(MogulCircleActivity.this, messg);
-                        } else {
-                            ToastManager.showShort(MogulCircleActivity.this, getString(R.string.you_follow) + mogul_name);
-                            Logger.d(result);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                protected void onFailed(String errStr) {
-                    Logger.d(errStr);
-                }
-            });
-        } else {
-            ToastManager.showShort(this, getString(R.string.please_login));
-            startActivity(new Intent(this, MineActivity.class));
-        }
-    }
-
-
     @Override
     public void onBGARefreshLayoutBeginRefreshing(final BGARefreshLayout refreshLayout) {
         PAGE = 1;
@@ -282,26 +230,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
 
     @Override
     public void onFabulous(View view, int position, List<MogulData> list, boolean isLike) {
-        MogulData mogulData = new MogulData();
-        mogulData.setHead(list.get(position).getHead());
-        mogulData.setWeibo(list.get(position).getWeibo());
-        mogulData.setTime(list.get(position).getTime());
-        mogulData.setPosition(list.get(position).getPosition());
-        if (!isLike) {
-            mogulData.setFabulous(list.get(position).getFabulous() + 1);
-            mogulData.setLike(true);
-        } else {
-            mogulData.setFabulous(list.get(position).getFabulous() - 1);
-            mogulData.setLike(false);
-        }
-        mogulData.setUrlList(list.get(position).getUrlList());
-        mogulData.setContent(list.get(position).getContent());
-        mogulData.setName(list.get(position).getName());
-        mogulData.setType(list.get(position).getType());
-        mogulData.setId(list.get(position).getId());
-        mogulData.setTranslate(list.get(position).getTranslate());
-        mogulDataList.set(position, mogulData);
-        addFabulous(list.get(position).getId(), isLike);
+
+        addFabulous(position,list.get(position).getId(),list.get(position).getMogulCircleID(), isLike);
 
     }
 
@@ -317,19 +247,8 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         mogulShareDialog.show();
     }
 
-
-    //    //关注
-//    @Override
-//    public void onFollow(View view, int position, List<MogulData> list) {
-//        if (list.get(position).getFocus() == 1) {
-//            cancelMogulFollow(list.get(position).getId());
-//        } else {
-//            addMogulFollow(list.get(position).getId());
-//        }
-//    }
-//
     //点赞
-    private void addFabulous(final int id, final boolean isLike) {
+    private void addFabulous(final int position, final int id, final int circleID, final boolean isLike) {
         final Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(id));
         requestGet(UrlList.MOGUL_LIKE, params, new MyStringCallback(this) {
@@ -343,14 +262,25 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
                     } else {
                         likeBean.setLike(true);
                     }
-                    likeBean.setMogulID(id);
+                    likeBean.setMogulID(circleID);
                     likeBean.save();
+                    MogulData tmp = mogulAdapter.getmPostList().get(position);
+                    if (isLike) {
+                        tmp.setLike(false);
+                        if (tmp.getFabulous()>0){
+                            tmp.setFabulous(tmp.getFabulous() - 1);
+                        }
+                    } else {
+                        tmp.setLike(true);
+                        tmp.setFabulous(tmp.getFabulous() + 1);
+                    }
+                    mogulAdapter.getmPostList().set(position, tmp);
+                    mogulAdapter.notifyDataSetChanged();
                 } else {
                     ToastManager.showShort(MogulCircleActivity.this, bean.getMsg());
                 }
                 Logger.d(result);
             }
-
             @Override
             protected void onFailed(String errStr) {
                 Logger.d(errStr);

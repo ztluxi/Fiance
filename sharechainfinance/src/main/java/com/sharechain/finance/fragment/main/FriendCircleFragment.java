@@ -138,9 +138,8 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         String text = bean.getData().getLists().get(i).getText();
                         String translate = bean.getData().getLists().get(i).getTranslate_content();
                         int fabulous = bean.getData().getLists().get(i).getHits();
-                        int circleID = bean.getData().getLists().get(i).getId();
-
-                        int mogul_id = bean.getData().getLists().get(i).getCelebrity_id();
+                        int circleID = bean.getData().getLists().get(i).getId();//内容id
+                        int mogul_id = bean.getData().getLists().get(i).getCelebrity_id();//大佬id
                         List<String> imgs = new ArrayList<>();
                         if (bean.getData().getLists().get(i).getImages().size() != 0) {
                             for (int j = 0; j < bean.getData().getLists().get(i).getImages().size(); j++) {
@@ -149,19 +148,17 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         }
                         MogulData mogulData = new MogulData();
                         mogulData.setName(mogul_name);
-                        mogulData.setTranslate(null);
                         mogulData.setContent(text);
                         mogulData.setPosition(positon);
-                        mogulData.setUrlList(null);
                         mogulData.setHead(user_image);
                         mogulData.setTime(create_time);
                         mogulData.setWeibo(weibo_name);
                         mogulData.setFabulous(fabulous);
-                        mogulData.setId(mogul_id);
+                        mogulData.setMogulCircleID(circleID);
                         mogulData.setUrlList(imgs);
                         mogulData.setTranslate(translate);
                         mogulData.setType(1);
-                        mogulData.setId(circleID);
+                        mogulData.setId(mogul_id);
                         List<MogulLikeBean> likeList = DataSupport.where("mogulID = ?", String.valueOf(circleID)).find(MogulLikeBean.class);
                         if (likeList.size() > 0) {
                             mogulData.setLike(true);
@@ -229,11 +226,13 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                         likeBean.setLike(true);
                     }
                     likeBean.setMogulID(circleID);
-                    boolean isSave = likeBean.save();
+                    likeBean.save();
                     MogulData tmp = mogulAdapter.getmPostList().get(position);
                     if (isLike) {
                         tmp.setLike(false);
-                        tmp.setFabulous(tmp.getFabulous() - 1);
+                        if (tmp.getFabulous()>0){
+                            tmp.setFabulous(tmp.getFabulous() - 1);
+                        }
                     } else {
                         tmp.setLike(true);
                         tmp.setFabulous(tmp.getFabulous() + 1);

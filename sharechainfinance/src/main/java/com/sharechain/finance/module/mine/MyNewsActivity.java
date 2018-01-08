@@ -14,6 +14,7 @@ import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MainActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.MyNewsBean;
 import com.sharechain.finance.bean.NewsData;
@@ -76,6 +77,7 @@ public class MyNewsActivity extends BaseActivity {
         mDialog = new LoadDialog().LoadProgressDialog(this);
 
         EventBus.getDefault().post(new NewsEven(0));
+        SFApplication.mineNews = false;
     }
 
     @Override

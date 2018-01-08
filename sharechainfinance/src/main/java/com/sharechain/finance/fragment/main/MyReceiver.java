@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.MainActivity;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.module.mine.MyNewsActivity;
 
@@ -15,6 +16,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import cn.jpush.android.api.JPushInterface;
+
+import static com.sharechain.finance.SFApplication.mineNews;
 
 /**
  * Created by Chu on 2018/1/2.
@@ -52,6 +55,10 @@ public class MyReceiver extends BroadcastReceiver {
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
         NewsEven event = new NewsEven(1);
         EventBus.getDefault().post(event);
+
+        //设置我的页面消息小点
+        SFApplication.mineNews = true;
+
     }
 
     private void openNotification(Context context, Bundle bundle) {
