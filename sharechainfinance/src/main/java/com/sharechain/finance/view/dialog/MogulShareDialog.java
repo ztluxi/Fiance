@@ -58,7 +58,7 @@ public class MogulShareDialog extends Dialog {
 
     @OnClick(R.id.image_weixin)
     void gotoShareWeixin() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
         }
@@ -66,7 +66,7 @@ public class MogulShareDialog extends Dialog {
 
     @OnClick(R.id.image_circle)
     void gotoShareWeixinCircle() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
         }
@@ -86,7 +86,7 @@ public class MogulShareDialog extends Dialog {
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width,getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
             if (isSuccess) {
@@ -119,22 +119,22 @@ public class MogulShareDialog extends Dialog {
 
     private void setContent() {
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.getInstance().loadUserImage(SFApplication.get(context),mogulShareBean.getUrl(),headImage, headOptions);
-        text_namet.setText(mogulShareBean.getName()+"");
-        if (mogulShareBean.getPosition().equals("")){
+        GlideUtils.getInstance().loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), headImage, headOptions);
+        text_namet.setText(mogulShareBean.getName() + "");
+        if (mogulShareBean.getPosition().equals("")) {
             text_position.setVisibility(View.GONE);
-        }else {
+        } else {
             text_position.setText(mogulShareBean.getPosition());
         }
-        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())){
-            text_weibo.setText(mogulShareBean.getWeibo()+"");
+        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())) {
+            text_weibo.setText(mogulShareBean.getWeibo() + "");
             text_weibo.setVisibility(View.GONE);
-        }else {
-            text_weibo.setText(mogulShareBean.getWeibo()+"");
+        } else {
+            text_weibo.setText(mogulShareBean.getWeibo() + "");
             text_weibo.setVisibility(View.VISIBLE);
         }
         //设置textveiw显示html
-        MyImageGetter glide = new MyImageGetter(text_content,context);
+        MyImageGetter glide = new MyImageGetter(text_content, context);
         text_content.setText(Html.fromHtml(mogulShareBean.getContent(), glide, null));
         text_content.setMovementMethod(LinkMovementMethod.getInstance());
         text_content.setLinkTextColor(getColor(R.color.tint_home_color));
@@ -159,11 +159,20 @@ public class MogulShareDialog extends Dialog {
         GlideUtils.getInstance().loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), image_avatar, headOptions);
         TextView text_name = shareView.findViewById(R.id.text_name);
         text_name.setText(mogulShareBean.getName());
+        TextView text_media_type = shareView.findViewById(R.id.text_media_type);
+        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())) {
+            text_media_type.setText(mogulShareBean.getWeibo() + "");
+            text_media_type.setVisibility(View.GONE);
+        } else {
+            text_media_type.setText(mogulShareBean.getWeibo() + "");
+            text_media_type.setVisibility(View.VISIBLE);
+        }
         TextView text_tag = shareView.findViewById(R.id.text_tag);
         text_tag.setText(mogulShareBean.getPosition());
         TextView text_content = shareView.findViewById(R.id.text_content);
-        text_content.setText(mogulShareBean.getContent());
-        TextView text_uid = shareView.findViewById(R.id.text_uid);
+        //设置textveiw显示html
+        MyImageGetter glide = new MyImageGetter(text_content, context);
+        text_content.setText(Html.fromHtml(mogulShareBean.getContent(), glide, null));
     }
 
 }

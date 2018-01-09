@@ -72,6 +72,7 @@ public class FastMsgFragment extends BaseFragment {
         xRefreshView.setCustomHeaderView(header);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
+        listView.setShadowVisible(false);
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
 
             @Override
