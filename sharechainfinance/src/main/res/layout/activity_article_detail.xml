@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:descendantFocusability="blocksDescendants"
             android:scrollbars="none">
 
             <LinearLayout
@@ -98,7 +99,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="26dp"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
 
                 <TextView
                     android:id="@+id/text_from"

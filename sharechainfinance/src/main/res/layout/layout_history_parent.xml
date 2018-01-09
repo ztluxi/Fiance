@@ -2,16 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="36dp"
-    android:elevation="0dp"
     android:background="@color/base_bg_color"
     android:orientation="horizontal">
-
-    <View
-        android:id="@+id/view_line"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20.2dp"
-        android:background="#dadada" />
 
     <LinearLayout
         android:layout_width="wrap_content"

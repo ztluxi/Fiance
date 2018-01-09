@@ -54,10 +54,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     code = ((SendAuth.Resp) baseResp).code;
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
-                    code="";
+                    code = "";
                     break;
                 default:
-                    code="";
+                    code = "";
                     break;
             }
             BaseNotifyBean baseNotifyBean = new BaseNotifyBean();

@@ -31,6 +31,7 @@ public class UrlList {
     public static final String MOGUL_FOLLOW = base_url + "/api_app/My/focus";
     public static final String CANCLE_FOLLOW = base_url + "/api_app/My/unfocus";
     public static final String WX_LOGIN = base_url + "/api_app/Login/wechat";//微信登录
+    public static final String GET_TOP_NEWS = base_url + "/api_app/Fastnews/top_news";
 
 
 }

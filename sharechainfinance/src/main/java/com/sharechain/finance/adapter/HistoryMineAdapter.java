@@ -65,7 +65,7 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
         if (itemType == FastMsgData.PARENT_TYPE) {
             HistoryMineAdapter.ParentViewHolder parentViewHolder;
             if (view == null) {
-                view = LayoutInflater.from(context).inflate(R.layout.item_fast_msg_parent, viewGroup, false);
+                view = LayoutInflater.from(context).inflate(R.layout.layout_history_parent, viewGroup, false);
             }
             parentViewHolder = new HistoryMineAdapter.ParentViewHolder(view);
             parentViewHolder.text_item.setText(listData.get(i).getDate());

@@ -181,7 +181,6 @@ public class HomeFragment extends BaseFragment {
     void addTag() {
         Bundle data = new Bundle();
         data.putSerializable("list", (Serializable) typeList);
-//        BaseUtils.openActivityBottomAnim(getActivity(), ManageTagActivity.class, data);
         BaseUtils.openActivityBottomAnim(getActivity(), ManageTagFixedActivity.class, data);
     }
 
@@ -273,7 +272,6 @@ public class HomeFragment extends BaseFragment {
         NewsChannelTable table = new NewsChannelTable();
         table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
         table.setNewsChannelName(titleListsBean.getName());
-        table.setCacheType(NewsChannelTable.CACHE_TYPE_ALL);//设置缓存类型为全部
         if (i == 0) {
             table.setNewsChannelFixed(true);
             table.setNewsChannelSelect(false);
@@ -288,7 +286,6 @@ public class HomeFragment extends BaseFragment {
         NewsChannelTable table = new NewsChannelTable();
         table.setNewsChannelId(String.valueOf(titleListsBean.getTerm_taxonomy_id()));
         table.setNewsChannelName(titleListsBean.getName());
-        table.setCacheType(NewsChannelTable.CACHE_TYPE_MINE);//设置缓存类型为全部
         if (titleListsBean.getTerm_taxonomy_id() == -1) {
             table.setNewsChannelFixed(true);
             table.setNewsChannelSelect(false);

@@ -46,7 +46,6 @@ public class GuideActivity extends Activity {
     }
 
     private void processLogic() {
-        mForegroundBanner.setData(R.drawable.start_page_1, R.drawable.start_page_2, R.drawable.start_page_3, R.drawable.start_page_4);
         // 设置数据源
 //        mBackgroundBanner.setData(R.drawable.uoko_guide_background_1, R.drawable.uoko_guide_background_2, R.drawable.uoko_guide_background_3);
 //

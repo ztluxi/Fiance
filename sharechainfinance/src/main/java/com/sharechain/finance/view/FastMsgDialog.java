@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -116,7 +117,7 @@ public class FastMsgDialog extends Dialog {
             text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
             text_title.setText(context.getString(R.string.fastmsg_important));
         }
-        text_date.setText( fastMsgData.getHour() + "  " +fastMsgData.getSectionText());
+        text_date.setText(fastMsgData.getHour() + "     " + fastMsgData.getSectionText());
         text_content.setText(fastMsgData.getDataText());
     }
 
@@ -152,6 +153,18 @@ public class FastMsgDialog extends Dialog {
         }
         share_date.setText(fastMsgData.getHour() + "  " + fastMsgData.getSectionText());
         share_content.setText(fastMsgData.getDataText());
+        shareView.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+
+                    @Override
+                    public boolean onPreDraw() {
+                        shareView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        int width = shareView.getWidth(); // 获取宽度
+                        int height = shareView.getHeight(); // 获取高度
+                        return true;
+                    }
+                });
+
     }
 
     //    计算view高度

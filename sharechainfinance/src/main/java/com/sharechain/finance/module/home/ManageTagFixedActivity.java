@@ -137,7 +137,6 @@ public class ManageTagFixedActivity extends BaseActivity {
                     int otherChangePos = newsChannelsMore.size();
                     //其它频道列表添加
                     NewsChannelTable table = newsChannelsMine.get(position);
-                    table.setCacheType(NewsChannelTable.CACHE_TYPE_ALL);
                     newsChannelsMore.add(table);
                     //我的频道删除
                     newsChannelsMine.remove(position);
@@ -169,6 +168,7 @@ public class ManageTagFixedActivity extends BaseActivity {
     private void setResultData() {
         if (mineAdapter != null && mineAdapter.isDataChanged()) {
             List<NewsChannelTable> myList = mineAdapter.getmMyChannelItems();
+            List<NewsChannelTable> otherList = otherAdapter.getOtherList();
             DataSupport.deleteAll(NewsChannelTable.class, "cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_MINE));
             DataSupport.deleteAll(NewsChannelTable.class, "cacheType = ?", String.valueOf(NewsChannelTable.CACHE_TYPE_ALL));
             for (NewsChannelTable tmp : myList) {
@@ -179,6 +179,15 @@ public class ManageTagFixedActivity extends BaseActivity {
                 mine.setNewsChannelSelect(tmp.getNewsChannelSelect());
                 mine.setNewsChannelFixed(tmp.getNewsChannelFixed());
                 mine.save();
+            }
+            for (NewsChannelTable tmp : otherList) {
+                NewsChannelTable other = new NewsChannelTable();
+                other.setCacheType(NewsChannelTable.CACHE_TYPE_ALL);
+                other.setNewsChannelName(tmp.getNewsChannelName());
+                other.setNewsChannelId(tmp.getNewsChannelId());
+                other.setNewsChannelSelect(tmp.getNewsChannelSelect());
+                other.setNewsChannelFixed(tmp.getNewsChannelFixed());
+                other.save();
             }
             BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
             baseNotifyBean.setType(TYPE_MANAGE_TAG_RESULT);

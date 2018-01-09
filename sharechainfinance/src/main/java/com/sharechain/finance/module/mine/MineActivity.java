@@ -1,17 +1,14 @@
 package com.sharechain.finance.module.mine;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
@@ -20,14 +17,12 @@ import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.LoginDataBean;
-import com.sharechain.finance.bean.NewsEven;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.bean.WXAccessBean;
 import com.sharechain.finance.bean.WXRefreshBean;
 import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
-import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.ExitLoginDialog;
 import com.sharechain.finance.view.dialog.LoadDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -43,9 +38,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 /**
  * Created by Administrator on 2017/12/13.
@@ -83,7 +75,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
     TextView user_login;
 
     private IWXAPI iwxapi;
-    private String size="";//glide缓存大小；
+    private String size = "";//glide缓存大小；
 
     @Override
     public int getLayout() {
@@ -116,9 +108,9 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SFApplication.mineNews){
+        if (SFApplication.mineNews) {
             news_red_tv.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             news_red_tv.setVisibility(View.GONE);
         }
     }
@@ -184,7 +176,7 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 exitLoginDialog.show();
                 break;
             case R.id.score_ll:
-                BaseUtils.shareAppShop(this,getPackageName());
+                BaseUtils.shareAppShop(this, getPackageName());
                 break;
             case R.id.about_ll:
                 BaseUtils.openActivity(this, AboutFinanceActivity.class, null);
@@ -258,7 +250,12 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 if (bean.isSuccess()) {
                     //先删除用户数据
                     SFApplication.loginDataBean = bean.getData();
-                    updateView();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateView();
+                        }
+                    }, 500);
                     DataSupport.deleteAll(LoginDataBean.class);
                     LoginDataBean loginDataBean = bean.getData();
                     //存储用户数据
@@ -317,7 +314,6 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
             }
         });
     }
-
 
 
     @Override

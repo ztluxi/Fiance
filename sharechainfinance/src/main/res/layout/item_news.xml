@@ -70,6 +70,8 @@
         android:id="@+id/image_pic"
         android:layout_width="110dp"
         android:layout_height="65dp"
-        android:layout_marginLeft="17dp" />
+        android:layout_marginLeft="17dp"
+        android:background="@drawable/common_image_round_circle"
+        android:padding="1px" />
 
 </LinearLayout>

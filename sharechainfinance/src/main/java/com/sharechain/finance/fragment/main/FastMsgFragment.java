@@ -15,7 +15,9 @@ import com.sharechain.finance.bean.BaseNotifyBean;
 import com.sharechain.finance.bean.FastMsgBean;
 import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.MainCacheBean;
+import com.sharechain.finance.bean.TopNewsBean;
 import com.sharechain.finance.bean.UrlList;
+import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.FastMsgDialog;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 
@@ -25,6 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +52,7 @@ public class FastMsgFragment extends BaseFragment {
 
     private FastMsgAdapter adapter;
     private List<FastMsgData> dataList = new ArrayList<>();
-    private FastMsgBean.DataBean.ListBean headData;
+    private TopNewsBean headData;
     private FastMsgBean bean;
     private String time = "";//第一条星期时间
 
@@ -76,6 +79,7 @@ public class FastMsgFragment extends BaseFragment {
                 super.onRefresh(isPullDown);
                 page = 1;
                 getDetail();
+                getTopNews();
             }
 
             @Override
@@ -83,6 +87,7 @@ public class FastMsgFragment extends BaseFragment {
                 super.onLoadMore(isSilence);
                 page++;
                 getDetail();
+                getTopNews();
             }
 
         });
@@ -110,6 +115,7 @@ public class FastMsgFragment extends BaseFragment {
         }
         updateView();
         getDetail();
+        getTopNews();
         if (SFApplication.shareData != null) {
             new FastMsgDialog(getActivity(), SFApplication.shareData).show();
         }
@@ -128,9 +134,11 @@ public class FastMsgFragment extends BaseFragment {
             //刷新列表
             page = 1;
             getDetail();
+            getTopNews();
         }
     }
 
+    //    获取快讯数据
     private void getDetail() {
         final Map<String, String> params = new HashMap<>();
         params.put(pageParam, String.valueOf(page));
@@ -157,17 +165,17 @@ public class FastMsgFragment extends BaseFragment {
         });
     }
 
-    private void updateView() {
-        if (bean != null) {
-            if (bean.isSuccess()) {
-                if (page == 1) {
-                    dataList.clear();
-                    //取出头部数据
-                    if (bean.getData().size() > 0 && bean.getData().get(0).getList().size() > 0) {
-                        headData = bean.getData().get(0).getList().get(0);
-                        time = bean.getData().get(0).getTime();
-                        text_big_news.setText(headData.getText());
-                        int type = headData.getType();
+    //获取重磅快讯数据
+    private void getTopNews() {
+        requestGet(UrlList.GET_TOP_NEWS, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                headData = JSON.parseObject(result, TopNewsBean.class);
+                if (headData.getSuccess() == 1) {
+                    if (headData.getData().size() > 0) {
+                        TopNewsBean.DataBean dataBean = headData.getData().get(0);
+                        text_big_news.setText(dataBean.getSite_content());
+                        int type = dataBean.getHot_type();
                         switch (type) {
                             case 1:
                                 first_title_tv.setText(getString(R.string.fastmsg_normal));
@@ -181,29 +189,59 @@ public class FastMsgFragment extends BaseFragment {
                         }
                     }
                 }
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
+    }
+
+    private void updateView() {
+        if (bean != null) {
+            if (bean.isSuccess()) {
+                if (page == 1) {
+                    dataList.clear();
+                }
                 for (int i = 0; i < bean.getData().size(); i++) {
                     FastMsgBean.DataBean parentBean = bean.getData().get(i);
                     String sectionText = parentBean.getTime();
-                    FastMsgData groupData = new FastMsgData();
-                    groupData.setType(FastMsgData.PARENT_TYPE);
-                    groupData.setSectionText(sectionText);
-                    dataList.add(groupData);
-                    for (int j = 0; j < parentBean.getList().size(); j++) {
-                        if (page == 1 && i == 0 && j == 0) {
-                            continue;
+                    if (dataList.size() > 0 && dataList.get(dataList.size() - 1).getSectionText().equals(sectionText)) {
+                        //该条数据和上一页数据最后一条数据处于同一时间，则将该条数据存至上条
+                        for (int j = 0; j < parentBean.getList().size(); j++) {
+                            String content = parentBean.getList().get(j).getText();
+                            FastMsgData childData = new FastMsgData();
+                            childData.setId(parentBean.getList().get(j).getId());
+                            childData.setSectionText(sectionText);//日期
+                            childData.setType(FastMsgData.CHILD_TYPE);//子item
+                            childData.setDataText(content);//内容
+                            childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
+                            childData.setTitle(parentBean.getList().get(j).getTitle());//标题
+                            childData.setHour(parentBean.getList().get(j).getHour());//时间
+                            childData.setUrl(parentBean.getList().get(j).getUrl());//url
+                            childData.setSource(parentBean.getList().get(j).getSource());//来源
+                            dataList.add(childData);
                         }
-                        String content = parentBean.getList().get(j).getText();
-                        FastMsgData childData = new FastMsgData();
-                        childData.setId(parentBean.getList().get(j).getId());
-                        childData.setSectionText(sectionText);//日期
-                        childData.setType(FastMsgData.CHILD_TYPE);//子item
-                        childData.setDataText(content);//内容
-                        childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
-                        childData.setTitle(parentBean.getList().get(j).getTitle());//标题
-                        childData.setHour(parentBean.getList().get(j).getHour());//时间
-                        childData.setUrl(parentBean.getList().get(j).getUrl());//url
-                        childData.setSource(parentBean.getList().get(j).getSource());//来源
-                        dataList.add(childData);
+                    } else {
+                        FastMsgData groupData = new FastMsgData();
+                        groupData.setType(FastMsgData.PARENT_TYPE);
+                        groupData.setSectionText(sectionText);
+                        dataList.add(groupData);
+                        for (int j = 0; j < parentBean.getList().size(); j++) {
+                            String content = parentBean.getList().get(j).getText();
+                            FastMsgData childData = new FastMsgData();
+                            childData.setId(parentBean.getList().get(j).getId());
+                            childData.setSectionText(sectionText);//日期
+                            childData.setType(FastMsgData.CHILD_TYPE);//子item
+                            childData.setDataText(content);//内容
+                            childData.setMsgType(parentBean.getList().get(j).getType());//消息类型
+                            childData.setTitle(parentBean.getList().get(j).getTitle());//标题
+                            childData.setHour(parentBean.getList().get(j).getHour());//时间
+                            childData.setUrl(parentBean.getList().get(j).getUrl());//url
+                            childData.setSource(parentBean.getList().get(j).getSource());//来源
+                            dataList.add(childData);
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -213,20 +251,18 @@ public class FastMsgFragment extends BaseFragment {
 
     @OnClick(R.id.btn_view_detail)
     void viewDetail() {
-        if (headData != null) {
+        if (headData != null && headData.getData().size() > 0) {
             FastMsgData fastMsgData = new FastMsgData();
-            fastMsgData.setMsgType(headData.getType());
-            fastMsgData.setDataText(headData.getText());
-            fastMsgData.setTitle(headData.getTitle());
-            fastMsgData.setUrl(headData.getUrl());
-            fastMsgData.setId(headData.getId());
-            fastMsgData.setHour(headData.getHour());
-            fastMsgData.setSectionText(time);
+            fastMsgData.setMsgType(headData.getData().get(0).getHot_type());
+            fastMsgData.setDataText(headData.getData().get(0).getSite_content());
+            fastMsgData.setTitle(headData.getData().get(0).getSite_name());
+            fastMsgData.setUrl(headData.getData().get(0).getSite_url());
+            fastMsgData.setId(headData.getData().get(0).getId());
+            fastMsgData.setHour(headData.getData().get(0).getTime());
+            Date date = TimeUtil.StringToDate(headData.getData().get(0).getCreate_time());
+            fastMsgData.setSectionText(TimeUtil.RelativeDateFormat(date));
 
             new FastMsgDialog(getActivity(), fastMsgData).show();
-//            Bundle bundle = new Bundle();
-//            bundle.putString("web_url", headData.getUrl());
-//            BaseUtils.openActivity(getActivity(), BaseWebViewActivity.class, bundle);
         }
     }
 

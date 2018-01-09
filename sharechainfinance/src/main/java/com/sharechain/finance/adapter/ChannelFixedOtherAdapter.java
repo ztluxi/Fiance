@@ -75,4 +75,7 @@ public class ChannelFixedOtherAdapter extends RecyclerView.Adapter<ChannelFixedO
         void onOtherItemClick(NewsChannelTable otherTable);
     }
 
+    public List<NewsChannelTable> getOtherList() {
+        return otherList;
+    }
 }

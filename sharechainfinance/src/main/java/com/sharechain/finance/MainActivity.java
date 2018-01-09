@@ -1,10 +1,13 @@
 package com.sharechain.finance;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
@@ -56,7 +59,6 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.tv_tabhost_fast_msg)
     void clickFastMsg() {
         curItem = BOTTOM_ITEM.FAST_MSG;
-//        suoFang(tv_tabhost_fast_msg);
         setBottom();
     }
 
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity {
         setBottom();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +79,21 @@ public class MainActivity extends BaseActivity {
         tv_tabhost_home.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.icon_tab_home), null, null);
         tv_tabhost_home.setTextColor(getResources().getColor(R.color.color_base_blue));
         tabHostAddTab();
+        tv_tabhost_fast_msg.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDown(tv_tabhost_fast_msg);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        touchUp(tv_tabhost_fast_msg);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -156,6 +174,22 @@ public class MainActivity extends BaseActivity {
         ScaleAnimation animation = new ScaleAnimation(0.8f, 1, 0.8f, 1, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(200);
+        animation.setFillAfter(true);
+        iv.startAnimation(animation);
+    }
+
+    private void touchDown(ImageView iv) {
+        ScaleAnimation animation = new ScaleAnimation(1, 1.2f, 1, 1.2f, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(100);
+        animation.setFillAfter(true);
+        iv.startAnimation(animation);
+    }
+
+    private void touchUp(ImageView iv) {
+        ScaleAnimation animation = new ScaleAnimation(1.2f, 1, 1.2f, 1, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(100);
         animation.setFillAfter(true);
         iv.startAnimation(animation);
     }
