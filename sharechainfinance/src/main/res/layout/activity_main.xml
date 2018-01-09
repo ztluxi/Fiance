@@ -83,6 +83,12 @@
                 android:textSize="10sp" />
 
         </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/icon_tab_line" />
 
         <ImageView
             android:id="@+id/tv_tabhost_fast_msg"
@@ -94,12 +100,6 @@
             android:background="@drawable/icon_tab_fastmsg"
             android:gravity="center" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/icon_tab_line" />
 
     </RelativeLayout>
 

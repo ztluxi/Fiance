@@ -24,9 +24,9 @@ public class HistoryAdapter extends BGAAdapterViewAdapter<HistoryData> {
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, HistoryData model) {
-        helper.getTextView(R.id.text_content).setText(model.getPost_title());
+        helper.getTextView(R.id.text_content).setText(model.getDisplay_name());
         helper.getTextView(R.id.text_comment_num).setText(model.getViews() + mContext.getString(R.string.home_item_comment));
         helper.getTextView(R.id.text_praise_num).setText(model.getPost_view_rand() + mContext.getString(R.string.home_item_praise));
-        GlideUtils.getInstance().loadRoundImage(mContext, model.getUser_avatars(), helper.getImageView(R.id.image_pic), 5, R.drawable.home_default);
+        GlideUtils.getInstance().loadRoundImage(mContext, model.getUser_avatars(), helper.getImageView(R.id.image_pic), 10, R.drawable.home_default);
     }
 }

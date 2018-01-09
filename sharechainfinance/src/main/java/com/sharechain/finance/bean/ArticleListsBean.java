@@ -22,6 +22,16 @@ public class ArticleListsBean extends DataSupport implements Serializable {
     private int views;
     private String image;
     private String name;
+    private String display_name;
+
+    public String getDisplay_name() {
+        return display_name;
+    }
+
+    public void setDisplay_name(String display_name) {
+        this.display_name = display_name;
+    }
+
     private int cacheType;
 
     public int getID() {

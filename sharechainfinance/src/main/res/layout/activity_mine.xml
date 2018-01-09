@@ -38,11 +38,11 @@
                         <ImageView
                             android:id="@+id/back_iv"
                             android:layout_width="wrap_content"
-                            android:layout_height="19dp"
+                            android:layout_height="22dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="15dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/back" />
+                            android:src="@drawable/common_back_bg" />
 
                         <LinearLayout
                             android:id="@+id/ll_user_login"
@@ -303,12 +303,13 @@
                 android:foregroundGravity="center">
 
                 <LinearLayout
-
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="90dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
-                    android:background="@drawable/mine_center_bg"
+                    android:background="@drawable/fast_msg_item_bg"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -324,7 +325,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:drawableTop="@drawable/follow"
-                            android:elevation="2dp"
                             android:gravity="center"
                             android:paddingLeft="10dp"
                             android:paddingTop="10dp"
@@ -345,7 +345,6 @@
                             android:id="@+id/my_news_rl"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:elevation="2dp"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -388,7 +387,6 @@
                             android:layout_below="@+id/user_image"
                             android:layout_weight="1"
                             android:drawableTop="@drawable/history"
-                            android:elevation="2dp"
                             android:gravity="center"
                             android:paddingRight="10dp"
                             android:paddingTop="10dp"

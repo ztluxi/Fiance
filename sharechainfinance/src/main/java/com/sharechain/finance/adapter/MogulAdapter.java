@@ -108,7 +108,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
             //大佬图像
-            RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop();
             GlideUtils.getInstance().loadUserImage(mContext, mPostList.get(position).getHead(), ((HeadViewHolder) holder).mogulHeadImageTv, headOptions);
 
             //返回
@@ -130,7 +130,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((PostViewHolder) holder).mNglContent.setImagesData(mogulData.getUrlList());
             ((PostViewHolder) holder).mNglContent.setShowStyle(NineGridImageView.STYLE_FILL);
             //大佬图像
-            RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop();
             GlideUtils.getInstance().loadUserImage(mContext, mogulData.getHead(), ((PostViewHolder) holder).mogulHeadIvs, headOptions);
             //大佬名称
             ((PostViewHolder) holder).mogulName.setText(mogulData.getName());
@@ -259,7 +259,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
             protected void onDisplayImage(Context context, ImageView imageView, String s) {
-                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerCrop();
                 GlideUtils.getInstance().loadUserImage(mContext, s, imageView, headOptions);
             }
 

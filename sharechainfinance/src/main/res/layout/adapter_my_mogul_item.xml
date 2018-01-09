@@ -145,7 +145,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/mogul_content_translate_ll"
             android:layout_marginRight="15dp"
-            android:visibility="gone"
             app:imgGap="8dp"
             app:showStyle="grid"
             app:singleImgSize="200dp" />

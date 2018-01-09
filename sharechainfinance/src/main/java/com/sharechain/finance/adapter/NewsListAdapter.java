@@ -136,7 +136,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
             ArticleListsBean bean = mList.get(position - 1);
             holder.text_content.setText(bean.getPost_title());
             Date date = TimeUtil.StringToDate(bean.getPost_date_gmt());
-            holder.text_type.setText(bean.getName());
+            holder.text_type.setText(bean.getDisplay_name());
             holder.text_time.setText(TimeUtil.RelativeDateFormat(date));
             holder.text_views.setText(String.format("%1$d阅读", bean.getViews()));
             GlideUtils.getInstance().loadRoundImage(context, bean.getImage(), holder.image_pic, BaseUtils.dip2px(context, 5), R.drawable.home_default);

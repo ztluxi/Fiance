@@ -29,7 +29,7 @@ public class HomeOtherAdapter extends BGAAdapterViewAdapter<ArticleListsBean> {
         helper.getTextView(R.id.text_time).setText(TimeUtil.RelativeDateFormat(date));
         helper.getTextView(R.id.text_views).setText(String.format("%1$d阅读", model.getViews()));
         helper.getTextView(R.id.text_content).setText(model.getPost_title());
-        GlideUtils.getInstance().loadRoundImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), 5, R.drawable.home_default);
+        GlideUtils.getInstance().loadRoundImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), 10, R.drawable.home_default);
     }
 
 }

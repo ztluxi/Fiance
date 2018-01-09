@@ -63,7 +63,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="王者"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
 
@@ -72,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="微博"
                     android:textColor="@color/about_font"
                     android:textSize="12sp" />
 
@@ -90,10 +88,9 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="3dp"
-                    android:text="@string/permission_open"
                     android:textColor="@color/tint_home_color"
                     android:textSize="12sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 

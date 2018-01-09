@@ -15,11 +15,12 @@
     <color name="colorBlack">#252424</color>
     <color name="colorGreen">#2daf77</color>
     <color name="circleColorRed">#f20b0b</color>
+    <color name="fast_mag_font">#fc413d</color>
 
     <color name="color_999999">#999999</color>
     <color name="color_base_blue">#3badfc</color>
     <color name="share_finance_blue">#127eed</color>
-    <color name="color_7c7c7c">#7c7c7c</color>
+    <color name="color_7c7c7c">#b6b6b6</color>
 
     <!--87%white-->
     <color name="primary_text">#de000000</color>

@@ -75,10 +75,10 @@ public class MyFollowAdapter extends BGAAdapterViewAdapter<FollowData> {
         //如果已关注了显示已关注背景，反正则显示蓝色未关注
         if (model.getState()==1){
             follow.setText(R.string.has_follow);
-            follow.setBackgroundResource(R.drawable.my_has_follow_bg);
+            follow.setBackgroundResource(R.drawable.has_follow_bg);
         }else {
             follow.setText(R.string.follow);
-            follow.setBackgroundResource(R.drawable.my_no_follow_bg);
+            follow.setBackgroundResource(R.drawable.no_follow_bg);
         }
         RequestOptions options = new RequestOptions().circleCrop().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default);
         GlideUtils.getInstance().loadUserImage(mContext,model.getImage(),mogulHeadIv,options);

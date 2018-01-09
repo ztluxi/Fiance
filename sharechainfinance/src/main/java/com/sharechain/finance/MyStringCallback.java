@@ -40,6 +40,8 @@ public abstract class MyStringCallback extends StringCallback {
             if (object.has("code") && object.optInt("code") == 1000) {
                 ToastManager.showShort(context, object.optString("msg"));
                 context.startActivity(new Intent(context, MineActivity.class));
+
+
                 Activity activity = (Activity) context;
                 activity.finish();
             } else {

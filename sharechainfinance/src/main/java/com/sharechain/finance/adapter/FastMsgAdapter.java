@@ -90,16 +90,19 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
                 childViewHolder.ll_red_fire.setVisibility(View.GONE);
                 childViewHolder.image_orange_fire.setVisibility(View.GONE);
                 childViewHolder.image_pos.setImageResource(R.drawable.image_bule_cricle);
+                childViewHolder.text_content.setTextColor(context.getResources().getColor(R.color.colorBlack));
             } else if (listData.get(i).getMsgType() == 2) {
                 //重要
                 childViewHolder.ll_red_fire.setVisibility(View.GONE);
                 childViewHolder.image_orange_fire.setVisibility(View.VISIBLE);
                 childViewHolder.image_pos.setImageResource(R.drawable.image_orange_cricle);
+                childViewHolder.text_content.setTextColor(context.getResources().getColor(R.color.colorBlack));
             } else if (listData.get(i).getMsgType() == 3) {
                 //非常重要
                 childViewHolder.ll_red_fire.setVisibility(View.VISIBLE);
                 childViewHolder.image_orange_fire.setVisibility(View.GONE);
                 childViewHolder.image_pos.setImageResource(R.drawable.image_red_circle);
+                childViewHolder.text_content.setTextColor(context.getResources().getColor(R.color.fast_mag_font));
             }
             if (BaseUtils.isEmpty(listData.get(i).getUrl())) {
                 childViewHolder.text_view_article.setVisibility(View.GONE);
@@ -153,7 +156,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
         @BindView(R.id.image_share)
         ImageView image_share;
         @BindView(R.id.card_fast_msg)
-        CardView card_fast_msg;
+        LinearLayout card_fast_msg;
         @BindView(R.id.ll_red_fire)
         LinearLayout ll_red_fire;
         @BindView(R.id.image_orange_fire)

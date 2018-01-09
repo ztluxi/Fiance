@@ -199,6 +199,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bean.setUser_avatars(articleBean.getUser_avatars());
         bean.setViews(articleBean.getViews());
         bean.setChannel_type(newsType);
+        bean.setDisplay_name(articleBean.getDisplay_name());
         bean.setDate(TimeUtil.getCurrentTime("yyyy-MM-dd"));
         if (isFirst) {
             bean.setType(HistoryData.PARENT_TYPE);
@@ -213,6 +214,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bean.setID(articleBean.getID());
         bean.setImage(articleBean.getImage());
         bean.setName(articleBean.getName());
+        bean.setDisplay_name(articleBean.getDisplay_name());
         bean.setPost_content(articleBean.getPost_content());
         bean.setPost_date_gmt(articleBean.getPost_date_gmt());
         bean.setPost_title(articleBean.getPost_title());
@@ -220,6 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bean.setTagId(articleBean.getTagId());
         bean.setUser_avatars(articleBean.getUser_avatars());
         bean.setViews(articleBean.getViews());
+        bean.setDisplay_name(articleBean.getDisplay_name());
         return bean;
     }
 

@@ -71,7 +71,7 @@
             android:layout_marginTop="5dp"
             android:maxLines="1"
             android:ellipsize="end"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:background="@drawable/mogul_follow_bg"
@@ -79,7 +79,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/my_follow_Image_ll"
-            android:text="未来财经ceo"
             android:textColor="@color/tint_home_color"
             android:textSize="11sp" />
 
@@ -94,11 +93,10 @@
         android:gravity="center">
 
         <TextView
-            android:elevation="2dp"
             android:id="@+id/has_follow_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/my_has_follow_bg"
+            android:layout_height="40dp"
+            android:background="@drawable/has_follow_bg"
             android:gravity="center"
             android:text="@string/has_follow"
             android:textColor="@color/white"

@@ -77,7 +77,7 @@ public class HistoryMineAdapter extends BaseAdapter implements PinnedSectionList
                 }
                 childViewHolder = new HistoryMineAdapter.HomeChildViewHolder(view);
                 childViewHolder.text_content.setText(listData.get(i).getPost_title());
-                childViewHolder.text_type.setText(listData.get(i).getName());
+                childViewHolder.text_type.setText(listData.get(i).getDisplay_name());
                 Date date = TimeUtil.StringToDate(listData.get(i).getPost_date_gmt());
                 childViewHolder.text_time.setText(TimeUtil.RelativeDateFormat(date));
                 childViewHolder.text_views.setText(String.format("%1$d阅读", listData.get(i).getViews()));
