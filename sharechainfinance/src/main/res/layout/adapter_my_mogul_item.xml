@@ -141,7 +141,7 @@
         <com.jaeger.ninegridimageview.NineGridImageView
             android:layout_marginTop="13dp"
             android:id="@+id/mogul_content_Image_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mogul_content_translate_ll"
             android:layout_marginRight="15dp"

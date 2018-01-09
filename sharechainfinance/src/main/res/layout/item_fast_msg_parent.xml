@@ -9,7 +9,7 @@
         android:id="@+id/view_line"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20.5dp"
+        android:layout_marginLeft="20.2dp"
         android:background="#dadada" />
 
     <LinearLayout

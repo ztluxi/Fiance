@@ -89,14 +89,17 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
                 //一般消息
                 childViewHolder.ll_red_fire.setVisibility(View.GONE);
                 childViewHolder.image_orange_fire.setVisibility(View.GONE);
+                childViewHolder.image_pos.setImageResource(R.drawable.image_bule_cricle);
             } else if (listData.get(i).getMsgType() == 2) {
                 //重要
                 childViewHolder.ll_red_fire.setVisibility(View.GONE);
                 childViewHolder.image_orange_fire.setVisibility(View.VISIBLE);
+                childViewHolder.image_pos.setImageResource(R.drawable.image_orange_cricle);
             } else if (listData.get(i).getMsgType() == 3) {
                 //非常重要
                 childViewHolder.ll_red_fire.setVisibility(View.VISIBLE);
                 childViewHolder.image_orange_fire.setVisibility(View.GONE);
+                childViewHolder.image_pos.setImageResource(R.drawable.image_red_circle);
             }
             if (BaseUtils.isEmpty(listData.get(i).getUrl())) {
                 childViewHolder.text_view_article.setVisibility(View.GONE);
@@ -155,6 +158,9 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
         LinearLayout ll_red_fire;
         @BindView(R.id.image_orange_fire)
         ImageView image_orange_fire;
+        @BindView(R.id.image_pos)
+        ImageView image_pos;
+
 
         public ChildViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);

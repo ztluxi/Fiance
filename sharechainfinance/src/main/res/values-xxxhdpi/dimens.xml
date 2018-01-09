@@ -16,8 +16,8 @@
     <dimen name="item_margin">8dp</dimen>
     <dimen name="title_margin">24dp</dimen>
 
-    <dimen name="share_dialog_image_height">173dp</dimen>
-    <dimen name="share_dialog_margin_top">20dp</dimen>
+    <dimen name="share_dialog_image_height">144dp</dimen>
+    <dimen name="share_dialog_margin_top">30dp</dimen>
     <dimen name="share_dialog_padding_left">39dp</dimen>
     <dimen name="share_dialog_share_margin_top">33dp</dimen>
 

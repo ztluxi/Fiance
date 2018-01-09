@@ -262,7 +262,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
             protected void onDisplayImage(Context context, ImageView imageView, String s) {
-                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                 GlideUtils.getInstance().loadUserImage(mContext, s, imageView, headOptions);
             }
 

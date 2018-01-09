@@ -10,18 +10,18 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingLeft="12dp"
-        android:paddingRight="8dp">
+        android:layout_marginRight="8dp">
 
         <View
             android:layout_width="1dp"
-            android:layout_height="10dp"
+            android:layout_height="17dp"
             android:background="#dadada" />
 
         <ImageView
             android:id="@+id/image_pos"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:src="@drawable/icon_fastmsg_pos" />
+            android:src="@drawable/image_bule_cricle" />
 
         <View
             android:layout_width="1dp"
@@ -44,9 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="12dp">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="13dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,10 +108,10 @@
                 android:id="@+id/text_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:alpha="0.8"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,7 +135,7 @@
                         android:paddingBottom="8dp"
                         android:paddingTop="6dp"
                         android:src="@drawable/icon_view_article"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                 </LinearLayout>
 
@@ -152,8 +152,8 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:paddingBottom="14dp"
-                        android:paddingTop="14dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/icon_fastmsg_share" />
 

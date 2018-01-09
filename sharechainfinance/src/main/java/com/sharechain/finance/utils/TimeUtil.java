@@ -1,5 +1,6 @@
 package com.sharechain.finance.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -278,17 +279,23 @@ public class TimeUtil {
         if (delta < 48L * ONE_HOUR) {
             return "昨天";
         }
-        if (delta < 30L * ONE_DAY) {
-            long days = toDays(delta);
-            return (days <= 0 ? 1 : days) + ONE_DAY_AGO;
-        }
-        if (delta < 12L * 4L * ONE_WEEK) {
-            long months = toMonths(delta);
-            return (months <= 0 ? 1 : months) + ONE_MONTH_AGO;
-        } else {
-            long years = toYears(delta);
-            return (years <= 0 ? 1 : years) + ONE_YEAR_AGO;
-        }
+            if (delta > 48 * ONE_HOUR) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                return df.format(date);
+            }
+//        if (delta < 30L * ONE_DAY) {
+//            long days = toDays(delta);
+//            return (days <= 0 ? 1 : days) + ONE_DAY_AGO;
+//        }
+//        if (delta < 12L * 4L * ONE_WEEK) {
+//            long months = toMonths(delta);
+//            return (months <= 0 ? 1 : months) + ONE_MONTH_AGO;
+//        } else {
+//            long years = toYears(delta);
+//            return (years <= 0 ? 1 : years) + ONE_YEAR_AGO;
+//        }
+
+        return null;
     }
 
     private static long toSeconds(long date) {

@@ -116,7 +116,7 @@ public class FastMsgDialog extends Dialog {
             text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
             text_title.setText(context.getString(R.string.fastmsg_important));
         }
-        text_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
+        text_date.setText( fastMsgData.getHour() + "  " +fastMsgData.getSectionText());
         text_content.setText(fastMsgData.getDataText());
     }
 
@@ -150,7 +150,7 @@ public class FastMsgDialog extends Dialog {
             share_title.setBackgroundResource(R.drawable.icon_share_red_bg_rect);
             share_title.setText(context.getString(R.string.fastmsg_important));
         }
-        share_date.setText(fastMsgData.getSectionText() + "  " + fastMsgData.getHour());
+        share_date.setText(fastMsgData.getHour() + "  " + fastMsgData.getSectionText());
         share_content.setText(fastMsgData.getDataText());
     }
 
