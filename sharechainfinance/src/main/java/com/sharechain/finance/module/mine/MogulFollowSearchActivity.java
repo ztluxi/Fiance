@@ -29,7 +29,7 @@ import com.sharechain.finance.bean.FollowData;
 import com.sharechain.finance.bean.MogulCircleBean;
 import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.mogul.MogulCircleActivity;
+import com.sharechain.finance.module.mogul.MogulCircleFixedActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
@@ -202,7 +202,7 @@ public class MogulFollowSearchActivity extends BaseActivity implements MyFollowA
                 bundle.putString("name", followDataList.get(i).getName());
                 bundle.putString("position", followDataList.get(i).getPosition());
                 bundle.putInt("focus", followDataList.get(i).getState());
-                BaseUtils.openActivity(MogulFollowSearchActivity.this, MogulCircleActivity.class, bundle);
+                BaseUtils.openActivity(MogulFollowSearchActivity.this, MogulCircleFixedActivity.class, bundle);
             }
         });
         deleteTv.setOnClickListener(new View.OnClickListener() {

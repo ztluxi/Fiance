@@ -19,11 +19,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.MogulData;
-import com.sharechain.finance.bean.MogulHeadData;
 import com.sharechain.finance.module.mogul.DragPhotoActivity;
-import com.sharechain.finance.module.mogul.MogulCircleActivity;
+import com.sharechain.finance.module.mogul.MogulCircleFixedActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
 import com.sharechain.finance.utils.MyImageGetter;
@@ -44,7 +42,6 @@ import static cn.bingoogolapple.baseadapter.BGABaseAdapterUtil.getColor;
 public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEAD = 0;
     private static final int TYPE_BODY = 1;
-
 
     private LayoutInflater mInflater;
     private List<MogulData> mPostList;
@@ -169,7 +166,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             if (mPostList.get(position).isLike()) {
                 if (mPostList.get(position).getFabulous() == 0) {
-                    ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + 1+"");
+                    ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + 1 + "");
                 } else {
                     ((PostViewHolder) holder).mogulFabulousNumberTv.setText(like + "");
                 }
@@ -185,7 +182,7 @@ public class MogulAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ((PostViewHolder) holder).mogulHeadIvs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(mContext, MogulCircleActivity.class);
+                        Intent intent = new Intent(mContext, MogulCircleFixedActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("id", mPostList.get(position).getId());
                         bundle.putString("head", mPostList.get(position).getHead());

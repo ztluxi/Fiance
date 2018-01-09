@@ -20,6 +20,7 @@ import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
+import com.sharechain.finance.view.MyXrefreshViewFooter;
 
 import org.litepal.crud.DataSupport;
 
@@ -85,10 +86,14 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         initXRefreshView(xRefreshView);
         MyXRefreshViewHeader header = new MyXRefreshViewHeader(getActivity());
         header.setBlueBackground(R.color.tint_home_color, R.color.white);
+        MyXrefreshViewFooter footer = new MyXrefreshViewFooter(getActivity());
+        footer.setBlueBackground(R.color.tint_home_color, R.color.white);
         xRefreshView.setCustomHeaderView(header);
+        xRefreshView.setCustomFooterView(footer);
         xRefreshView.setPullRefreshEnable(true);
         xRefreshView.setPullLoadEnable(true);
         xRefreshView.setAutoRefresh(false);
+        xRefreshView.setMoveForHorizontal(true);//设置后可以让左右滑动不冲突
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
 
             @Override

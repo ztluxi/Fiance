@@ -3,20 +3,13 @@ package com.sharechain.finance.module.mine;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.andview.refreshview.XRefreshView;
 import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
@@ -24,21 +17,13 @@ import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
 import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MyFollowAdapter;
-import com.sharechain.finance.adapter.MyNewsAdapter;
 import com.sharechain.finance.bean.FollowBean;
 import com.sharechain.finance.bean.FollowData;
-import com.sharechain.finance.bean.MogulCircleBean;
-import com.sharechain.finance.bean.MyFollowBean;
-import com.sharechain.finance.bean.MyNewsBean;
-import com.sharechain.finance.bean.NewsData;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.home.BaseWebViewActivity;
-import com.sharechain.finance.module.mogul.MogulCircleActivity;
+import com.sharechain.finance.module.mogul.MogulCircleFixedActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.LoadDialog;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +32,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
 /**
  * 我的关注列表
@@ -140,7 +124,7 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                 bundle.putString("name", followDataList.get(i).getName());
                 bundle.putString("position", followDataList.get(i).getPosition());
                 bundle.putInt("focus", followDataList.get(i).getState());
-                BaseUtils.openActivity(MyFollowActivity.this, MogulCircleActivity.class, bundle);
+                BaseUtils.openActivity(MyFollowActivity.this, MogulCircleFixedActivity.class, bundle);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.sharechain.finance.view;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,12 @@ public class MyXrefreshViewFooter extends LinearLayout implements IFooterCallBac
     public MyXrefreshViewFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
+    }
+
+    public void setBlueBackground(int bgColor, int textColor) {
+        mContentView.setBackgroundColor(ContextCompat.getColor(mContext, bgColor));
+        mHintView.setTextColor(ContextCompat.getColor(mContext, textColor));
+        mClickView.setTextColor(ContextCompat.getColor(mContext, textColor));
     }
 
     @Override

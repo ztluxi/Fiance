@@ -7,14 +7,12 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
         android:id="@+id/rl_recyclerview_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/view_line"
         android:visibility="visible">
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mogul_circle_rl"
@@ -24,15 +22,15 @@
             android:background="@color/white"
             android:visibility="visible" />
 
-
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
     <RelativeLayout
-        android:gravity="center"
         android:id="@+id/no_result_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:visibility="gone">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -41,5 +39,7 @@
             android:layout_marginTop="50dp"
             android:text="@string/load_no_data"
             android:textColor="@color/about_font" />
+
     </RelativeLayout>
+
 </LinearLayout>

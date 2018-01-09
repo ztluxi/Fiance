@@ -28,20 +28,29 @@ public class SharedPreferenceManager {
         return false;
     }
 
+    public static void saveFirst(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("users", 0);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("isFirst", false);
+        ed.apply();
+    }
+
     /**
      * 保存第一次反馈意见的时间
+     *
      * @param context
      * @param time
      */
-    public static void saveFeedBackTime(Context context,long time){
+    public static void saveFeedBackTime(Context context, long time) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("feedBookTime", context.MODE_PRIVATE);
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putLong("Time", time);
         editor.commit();
     }
-    public static long getFeedBackTime(Context context){
-        SharedPreferences share = context.getSharedPreferences("feedBookTime",context.MODE_PRIVATE);
-        long feedTime=share.getLong("Time",0);
+
+    public static long getFeedBackTime(Context context) {
+        SharedPreferences share = context.getSharedPreferences("feedBookTime", context.MODE_PRIVATE);
+        long feedTime = share.getLong("Time", 0);
         return feedTime;
     }
 }
