@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -243,14 +245,14 @@ public class GlideUtils {
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
 
-//    /**
-//     * 回收图片资源
-//     */
-//    public static final void recyclerviewImageBitmap(@NonNull ImageView iv,Context context) {
-//        iv.setImageDrawable(null);
-//        Glide.with(SFApplication.get(context)).clear(iv);
-//    }
-//
+    /**
+     * 回收图片资源
+     */
+    public static final void recyclerviewImageBitmap(@NonNull ImageView iv,Context context) {
+        iv.setImageDrawable(null);
+        Glide.with(context).clear(iv);
+    }
+
 //    /**
 //     * 回收资源
 //     */

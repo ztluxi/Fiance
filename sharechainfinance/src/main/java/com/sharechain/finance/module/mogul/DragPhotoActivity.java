@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.bm.library.PhotoView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.utils.GlideUtils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class DragPhotoActivity extends AppCompatActivity {
     private PhotoViewPager<String> mAdapter;
     private List<String> mDatas = new ArrayList<>();
     private PhotoView photoView;
+
 
     /**
      * viewpagge 指引页面改监听器
@@ -56,9 +60,7 @@ public class DragPhotoActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             // TODO Auto-generated method stub
-//            if (count != null && mDatas != null) {
-//                count.setText((position + 1) + "/" + mDatas.size());
-//            }
+
         }
     }
 
@@ -80,7 +82,6 @@ public class DragPhotoActivity extends AppCompatActivity {
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(position);
         viewPager.addOnPageChangeListener(new GuidePageChangeListener());
-
     }
 
     class PhotoViewPager<T> extends PagerAdapter {
@@ -110,8 +111,12 @@ public class DragPhotoActivity extends AppCompatActivity {
             if (null != object && object instanceof View) {
                 View v = (View) object;
                 PhotoView iv = (PhotoView) v.findViewById(R.id.img_pv);
-                (container).removeView((View) object);
+                if (null != iv) {
+                    GlideUtils.recyclerviewImageBitmap(iv,DragPhotoActivity.this);
+                }
+                this.mViewCache.add(v);
             }
+            ((ViewPager) container).removeView((View) object);
         }
 
         @NonNull
@@ -121,8 +126,14 @@ public class DragPhotoActivity extends AppCompatActivity {
                 return null;
             }
             View view = null;
-            view = inflater.inflate(R.layout.adapter_photo_gallery_item, container, false);
-            photoView = view.findViewById(R.id.img_pv);
+            if (mViewCache.isEmpty()) {
+                view = inflater.inflate(R.layout.adapter_photo_gallery_item, container, false);
+                photoView = view.findViewById(R.id.img_pv);
+            }else {
+                view = mViewCache.removeFirst();
+                photoView = view.findViewById(R.id.img_pv);
+            }
+
             // 获取图片信息
             photoView.enable();
             photoView.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +144,7 @@ public class DragPhotoActivity extends AppCompatActivity {
             });
 
             String url = mDatas.get(position);
-            RequestOptions options = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside();
+            RequestOptions options = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerCrop();
 			GlideUtils.getInstance().loadUserImage(DragPhotoActivity.this, url, photoView, options);
             container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             return view;

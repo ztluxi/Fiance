@@ -43,7 +43,6 @@
             android:id="@+id/my_news_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="有大佬回复您的消息"
             android:textColor="@color/colorBlack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/my_news_Image_iv" />
@@ -56,7 +55,6 @@
             android:id="@+id/my_news_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2017-07-12"
             android:textColor="@color/about_font"
              />
     </LinearLayout>

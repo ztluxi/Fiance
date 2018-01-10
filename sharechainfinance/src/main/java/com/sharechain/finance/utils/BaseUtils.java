@@ -32,6 +32,46 @@ public class BaseUtils {
     private static final String NEWS_ITEM_SPECIAL = "special";
     private static final String NEWS_ITEM_PHOTO_SET = "photoset";
 
+    /**
+     * 返回临时下载apk文件路径
+     */
+    public static String getDownloadApkDirectory(Context context) {
+        File downloadPath = null;
+        // 获取系统的保存路径
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else {
+            downloadPath = new File(getDiskCacheDir(context, "apk"));
+        }
+
+        if (!downloadPath.exists()) {
+            downloadPath.mkdirs();
+        }
+        return downloadPath.getAbsolutePath() + File.separator;
+    }
+    /**
+     * 获取cache文件夹下的路径
+     */
+    public static String getDiskCacheDir(Context context, String uniqueName) {
+        String cachePath = null;
+        try {
+            if (context != null) {
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                        || !Environment.isExternalStorageRemovable()) {
+                    /**暂时先注释掉，由于获取该路径出现空指针*/
+                    cachePath = context.getExternalCacheDir().getPath();
+                } else {
+                    cachePath = context.getCacheDir().getPath();
+                }
+                return cachePath + File.separator + uniqueName;
+            } else {
+                cachePath = "/storage/emulated/0/Android/data/com.finnace/cache";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cachePath;
+    }
 
     /**
      * 根据应用包名，跳转到应用市场
