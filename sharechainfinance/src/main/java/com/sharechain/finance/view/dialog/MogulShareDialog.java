@@ -119,7 +119,7 @@ public class MogulShareDialog extends Dialog {
 
     private void setContent() {
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.getInstance().loadUserImage(SFApplication.get(context),mogulShareBean.getUrl(),headImage, headOptions);
+        GlideUtils.getInstance().loadUserImage(context,mogulShareBean.getUrl(),headImage, headOptions);
         text_namet.setText(mogulShareBean.getName()+"");
         if (mogulShareBean.getPosition().equals("")){
             text_position.setVisibility(View.GONE);
@@ -156,7 +156,7 @@ public class MogulShareDialog extends Dialog {
         shareView = LayoutInflater.from(context).inflate(R.layout.layout_share_bitmap, null);
         ImageView image_avatar = shareView.findViewById(R.id.image_avatar);
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.mogul_default).error(R.drawable.mogul_default).circleCrop();
-        GlideUtils.getInstance().loadUserImage(SFApplication.get(context), mogulShareBean.getUrl(), image_avatar, headOptions);
+        GlideUtils.getInstance().loadUserImage(context, mogulShareBean.getUrl(), image_avatar, headOptions);
         TextView text_name = shareView.findViewById(R.id.text_name);
         text_name.setText(mogulShareBean.getName());
         TextView text_tag = shareView.findViewById(R.id.text_tag);

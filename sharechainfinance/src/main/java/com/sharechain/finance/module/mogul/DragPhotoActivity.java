@@ -135,7 +135,7 @@ public class DragPhotoActivity extends AppCompatActivity {
 
             String url = mDatas.get(position);
             RequestOptions options = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside();
-            GlideUtils.getInstance().loadUserImage(SFApplication.get(mContext), url, photoView, options);
+            GlideUtils.getInstance().loadUserImage(mContext, url, photoView, options);
             container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             return view;
         }

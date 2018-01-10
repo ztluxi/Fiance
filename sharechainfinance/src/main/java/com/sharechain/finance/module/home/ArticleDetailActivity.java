@@ -309,7 +309,7 @@ public class ArticleDetailActivity extends BaseActivity {
     private void updateView(ArticleDetailBean bean) {
         text_article_title.setText(bean.getData().getArticle().getPost_title());
         RequestOptions options = new RequestOptions().circleCrop();
-        Glide.with(SFApplication.get(this)).load(bean.getData().getAuthor().getUser_avatars()).apply(options).into(image_avatar);
+        Glide.with(this).load(bean.getData().getAuthor().getUser_avatars()).apply(options).into(image_avatar);
         text_name.setText(bean.getData().getAuthor().getDisplay_name());
         text_time.setText(bean.getData().getArticle().getPost_date_gmt());
         text_view_count.setText(String.valueOf(bean.getData().getArticle().getViews()));

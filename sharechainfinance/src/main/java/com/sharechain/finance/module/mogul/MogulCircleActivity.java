@@ -93,7 +93,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         headData.setType(0);
         mogulDataList.add(headData);
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(this), true));
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(MogulCircleActivity.this, true));
 
         FullLinear linear = new FullLinear(this);
         linear.setSmoothScrollbarEnabled(true);

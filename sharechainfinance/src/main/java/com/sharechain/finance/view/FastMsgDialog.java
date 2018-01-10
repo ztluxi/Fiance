@@ -43,6 +43,10 @@ public class FastMsgDialog extends Dialog {
     ImageView image_qrcode;
     @BindView(R.id.text_uid)
     TextView text_uid;
+    @BindView(R.id.text_hour)
+    TextView text_hour;
+    @BindView(R.id.text_week)
+    TextView text_week;
     private ShareUtils shareUtils;
 
     @OnClick(R.id.image_close)
@@ -117,7 +121,11 @@ public class FastMsgDialog extends Dialog {
             text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
             text_title.setText(context.getString(R.string.fastmsg_important));
         }
-        text_date.setText(fastMsgData.getHour() + "     " + fastMsgData.getSectionText());
+        String result =fastMsgData.getSectionText();
+        String [] date = result.split(" ");
+        text_hour.setText(fastMsgData.getHour());
+        text_date.setText(date[0]);
+        text_week.setText(date[1]);
         text_content.setText(fastMsgData.getDataText());
     }
 
@@ -137,6 +145,8 @@ public class FastMsgDialog extends Dialog {
         shareView = LayoutInflater.from(context).inflate(R.layout.layout_share_fastmsg, null);
         TextView share_title = shareView.findViewById(R.id.text_title);
         TextView share_date = shareView.findViewById(R.id.text_date);
+        TextView share_hour = shareView.findViewById(R.id.text_hour);
+        TextView share_week = shareView.findViewById(R.id.text_week);
         TextView share_content = shareView.findViewById(R.id.text_content);
         if (fastMsgData.getMsgType() == 1) {
             //一般消息
@@ -151,7 +161,12 @@ public class FastMsgDialog extends Dialog {
             share_title.setBackgroundResource(R.drawable.icon_share_red_bg_rect);
             share_title.setText(context.getString(R.string.fastmsg_important));
         }
-        share_date.setText(fastMsgData.getHour() + "  " + fastMsgData.getSectionText());
+        share_hour.setText(fastMsgData.getHour());
+        String result =fastMsgData.getSectionText();
+        String [] date = result.split(" ");
+        share_date.setText(date[0]);
+        share_week.setText(date[1]);
+
         share_content.setText(fastMsgData.getDataText());
         shareView.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {

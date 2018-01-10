@@ -56,7 +56,7 @@
                     android:id="@+id/mogul_head_center_iv"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/mogul_default" />
 
                 <TextView
                     android:id="@+id/mogul_head_name_tv"

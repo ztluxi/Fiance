@@ -80,7 +80,7 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
         searchImage.setImageResource(R.drawable.search_white);
 
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(SFApplication.get(getActivity()), true));
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(getActivity(), true));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRvPostLister.setLayoutManager(manager);
 

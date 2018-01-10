@@ -23,6 +23,7 @@
         android:background="@color/white" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/text_big_news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
