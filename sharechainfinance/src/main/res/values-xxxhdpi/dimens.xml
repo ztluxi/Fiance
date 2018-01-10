@@ -21,4 +21,6 @@
     <dimen name="share_dialog_padding_left">39dp</dimen>
     <dimen name="share_dialog_share_margin_top">33dp</dimen>
 
+    <dimen name="share_dialog_share_to_top">12dp</dimen>
+    <dimen name="share_dialog_share_to_left">56dp</dimen>
 </resources>

@@ -191,7 +191,7 @@
 
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/share_dialog_padding_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -221,14 +221,14 @@
 
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/share_dialog_share_to_top"
+                android:layout_marginBottom="@dimen/share_dialog_share_to_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="@dimen/share_dialog_share_to_left"
                     android:id="@+id/image_weixin"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
@@ -243,7 +243,7 @@
                     android:src="@drawable/icon_share_circle" />
 
                 <ImageView
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="@dimen/share_dialog_share_to_left"
                     android:id="@+id/image_download"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
