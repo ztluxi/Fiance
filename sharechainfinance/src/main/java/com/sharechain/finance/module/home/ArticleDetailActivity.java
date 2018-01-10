@@ -90,6 +90,7 @@ public class ArticleDetailActivity extends BaseActivity {
     private int currentProgress;
     private ArticleListsBean articleBean;
     private int newsType = 0;
+    private int praiseNum = 0;
 
     @Override
     public int getLayout() {
@@ -336,6 +337,7 @@ public class ArticleDetailActivity extends BaseActivity {
         });
         //赞数目
         text_praise_num.setText(String.valueOf(bean.getData().getArticle().getHits()));
+        praiseNum = bean.getData().getArticle().getHits();
         //图文详情
         Document doc = Jsoup.parse(bean.getData().getArticle().getPost_content());
         Elements elements = doc.getElementsByTag("img");
@@ -401,6 +403,8 @@ public class ArticleDetailActivity extends BaseActivity {
                     likeBean.setArticleId(articleBean.getTagId());
                     likeBean.save();
                     image_praise.setClickable(false);
+                    praiseNum++;
+                    text_praise_num.setText(String.valueOf(praiseNum));
                 }
             }
 

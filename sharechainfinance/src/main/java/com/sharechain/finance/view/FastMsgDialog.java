@@ -120,11 +120,16 @@ public class FastMsgDialog extends Dialog {
             text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
             text_title.setText(context.getString(R.string.fastmsg_important));
         }
-        String result =fastMsgData.getSectionText();
-        String [] date = result.split(" ");
+        String result = fastMsgData.getSectionText();
         text_hour.setText(fastMsgData.getHour());
-        text_date.setText(date[0]);
-        text_week.setText(date[1]);
+        String[] date = result.split(" ");
+        if (date.length > 1) {
+            text_date.setText(date[0]);
+            text_week.setText(date[1]);
+        } else {
+            text_date.setText(result);
+        }
+
         text_content.setText(fastMsgData.getDataText());
     }
 
@@ -160,11 +165,15 @@ public class FastMsgDialog extends Dialog {
             share_title.setBackgroundResource(R.drawable.icon_share_red_bg_rect);
             share_title.setText(context.getString(R.string.fastmsg_important));
         }
+        String result = fastMsgData.getSectionText();
         share_hour.setText(fastMsgData.getHour());
-        String result =fastMsgData.getSectionText();
-        String [] date = result.split(" ");
-        share_date.setText(date[0]);
-        share_week.setText(date[1]);
+        String[] date = result.split(" ");
+        if (date.length > 1) {
+            share_date.setText(date[0]);
+            share_week.setText(date[1]);
+        } else {
+            share_date.setText(result);
+        }
 
         share_content.setText(fastMsgData.getDataText());
     }

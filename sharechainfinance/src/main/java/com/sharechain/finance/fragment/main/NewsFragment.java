@@ -135,8 +135,8 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         Map<String, String> params = new HashMap<>();
         if (term_taxonomy_id > 0) {
             params.put("term_taxonomy_id", String.valueOf(term_taxonomy_id));
-            params.put(pageParam, String.valueOf(page));
         }
+        params.put(pageParam, String.valueOf(page));
         requestGet(UrlList.HOME_ARTICLE_LIST, params, new MyStringCallback(getActivity()) {
             @Override
             protected void onSuccess(String result) {
