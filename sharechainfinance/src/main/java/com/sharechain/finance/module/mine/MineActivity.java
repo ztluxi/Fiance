@@ -23,8 +23,10 @@ import com.sharechain.finance.bean.WXRefreshBean;
 import com.sharechain.finance.bean.WxLoginBean;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
+import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.dialog.ExitLoginDialog;
 import com.sharechain.finance.view.dialog.LoadDialog;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -152,7 +154,11 @@ public class MineActivity extends BaseActivity implements View.OnClickListener {
                 BaseUtils.openActivity(this, MyNewsActivity.class, null);
                 break;
             case R.id.my_follow_tv:
-                BaseUtils.openActivity(this, MyFollowActivity.class, null);
+                if (SFApplication.loginDataBean != null) {
+                    BaseUtils.openActivity(this, MyFollowActivity.class, null);
+                }else {
+                    ToastManager.showShort(this,getString(R.string.please_login));
+                }
                 break;
             case R.id.suggest_ll:
                 BaseUtils.openActivity(this, FeedbackActivity.class, null);

@@ -14,6 +14,7 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
 import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.MainCacheBean;
@@ -196,7 +197,11 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_title_left:
-                BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
+                if (SFApplication.loginDataBean != null) {
+                    BaseUtils.openActivity(getActivity(), MyFollowActivity.class, null);
+                }else {
+                    ToastManager.showShort(getActivity(),getString(R.string.please_login));
+                }
                 break;
             case R.id.image_title_right:
                 Intent intentMogul = new Intent(getActivity(), MogulFollowSearchActivity.class);
