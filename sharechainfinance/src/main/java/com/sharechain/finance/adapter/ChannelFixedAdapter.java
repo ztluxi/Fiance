@@ -142,7 +142,7 @@ public class ChannelFixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 myHolder.text_item.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
                 myHolder.image_delete.setVisibility(View.GONE);
             } else {
-                myHolder.text_item.setBackgroundResource(R.drawable.search_bg);
+                myHolder.text_item.setBackgroundResource(R.drawable.common_tag_circlr_bg);
                 myHolder.text_item.setTextColor(ContextCompat.getColor(context, R.color.about_font));
                 if (isEditMode) {
                     myHolder.image_delete.setVisibility(View.VISIBLE);

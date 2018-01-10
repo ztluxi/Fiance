@@ -100,7 +100,7 @@ public class FastMsgFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i < dataList.size() && dataList.get(i).getType() == FastMsgData.CHILD_TYPE) {
-                    new FastMsgDialog(getActivity(), dataList.get(i)).show();
+                    new FastMsgDialog(getActivity(), dataList.get(i), true).show();
                 }
             }
         });
@@ -118,7 +118,7 @@ public class FastMsgFragment extends BaseFragment {
         getDetail();
         getTopNews();
         if (SFApplication.shareData != null) {
-            new FastMsgDialog(getActivity(), SFApplication.shareData).show();
+            new FastMsgDialog(getActivity(), SFApplication.shareData, true).show();
         }
     }
 
@@ -129,7 +129,7 @@ public class FastMsgFragment extends BaseFragment {
         } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_SCROLL_MSG) {
             //弹出分享对话框
             FastMsgData getData = (FastMsgData) event.getObj();
-            new FastMsgDialog(getActivity(), getData).show();
+            new FastMsgDialog(getActivity(), getData, true).show();
         } else if (event.getType() == BaseNotifyBean.TYPE.TYPE_REFRESH_FASTMSG_DATA) {
             //刷新
             //刷新列表
@@ -263,7 +263,7 @@ public class FastMsgFragment extends BaseFragment {
             Date date = TimeUtil.StringToDate(headData.getData().get(0).getCreate_time());
             fastMsgData.setSectionText(TimeUtil.RelativeDateFormat(date));
 
-            new FastMsgDialog(getActivity(), fastMsgData).show();
+            new FastMsgDialog(getActivity(), fastMsgData, true).show();
         }
     }
 

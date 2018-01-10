@@ -52,7 +52,6 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     private NewsListAdapter mNewsListAdapter;
     private HomeIndexBean homeIndexBean;
     private List<ArticleListsBean> dataList = new ArrayList<>();
-    private List<HomeIndexBean.DataBean.BannerBean> imageList = new ArrayList<>();
     private int curPosition;
 
     public static NewsFragment newInstance(HomeIndexBean homeIndexBean, int pos) {
@@ -70,8 +69,6 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         if (getArguments() != null) {
             homeIndexBean = (HomeIndexBean) getArguments().getSerializable(NEWS_TYPE_KEY);
             curPosition = getArguments().getInt(NEWS_TYPE_POSITION);
-            imageList.clear();
-            imageList.addAll(homeIndexBean.getData().getBanner());
         }
     }
 
@@ -101,6 +98,7 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
                 super.onRefresh(isPullDown);
                 page = 1;
                 getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+                getHomeIndexData();
             }
 
             @Override
@@ -128,6 +126,26 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
         dataList.addAll(cacheList);
         mNewsListAdapter.notifyDataSetChanged();
         getListData(homeIndexBean.getData().getArticle_title_lists().get(curPosition).getTerm_taxonomy_id());
+    }
+
+    //刷新banner和快讯数据
+    private void getHomeIndexData() {
+        requestGet(UrlList.HOME_INDEX, new MyStringCallback(getActivity()) {
+            @Override
+            protected void onSuccess(String result) {
+                HomeIndexBean bean = JSON.parseObject(result, HomeIndexBean.class);
+                if (bean.getSuccess() == UrlList.CODE_SUCCESS) {
+                    homeIndexBean = bean;
+                    mNewsListAdapter.setHeaderBean(homeIndexBean.getData());
+                    mNewsListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errStr) {
+
+            }
+        });
     }
 
     //根据id获取列表
@@ -192,16 +210,16 @@ public class NewsFragment extends BaseFragment implements NewsListAdapter.OnNews
     }
 
     @Override
-    protected void onFragmentStopLazy() {
-        super.onFragmentStopLazy();
+    protected void onPauseLazy() {
+        super.onPauseLazy();
         if (mNewsListAdapter != null) {
             mNewsListAdapter.waitCircleAll();
         }
     }
 
     @Override
-    protected void onFragmentStartLazy() {
-        super.onFragmentStartLazy();
+    protected void onResumeLazy() {
+        super.onResumeLazy();
         if (mNewsListAdapter != null) {
             mNewsListAdapter.notifyCircleAll();
         }

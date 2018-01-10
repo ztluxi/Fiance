@@ -1,23 +1,15 @@
 package com.sharechain.finance.module.mine;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
 
-import com.andview.refreshview.XRefreshView;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.R;
-import com.sharechain.finance.adapter.HistoryAdapter;
-import com.sharechain.finance.bean.HomeData;
-import com.sharechain.finance.utils.ToastManager;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.sharechain.finance.utils.BaseUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 
 /**
  * Created by ${zhoutao} on 2017/12/19 0013.
@@ -26,6 +18,8 @@ import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
 public class AboutFinanceActivity extends BaseActivity {
     @BindView(R.id.image_title_left)
     ImageView back_Image;
+    @BindView(R.id.version_tv)
+    TextView version_tv;
 
     @Override
     public int getLayout() {
@@ -37,12 +31,14 @@ public class AboutFinanceActivity extends BaseActivity {
         initData();
         initTitle(getString(R.string.app_name));
         back_Image.setVisibility(View.VISIBLE);
-
+        version_tv.setText(BaseUtils.getVersionName(this));
     }
+
     @Override
     public void initData() {
 
     }
+
     @OnClick({R.id.image_title_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -51,7 +47,6 @@ public class AboutFinanceActivity extends BaseActivity {
                 break;
         }
     }
-
 
 
 }

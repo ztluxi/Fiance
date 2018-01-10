@@ -174,7 +174,7 @@ public class HomeFragment extends BaseFragment {
 
     @OnClick(R.id.iv_add_channel)
     public void onViewClicked() {
-        BaseUtils.openActivity(getActivity(), MineActivity.class, null);
+        BaseUtils.openActivityLeft(getActivity(), MineActivity.class, null);
     }
 
     @OnClick(R.id.image_add_tag)
@@ -259,6 +259,7 @@ public class HomeFragment extends BaseFragment {
                     //返回成功
                     loadData();
                 }
+
             }
 
             @Override

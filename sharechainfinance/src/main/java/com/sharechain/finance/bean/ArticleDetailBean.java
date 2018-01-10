@@ -126,7 +126,6 @@ public class ArticleDetailBean {
             private int ID;
             private int post_author;
             private String post_date;
-            private String post_date_gmt;
             private String post_content;
             private String post_title;
             private String post_excerpt;
@@ -172,14 +171,6 @@ public class ArticleDetailBean {
 
             public void setPost_date(String post_date) {
                 this.post_date = post_date;
-            }
-
-            public String getPost_date_gmt() {
-                return post_date_gmt;
-            }
-
-            public void setPost_date_gmt(String post_date_gmt) {
-                this.post_date_gmt = post_date_gmt;
             }
 
             public String getPost_content() {

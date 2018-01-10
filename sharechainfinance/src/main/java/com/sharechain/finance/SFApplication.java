@@ -21,6 +21,7 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.tencent.bugly.beta.upgrade.UpgradeListener;
+import com.umeng.commonsdk.UMConfigure;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.litepal.LitePal;
@@ -72,6 +73,7 @@ public class SFApplication extends MultiDexApplication {
         initBugly();
 
         initJPush();
+        initUmeng();
         //litePal数据库
         LitePal.initialize(this);
         WindowManager manager = (WindowManager)
@@ -144,14 +146,14 @@ public class SFApplication extends MultiDexApplication {
         /**
          * 设置状态栏小图标，smallIconId为项目中的图片资源id;
          */
-        Beta.smallIconId =  R.drawable.logo;
+        Beta.smallIconId = R.drawable.logo;
 
 
         /**
          * 设置更新弹窗默认展示的banner，defaultBannerId为项目中的图片资源Id;
          * 当后台配置的banner拉取失败时显示此banner，默认不设置则展示“loading“;
          */
-        Beta.defaultBannerId =  R.drawable.logo;
+        Beta.defaultBannerId = R.drawable.logo;
 
         /**
          * 设置sd卡的Download为更新资源保存目录;
@@ -200,10 +202,17 @@ public class SFApplication extends MultiDexApplication {
             }
         };
 
-
-
     }
 
+    private void initUmeng() {
+        /**
+         * 初始化common库
+         * 参数1:上下文，不能为空
+         * 参数2:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
+         * 参数3:Push推送业务的secret
+         */
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "");
+    }
 
     /**
      * @param activity 作用说明 ：添加一个activity到管理里

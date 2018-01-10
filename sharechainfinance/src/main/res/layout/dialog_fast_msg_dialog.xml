@@ -84,6 +84,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <ScrollView
@@ -102,8 +103,9 @@
 
                     <TextView
                         android:id="@+id/text_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
@@ -111,6 +113,66 @@
                         android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1"
+                            android:gravity="left|bottom"
+                            android:orientation="horizontal"
+                            android:paddingBottom="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:lines="1"
+                                android:text="分享来自"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="未来财经App"
+                                android:textColor="@color/share_finance_blue"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/image_qrcode"
+                                android:layout_width="69dp"
+                                android:layout_height="69dp"
+                                android:src="@drawable/icon_share_qrcode" />
+
+                            <TextView
+                                android:id="@+id/text_uid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:text="@string/come_from_finance"
+                                android:textColor="@android:color/black"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_from"
@@ -124,70 +186,9 @@
                         android:textSize="12sp"
                         android:visibility="gone" />
 
-
                 </LinearLayout>
 
             </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:gravity="left|bottom"
-                    android:orientation="horizontal"
-                    android:paddingBottom="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:lines="1"
-                        android:text="分享来自"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="未来财经App"
-                        android:textColor="@color/share_finance_blue"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/image_qrcode"
-                        android:layout_width="69dp"
-                        android:layout_height="69dp"
-                        android:src="@drawable/icon_share_qrcode" />
-
-                    <TextView
-                        android:id="@+id/text_uid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/come_from_finance"
-                        android:textColor="@android:color/black"
-                        android:textSize="10sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

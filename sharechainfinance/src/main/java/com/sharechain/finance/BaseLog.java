@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class BaseLog {
 
-    private static boolean isShowLog = true;
+    private static boolean isShowLog = false;
 
     public static void d(String tag, String str) {
         if (isShowLog) {

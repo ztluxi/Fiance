@@ -3,7 +3,6 @@ package com.sharechain.finance.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +111,7 @@ public class FastMsgAdapter extends BaseAdapter implements PinnedSectionListView
             childViewHolder.image_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new FastMsgDialog(context, listData.get(i)).show();
+                    new FastMsgDialog(context, listData.get(i), true).show();
                 }
             });
             childViewHolder.text_view_article.setOnClickListener(new View.OnClickListener() {

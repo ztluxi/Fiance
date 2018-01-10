@@ -17,6 +17,7 @@ public class HistoryData extends DataSupport {
     private int ID;
     private String post_title;
     private String post_content;
+    private String post_date;
     private String post_date_gmt;
     private int post_view_rand;
     private String user_avatars;
@@ -24,6 +25,14 @@ public class HistoryData extends DataSupport {
     private String image;
     private String display_name;
     private String name;
+
+    public String getPost_date_gmt() {
+        return post_date_gmt;
+    }
+
+    public void setPost_date_gmt(String post_date_gmt) {
+        this.post_date_gmt = post_date_gmt;
+    }
 
     public String getDisplay_name() {
         return display_name;
@@ -89,12 +98,12 @@ public class HistoryData extends DataSupport {
         this.post_content = post_content;
     }
 
-    public String getPost_date_gmt() {
-        return post_date_gmt;
+    public String getPost_date() {
+        return post_date;
     }
 
-    public void setPost_date_gmt(String post_date_gmt) {
-        this.post_date_gmt = post_date_gmt;
+    public void setPost_date(String post_date) {
+        this.post_date = post_date;
     }
 
     public int getPost_view_rand() {

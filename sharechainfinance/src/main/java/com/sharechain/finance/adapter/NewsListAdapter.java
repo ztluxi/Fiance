@@ -38,8 +38,6 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.FastMsgData;
@@ -47,19 +45,16 @@ import com.sharechain.finance.bean.HomeIndexBean;
 import com.sharechain.finance.module.home.ArticleDetailActivity;
 import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.GlideUtils;
-import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.FastMsgDialog;
 import com.sharechain.finance.view.FixedSpeedScroller;
 import com.sharechain.finance.view.ScaleInTransformer;
 import com.sharechain.finance.view.UserOperateCallbackViewPager;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
     private HeaderViewHolder headerViewHolder;
@@ -76,6 +71,10 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
 
     public interface OnNewsListItemClickListener extends OnItemClickListener {
         void onItemClick(View view, int position, boolean isPhoto);
+    }
+
+    public void setHeaderBean(HomeIndexBean.DataBean headerBean) {
+        this.headerBean = headerBean;
     }
 
     @Override
@@ -135,11 +134,10 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
         if (position > 0) {
             ArticleListsBean bean = mList.get(position - 1);
             holder.text_content.setText(bean.getPost_title());
-            Date date = TimeUtil.StringToDate(bean.getPost_date_gmt());
             holder.text_type.setText(bean.getDisplay_name());
-            holder.text_time.setText(TimeUtil.RelativeDateFormat(date));
+            holder.text_time.setText(bean.getPost_date_gmt());
             holder.text_views.setText(String.format("%1$d阅读", bean.getViews()));
-            GlideUtils.getInstance().loadRoundImage(context, bean.getImage(), holder.image_pic, BaseUtils.dip2px(context, 5), R.drawable.home_default);
+            GlideUtils.getInstance().loadRoundImage(context, bean.getImage(), holder.image_pic, BaseUtils.dip2px(context, 5), R.drawable.icon_article_default);
         }
     }
 
@@ -153,9 +151,8 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                     View view = LayoutInflater.from(context).inflate(R.layout.layout_news_banner_item, null);
                     ImageView image_banner = view.findViewById(R.id.image_banner);
                     TextView text_banner = view.findViewById(R.id.text_banner);
-                    Glide.with(context).load(headerBean.getBanner().get(getRealPosition(position)).getUrl()).
-                            apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(BaseUtils.dip2px(context, 5), 0))
-                                    .placeholder(R.drawable.icon_banner_default)).into(image_banner);
+                    GlideUtils.getInstance().loadRoundImage(context, headerBean.getBanner().get(getRealPosition(position)).getUrl(),
+                            image_banner, BaseUtils.dip2px(context, 5));
                     text_banner.setText(headerBean.getBanner().get(getRealPosition(position)).getPost_title());
                     container.addView(view);
                     view.setOnClickListener(new View.OnClickListener() {
@@ -310,15 +307,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
                         childData.setUrl(headerBean.getTop_news().get(switchIndex).getSite_url());//url
 
                         //弹出分享对话框
-                        new FastMsgDialog(context, childData).show();
-//                        //切换至快讯界面
-//                        ((MainActivity) context).switchToFastMsg();
-//                        SFApplication.shareData = childData;
-//                        //EventBus发送消息
-//                        BaseNotifyBean bean = new BaseNotifyBean();
-//                        bean.setType(BaseNotifyBean.TYPE.TYPE_SCROLL_MSG);
-//                        bean.setObj(childData);
-//                        EventBus.getDefault().post(bean);
+                        new FastMsgDialog(context, childData, false).show();
                     }
                 });
                 startSwitchText();

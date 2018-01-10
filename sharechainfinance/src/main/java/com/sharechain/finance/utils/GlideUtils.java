@@ -9,8 +9,6 @@ import android.graphics.Paint;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -79,6 +77,19 @@ public class GlideUtils {
         Glide.with(context)
                 .load(url)
                 .apply(options)
+                .into(imageView);
+    }
+
+    public void loadRoundImage(Context context,
+                               String url,
+                               ImageView imageView,
+                               int radius) {
+        MultiTransformation multi = new MultiTransformation(
+                new CenterCrop(),
+                new RoundedCornersTransformation(radius, 0));
+        Glide.with(context)
+                .load(url)
+                .apply(RequestOptions.bitmapTransform(multi))
                 .into(imageView);
     }
 
@@ -248,7 +259,7 @@ public class GlideUtils {
     /**
      * 回收图片资源
      */
-    public static final void recyclerviewImageBitmap(@NonNull ImageView iv,Context context) {
+    public static final void recyclerviewImageBitmap(@NonNull ImageView iv, Context context) {
         iv.setImageDrawable(null);
         Glide.with(context).clear(iv);
     }

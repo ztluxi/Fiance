@@ -186,12 +186,33 @@ public class MainActivity extends BaseActivity {
         iv.startAnimation(animation);
     }
 
-    private void touchUp(ImageView iv) {
-        ScaleAnimation animation = new ScaleAnimation(0.8f, 1, 0.8f, 1, Animation.RELATIVE_TO_SELF,
+    private void touchUp(final ImageView iv) {
+        ScaleAnimation animation = new ScaleAnimation(0.9f, 1.1f, 0.9f, 1.1f, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(100);
         animation.setFillAfter(true);
         iv.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ScaleAnimation animation2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF,
+                        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                animation2.setDuration(100);
+                animation2.setFillAfter(true);
+                iv.startAnimation(animation2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
     //是否是从推送消息打开

@@ -5,9 +5,6 @@ import android.content.Context;
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.utils.GlideUtils;
-import com.sharechain.finance.utils.TimeUtil;
-
-import java.util.Date;
 
 import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
@@ -24,12 +21,11 @@ public class HomeOtherAdapter extends BGAAdapterViewAdapter<ArticleListsBean> {
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, ArticleListsBean model) {
-        helper.getTextView(R.id.text_type).setText(model.getName());
-        Date date = TimeUtil.StringToDate(model.getPost_date_gmt());
-        helper.getTextView(R.id.text_time).setText(TimeUtil.RelativeDateFormat(date));
+        helper.getTextView(R.id.text_type).setText(model.getDisplay_name());
+        helper.getTextView(R.id.text_time).setText(model.getPost_date_gmt());
         helper.getTextView(R.id.text_views).setText(String.format("%1$d阅读", model.getViews()));
         helper.getTextView(R.id.text_content).setText(model.getPost_title());
-        GlideUtils.getInstance().loadRoundImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), 10, R.drawable.home_default);
+        GlideUtils.getInstance().loadRoundImage(mContext, model.getImage(), helper.getImageView(R.id.image_pic), 10, R.drawable.icon_article_default);
     }
 
 }

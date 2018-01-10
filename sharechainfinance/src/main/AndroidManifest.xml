@@ -228,7 +228,15 @@
             android:name="JPUSH_APPKEY"
             android:value="04afea6b7cc9e406f430c1cd" /> <!--  </>值来自开发者平台取得的AppKey-->
 
-        <!--Bugly升级 必须配置-->
+<!--umeng setting-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a55d2028f4a9d42fb0000d7" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+
+<!--Bugly升级 必须配置-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
@@ -247,7 +255,6 @@
         </provider>
         <activity
             android:name=".module.mine.UpgradeActivity"
-            android:screenOrientation="portrait" />
-    </application>
+            android:screenOrientation="portrait" />    </application>
 
 </manifest>

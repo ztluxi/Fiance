@@ -311,7 +311,7 @@ public class ArticleDetailActivity extends BaseActivity {
         RequestOptions options = new RequestOptions().circleCrop();
         Glide.with(this).load(bean.getData().getAuthor().getUser_avatars()).apply(options).into(image_avatar);
         text_name.setText(bean.getData().getAuthor().getDisplay_name());
-        text_time.setText(bean.getData().getArticle().getPost_date_gmt());
+        text_time.setText(bean.getData().getArticle().getPost_date());
         text_view_count.setText(String.valueOf(bean.getData().getArticle().getViews()));
         if (bean.getData().getPost_tag().size() == 0) {
             flow_tags.setVisibility(View.GONE);

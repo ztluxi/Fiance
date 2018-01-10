@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -49,6 +51,7 @@ public class BaseUtils {
         }
         return downloadPath.getAbsolutePath() + File.separator;
     }
+
     /**
      * 获取cache文件夹下的路径
      */
@@ -136,7 +139,27 @@ public class BaseUtils {
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
-        context.overridePendingTransition(R.anim.fragment_slide_left_enter, R.anim.fragment_slide_left_exit);
+//        context.overridePendingTransition(R.anim.fragment_slide_left_enter, R.anim.fragment_slide_left_exit);
+    }
+
+    /**
+     * 带参数的页面跳转
+     *
+     * @param context
+     * @param pClass
+     * @param pBundle
+     * @author Jeff
+     */
+    public static void openActivityLeft(Activity context, Class<?> pClass, Bundle pBundle) {
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context, pClass);
+        if (pBundle != null) {
+            intent.putExtras(pBundle);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
     }
 
     /**
@@ -372,5 +395,18 @@ public class BaseUtils {
         return false;
     }
 
+    public static String getVersionName(Context context) {
+        // 获取packagemanager的实例
+        PackageManager packageManager = context.getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        try {
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            String version = packInfo.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "V1.0.0";
+    }
 
 }

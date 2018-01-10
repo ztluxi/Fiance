@@ -88,12 +88,14 @@ public class FastMsgDialog extends Dialog {
     private FastMsgData fastMsgData;
     private View contentView;
     private View shareView;
+    private boolean isWeek;
 
-    public FastMsgDialog(@NonNull Context context, FastMsgData fastMsgData) {
+    public FastMsgDialog(@NonNull Context context, FastMsgData fastMsgData, boolean isWeek) {
         super(context, R.style.base_dialog_style);
         this.context = context;
         this.fastMsgData = fastMsgData;
         shareUtils = new ShareUtils(context);
+        this.isWeek = isWeek;
     }
 
     @Override
@@ -120,16 +122,20 @@ public class FastMsgDialog extends Dialog {
             text_title.setBackgroundResource(R.drawable.icon_share_red_bg);
             text_title.setText(context.getString(R.string.fastmsg_important));
         }
-        String result = fastMsgData.getSectionText();
         text_hour.setText(fastMsgData.getHour());
-        String[] date = result.split(" ");
-        if (date.length > 1) {
-            text_date.setText(date[0]);
-            text_week.setText(date[1]);
-        } else {
-            text_date.setText(result);
-        }
 
+        String result = fastMsgData.getSectionText();
+        String[] date = result.split(" ");
+        if (isWeek) {
+            if (date.length > 1) {
+                text_date.setText(date[0]);
+                text_week.setText(date[1]);
+            } else {
+                text_date.setText(result);
+            }
+        } else {
+            text_date.setText(date[0]);
+        }
         text_content.setText(fastMsgData.getDataText());
     }
 
