@@ -14,7 +14,6 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseFragment;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
 import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.MainCacheBean;

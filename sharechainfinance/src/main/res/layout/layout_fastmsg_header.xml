@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_msg_header"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="155dp"
     android:background="@drawable/icon_fastmsg_header_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -22,7 +23,6 @@
         android:background="@color/white" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/text_big_news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,6 +30,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="14dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:lineSpacingMultiplier="1.2"
         android:maxLines="2"
         android:textColor="@color/white"

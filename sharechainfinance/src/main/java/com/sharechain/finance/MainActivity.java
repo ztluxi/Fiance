@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void touchDown(ImageView iv) {
-        ScaleAnimation animation = new ScaleAnimation(1, 1.2f, 1, 1.2f, Animation.RELATIVE_TO_SELF,
+        ScaleAnimation animation = new ScaleAnimation(1, 0.9f, 1, 0.9f, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(100);
         animation.setFillAfter(true);
@@ -187,7 +187,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void touchUp(ImageView iv) {
-        ScaleAnimation animation = new ScaleAnimation(1.2f, 1, 1.2f, 1, Animation.RELATIVE_TO_SELF,
+        ScaleAnimation animation = new ScaleAnimation(0.8f, 1, 0.8f, 1, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(100);
         animation.setFillAfter(true);

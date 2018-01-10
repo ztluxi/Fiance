@@ -1,11 +1,7 @@
 package com.sharechain.finance.module.mogul;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -14,7 +10,6 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MogulAdapter;
 import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.MogulCircleBean;
@@ -22,14 +17,11 @@ import com.sharechain.finance.bean.MogulData;
 import com.sharechain.finance.bean.MogulLikeBean;
 import com.sharechain.finance.bean.MogulShareBean;
 import com.sharechain.finance.bean.UrlList;
-import com.sharechain.finance.module.mine.MineActivity;
-import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.utils.ToastManager;
 import com.sharechain.finance.view.FullLinear;
 import com.sharechain.finance.view.dialog.LoadDialog;
 import com.sharechain.finance.view.dialog.MogulShareDialog;
 
-import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
@@ -93,8 +85,7 @@ public class MogulCircleActivity extends BaseActivity implements MogulAdapter.My
         headData.setType(0);
         mogulDataList.add(headData);
         mRefreshLayout.setDelegate(this);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(MogulCircleActivity.this, true));
-
+        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this, true));
         FullLinear linear = new FullLinear(this);
         linear.setSmoothScrollbarEnabled(true);
         linear.setAutoMeasureEnabled(true);

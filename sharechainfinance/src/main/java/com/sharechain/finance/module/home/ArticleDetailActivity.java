@@ -30,7 +30,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.BaseActivity;
 import com.sharechain.finance.MyStringCallback;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.bean.ArticleDetailBean;
 import com.sharechain.finance.bean.ArticleListsBean;
 import com.sharechain.finance.bean.HistoryData;

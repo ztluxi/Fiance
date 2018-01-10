@@ -250,7 +250,7 @@ public class FastMsgFragment extends BaseFragment {
         }
     }
 
-    @OnClick(R.id.btn_view_detail)
+    @OnClick(R.id.ll_msg_header)
     void viewDetail() {
         if (headData != null && headData.getData().size() > 0) {
             FastMsgData fastMsgData = new FastMsgData();
