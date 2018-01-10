@@ -21,8 +21,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/follow" />
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:id="@+id/mogul_name"
@@ -34,7 +33,6 @@
             android:ellipsize="end"
             android:lines="1"
             android:maxLength="15"
-            android:text="大佬"
             android:textColor="@color/tint_home_color"
             android:textSize="14sp" />
 
@@ -45,7 +43,6 @@
             android:layout_below="@+id/mogul_content_Image_tv"
             android:layout_marginBottom="14dp"
             android:layout_marginTop="14dp"
-            android:text="2017-07-12"
             android:textColor="@color/about_font"
             android:textSize="11sp" />
 
@@ -63,7 +60,6 @@
             android:maxLength="15"
             android:maxLines="1"
             android:paddingRight="5dp"
-            android:text="@string/aite_weibo"
             android:textColor="@color/about_font"
             android:textSize="14sp"
             android:visibility="visible" />
@@ -76,7 +72,6 @@
             android:layout_marginTop="18dp"
             android:ellipsize="end"
             android:paddingRight="10dp"
-            android:text="比特币这东西，早买晚买都是买的！"
             android:textColor="@color/colorBlack"
             android:textSize="14sp" />
 
@@ -96,7 +91,6 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="3dp"
-            android:text="未来财经ceo"
             android:textColor="@color/tint_home_color"
             android:textSize="11sp"
             android:visibility="visible" />
@@ -131,7 +125,6 @@
                 android:layout_alignParentRight="true"
                 android:paddingBottom="15dp"
                 android:paddingLeft="10dp"
-                android:text="大佬啦"
                 android:textColor="@color/colorBlack"
                 android:textColorHint="@color/colorBlack"
                 android:textSize="14sp"

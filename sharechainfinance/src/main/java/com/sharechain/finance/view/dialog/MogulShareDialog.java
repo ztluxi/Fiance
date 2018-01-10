@@ -119,22 +119,21 @@ public class MogulShareDialog extends Dialog {
 
     private void setContent() {
         RequestOptions headOptions = new RequestOptions().placeholder(R.drawable.logo).circleCrop();
-        GlideUtils.getInstance().loadUserImage(SFApplication.get(context),mogulShareBean.getUrl(),headImage, headOptions);
-        text_namet.setText(mogulShareBean.getName()+"");
-        if (mogulShareBean.getPosition().equals("")){
+        GlideUtils.getInstance().loadUserImage(context, mogulShareBean.getUrl(), headImage, headOptions);
+        if (BaseUtils.isEmpty(mogulShareBean.getPosition())) {
             text_position.setVisibility(View.GONE);
-        }else {
+        } else {
             text_position.setText(mogulShareBean.getPosition());
         }
-        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())){
-            text_weibo.setText(mogulShareBean.getWeibo()+"");
+        if (BaseUtils.isEmpty(mogulShareBean.getWeibo())) {
+            text_weibo.setText(mogulShareBean.getWeibo() + "");
             text_weibo.setVisibility(View.GONE);
-        }else {
-            text_weibo.setText(mogulShareBean.getWeibo()+"");
+        } else {
+            text_weibo.setText(mogulShareBean.getWeibo() + "");
             text_weibo.setVisibility(View.VISIBLE);
         }
         //设置textveiw显示html
-        MyImageGetter glide = new MyImageGetter(text_content,context);
+        MyImageGetter glide = new MyImageGetter(text_content, context);
         text_content.setText(Html.fromHtml(mogulShareBean.getContent(), glide, null));
         text_content.setMovementMethod(LinkMovementMethod.getInstance());
         text_content.setLinkTextColor(getColor(R.color.tint_home_color));

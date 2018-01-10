@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import com.bm.library.PhotoView;
 import com.bumptech.glide.request.RequestOptions;
 import com.sharechain.finance.R;
-import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.utils.GlideUtils;
 
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class DragPhotoActivity extends AppCompatActivity {
 
             String url = mDatas.get(position);
             RequestOptions options = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerInside();
-            GlideUtils.getInstance().loadUserImage(mContext, url, photoView, options);
+			GlideUtils.getInstance().loadUserImage(DragPhotoActivity.this, url, photoView, options);
             container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             return view;
         }

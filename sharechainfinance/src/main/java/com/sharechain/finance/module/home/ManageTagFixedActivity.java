@@ -147,6 +147,10 @@ public class ManageTagFixedActivity extends BaseActivity {
                 } else {
                     //已选择的位置
                     selectPosition = position;
+                    BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
+                    baseNotifyBean.setType(TYPE_SELECT_TAG);
+                    baseNotifyBean.setInteger(selectPosition);
+                    EventBus.getDefault().post(baseNotifyBean);
                     finish();
                 }
             }
@@ -195,10 +199,7 @@ public class ManageTagFixedActivity extends BaseActivity {
             baseNotifyBean.setObj(myList);
             EventBus.getDefault().post(baseNotifyBean);
         } else {
-            BaseNotifyBean baseNotifyBean = new BaseNotifyBean();
-            baseNotifyBean.setType(TYPE_SELECT_TAG);
-            baseNotifyBean.setInteger(selectPosition);
-            EventBus.getDefault().post(baseNotifyBean);
+
         }
     }
 
