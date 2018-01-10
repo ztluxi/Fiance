@@ -16,7 +16,7 @@
     <style name="AppTheme.Splash" parent="@android:style/Theme">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/icon_splash</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">true</item>
@@ -76,7 +76,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:backgroundDimAmount">0.8</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
@@ -91,8 +91,9 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowBackground">@color/exit_dialog</item>
     </style>
+
     <style name="translucent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground" >@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
 

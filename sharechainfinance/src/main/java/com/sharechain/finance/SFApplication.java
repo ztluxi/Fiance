@@ -21,7 +21,6 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.tencent.bugly.beta.upgrade.UpgradeListener;
-import com.umeng.commonsdk.UMConfigure;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.litepal.LitePal;
@@ -73,7 +72,6 @@ public class SFApplication extends MultiDexApplication {
         initBugly();
 
         initJPush();
-        initUmeng();
         //litePal数据库
         LitePal.initialize(this);
         WindowManager manager = (WindowManager)
@@ -202,16 +200,6 @@ public class SFApplication extends MultiDexApplication {
             }
         };
 
-    }
-
-    private void initUmeng() {
-        /**
-         * 初始化common库
-         * 参数1:上下文，不能为空
-         * 参数2:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
-         * 参数3:Push推送业务的secret
-         */
-        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     /**

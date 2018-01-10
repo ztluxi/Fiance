@@ -46,7 +46,7 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -228,7 +228,7 @@
             android:name="JPUSH_APPKEY"
             android:value="04afea6b7cc9e406f430c1cd" /> <!--  </>值来自开发者平台取得的AppKey-->
 
-<!--umeng setting-->
+        <!--umeng setting-->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5a55d2028f4a9d42fb0000d7" />
@@ -236,11 +236,11 @@
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-<!--Bugly升级 必须配置-->
+        <!--Bugly升级 必须配置-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent"/>
+            android:theme="@android:style/Theme.Translucent" />
 
         <!-- 必须配置 fileProvider， 注意： android:authorities="${applicationId}.fileProvider" 不要直接copy，设置为你的包名.fileProvider-->
         <provider
@@ -250,11 +250,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
 
         </provider>
         <activity
             android:name=".module.mine.UpgradeActivity"
-            android:screenOrientation="portrait" />    </application>
+            android:screenOrientation="portrait" />
+    </application>
 
 </manifest>

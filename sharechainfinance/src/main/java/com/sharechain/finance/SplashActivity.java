@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.sharechain.finance.utils.BaseUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by ${zhoutao} on 2017/12/20 0020.
@@ -28,6 +29,18 @@ public class SplashActivity extends Activity {
             }
         }, 2000);
 //        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }

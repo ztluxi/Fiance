@@ -21,6 +21,7 @@ import com.sharechain.finance.bean.HistoryData;
 import com.sharechain.finance.utils.TimeUtil;
 import com.sharechain.finance.view.MyXRefreshViewHeader;
 import com.sharechain.finance.view.MyXrefreshViewFooter;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.lang.reflect.Field;
@@ -225,6 +226,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         bean.setViews(articleBean.getViews());
         bean.setDisplay_name(articleBean.getDisplay_name());
         return bean;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     public abstract int getLayout();
