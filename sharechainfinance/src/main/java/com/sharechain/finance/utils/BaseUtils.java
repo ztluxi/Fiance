@@ -264,7 +264,6 @@ public class BaseUtils {
             int widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
             int heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
             comBitmap.measure(widthSpec, heightSpec);
-            int cacuHeight = comBitmap.getMeasuredHeight();
             comBitmap.layout(0, 0, width, height);
 
             comBitmap.buildDrawingCache();

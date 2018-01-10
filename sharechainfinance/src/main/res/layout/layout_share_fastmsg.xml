@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/text_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/share_dialog_image_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/icon_share_blue_bg_rect"
         android:gravity="center"
@@ -76,11 +76,12 @@
         </LinearLayout>
 
         <TextView
-            android:text="数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康数据发动机健健康康"
             android:id="@+id/text_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lines="9"
             android:textColor="@android:color/black"
             android:textSize="15sp" />
 
@@ -110,14 +111,14 @@
                 android:layout_height="92dp"
                 android:src="@drawable/icon_share_qrcode" />
 
-            <TextView
-                android:id="@+id/text_uid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="来自未来财经"
-                android:textColor="@android:color/black"
-                android:textSize="10sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/text_uid"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="left"-->
+                <!--android:text="来自未来财经"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="10sp" />-->
 
         </LinearLayout>
 

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -56,7 +55,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_weixin)
     void gotoShareWeixin() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_FRIEND, bitmap);
         }
@@ -65,7 +64,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_circle)
     void gotoShareWeixinCircle() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             shareUtils.shareWithImage(ShareUtils.SHARE_TARGET_TYPE.TYPE_CIRCLE, bitmap);
         }
@@ -74,7 +73,7 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, getMeasureHeight());
+        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
         if (bitmap != null) {
             boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
             if (isSuccess) {
@@ -168,18 +167,6 @@ public class FastMsgDialog extends Dialog {
         share_week.setText(date[1]);
 
         share_content.setText(fastMsgData.getDataText());
-        shareView.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-
-                    @Override
-                    public boolean onPreDraw() {
-                        shareView.getViewTreeObserver().removeOnPreDrawListener(this);
-                        int width = shareView.getWidth(); // 获取宽度
-                        int height = shareView.getHeight(); // 获取高度
-                        return true;
-                    }
-                });
-
     }
 
     //    计算view高度
