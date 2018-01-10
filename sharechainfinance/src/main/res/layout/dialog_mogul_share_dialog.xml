@@ -28,12 +28,15 @@
             android:paddingTop="40dp">
 
             <ScrollView
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="1dp"
+                android:scrollbarThumbVertical="@color/base_bg_color"
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:fadingEdge="none"
-                android:overScrollMode="never"
-                android:scrollbars="none">
+               >
 
                 <LinearLayout
                     android:layout_width="match_parent"
