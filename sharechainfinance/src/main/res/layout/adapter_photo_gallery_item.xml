@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
         <com.bm.library.PhotoView
-            android:scaleType="centerCrop"
             android:id="@+id/img_pv"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
 
 </FrameLayout>

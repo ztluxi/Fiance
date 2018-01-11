@@ -134,10 +134,10 @@ public class FeedbackActivity extends BaseActivity {
                     ToastManager.showShort(this, getString(R.string.please_write_your_suggest));
                     return;
                 }
-                if (!NetworkManager.isConnnected(this)) {
-                    ToastManager.showShort(this, getString(R.string.please_check_network));
-                    return;
-                }
+//                if (!NetworkManager.isConnnected(this)) {
+//                    ToastManager.showShort(this, getString(R.string.please_check_network));
+//                    return;
+//                }
                 if (phone.equals("")){
                     phone = "未填写";
                 }
@@ -146,7 +146,6 @@ public class FeedbackActivity extends BaseActivity {
                 } else {
                     long result =  nowTime - firstTime;
                     //如果时间小于半小时内就不能提交
-//                    1800000
                     if (result  < 1800000) {
                         ToastManager.showShort(this, getString(R.string.only_once));
                     }else {

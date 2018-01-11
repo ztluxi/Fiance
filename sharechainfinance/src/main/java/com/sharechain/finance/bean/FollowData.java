@@ -10,7 +10,16 @@ public class FollowData {
     private String position;
     private String image;
     private int MogulID;
+    private int FollowID;
     private int state;
+
+    public int getFollowID() {
+        return FollowID;
+    }
+
+    public void setFollowID(int followID) {
+        FollowID = followID;
+    }
 
     public int getState() {
         return state;

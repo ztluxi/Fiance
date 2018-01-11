@@ -95,7 +95,7 @@
         <TextView
             android:id="@+id/has_follow_tv"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@drawable/has_follow_bg"
             android:gravity="center"
             android:text="@string/has_follow"

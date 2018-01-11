@@ -19,6 +19,7 @@ import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.adapter.MyFollowAdapter;
 import com.sharechain.finance.bean.FollowBean;
 import com.sharechain.finance.bean.FollowData;
+import com.sharechain.finance.bean.LoginManagerBean;
 import com.sharechain.finance.bean.UrlList;
 import com.sharechain.finance.module.mogul.MogulCircleFixedActivity;
 import com.sharechain.finance.utils.BaseUtils;
@@ -155,7 +156,8 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                                 followData.setName(myFollowBean.getData().get(i).getFull_name());
                                 followData.setImage(myFollowBean.getData().get(i).getProfile_image_url());
                                 followData.setMogulID(myFollowBean.getData().get(i).getCelebrity_id());
-                                followData.setState(myFollowBean.getData().get(i).getState());
+                                followData.setState(Integer.parseInt(myFollowBean.getData().get(i).getState()));
+                                followData.setFollowID(myFollowBean.getData().get(i).getId());
                                 followDataList.add(followData);
                             }
                         }
@@ -197,26 +199,30 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
 
     //取消大佬关注
 
-    private void cancelMogulFollow(int mogulID, final int position, final FollowData data) {
+    private void cancelMogulFollow(int followID, final int position, final FollowData data) {
         if (SFApplication.loginDataBean != null) {
             String token = SFApplication.loginDataBean.getToken();
             mDialog.show();
             final Map<String, String> params = new HashMap<>();
             params.put(UrlList.TOKEN, token);
-            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
+            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(followID));
             requestGet(UrlList.CANCLE_FOLLOW, params, new MyStringCallback(this) {
                 @Override
                 protected void onSuccess(String result) {
-                    FollowData data1 = new FollowData();
-                    data1.setState(2);
-                    data1.setMogulID(data.getMogulID());
-                    data1.setImage(data.getImage());
-                    data1.setName(data.getName());
-                    data1.setPosition(data.getPosition());
-                    data1.setWeibo(data.getWeibo());
-                    followDataList.set(position, data1);
-                    updateAdapter(position);
-                    ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
+                    LoginManagerBean bean = JSON.parseObject(result,LoginManagerBean.class);
+                    if (bean.getSuccess()==1 && bean.getCode() ==2000){
+                        FollowData data1 = new FollowData();
+                        data1.setState(2);
+                        data1.setMogulID(data.getMogulID());
+                        data1.setFollowID(data.getFollowID());
+                        data1.setImage(data.getImage());
+                        data1.setName(data.getName());
+                        data1.setPosition(data.getPosition());
+                        data1.setWeibo(data.getWeibo());
+                        followAdapter.setItem(position,data1);
+                        updateAdapter(position);
+                        ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_cancel) + data.getName() + getString(R.string.de_follow));
+                    }
                     Logger.d(result);
                     if (mDialog != null && mDialog.isShowing()) {
                         mDialog.dismiss();
@@ -238,39 +244,32 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
     }
 
     //关注大佬
-    private void addMogulFollow(int mogulID, final int position, final FollowData data) {
+    private void addMogulFollow(int followID, final int position, final FollowData data) {
         if (SFApplication.loginDataBean != null) {
             String token = SFApplication.loginDataBean.getToken();
             mDialog.show();
             final Map<String, String> params = new HashMap<>();
             params.put(UrlList.TOKEN, token);
-            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(mogulID));
+            params.put(UrlList.MOGUL_CANCLE_FOLLOW_ID, String.valueOf(followID));
             requestGet(UrlList.MOGUL_FOLLOW, params, new MyStringCallback(this) {
                 @Override
                 protected void onSuccess(String result) {
-//                {"success":0,"msg":"请登录","data":""}
-//                    try {
-//                        org.json.JSONObject object = new org.json.JSONObject(result);
-//                        int success = object.getInt("success");
-//                        String messg = object.getString("msg");
-//                        if (success == 0) {
-//                            ToastManager.showShort(MyFollowActivity.this, messg);
-//                        } else {
-                    FollowData data1 = new FollowData();
-                    data1.setState(1);
-                    data1.setMogulID(data.getMogulID());
-                    data1.setImage(data.getImage());
-                    data1.setName(data.getName());
-                    data1.setPosition(data.getPosition());
-                    data1.setWeibo(data.getWeibo());
-                    followDataList.set(position, data1);
-                    updateAdapter(position);
-                    ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
+                    LoginManagerBean bean = JSON.parseObject(result,LoginManagerBean.class);
+                    if (bean.getSuccess()==1 && bean.getCode() ==2000) {
+                        FollowData data1 = new FollowData();
+                        data1.setState(1);
+                        data1.setMogulID(data.getMogulID());
+                        data1.setFollowID(data.getFollowID());
+                        data1.setImage(data.getImage());
+                        data1.setName(data.getName());
+                        data1.setPosition(data.getPosition());
+                        data1.setWeibo(data.getWeibo());
+                        followAdapter.setItem(position,data1);
+                        updateAdapter(position);
+                        ToastManager.showShort(MyFollowActivity.this, getString(R.string.you_follow) + data.getName());
+                    }
                     Logger.d(result);
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
+
                     if (mDialog != null && mDialog.isShowing()) {
                         mDialog.dismiss();
                     }
@@ -310,9 +309,9 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
     @Override
     public void cancelFollow(View view, int position, FollowData data) {
         if (data.getState() == 1) {
-            cancelMogulFollow(data.getMogulID(), position, data);
+            cancelMogulFollow(data.getFollowID(), position, data);
         } else {
-            addMogulFollow(data.getMogulID(), position, data);
+            addMogulFollow(data.getFollowID(), position, data);
         }
     }
 }

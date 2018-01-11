@@ -1,26 +1,30 @@
 package com.sharechain.finance.module.mogul;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.sharechain.finance.R;
+import com.sharechain.finance.SFApplication;
 import com.sharechain.finance.utils.GlideUtils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,7 +41,6 @@ public class DragPhotoActivity extends AppCompatActivity {
     CustomViewPager viewPager;
     private PhotoViewPager<String> mAdapter;
     private List<String> mDatas = new ArrayList<>();
-    private PhotoView photoView;
 
 
     /**
@@ -87,12 +90,10 @@ public class DragPhotoActivity extends AppCompatActivity {
     class PhotoViewPager<T> extends PagerAdapter {
         private Activity mContext;
         private LayoutInflater inflater;
-        private LinkedList<View> mViewCache;
 
         public PhotoViewPager(Activity context) {
             this.mContext = context;
             inflater = LayoutInflater.from(context);
-            mViewCache = new LinkedList<>();
         }
 
         @Override
@@ -105,16 +106,14 @@ public class DragPhotoActivity extends AppCompatActivity {
             return view == object;
         }
 
-
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             if (null != object && object instanceof View) {
                 View v = (View) object;
                 PhotoView iv = (PhotoView) v.findViewById(R.id.img_pv);
                 if (null != iv) {
-                    GlideUtils.recyclerviewImageBitmap(iv,DragPhotoActivity.this);
+                    GlideUtils.recyclerviewImageBitmap(iv, DragPhotoActivity.this);
                 }
-                this.mViewCache.add(v);
             }
             ((ViewPager) container).removeView((View) object);
         }
@@ -125,28 +124,51 @@ public class DragPhotoActivity extends AppCompatActivity {
             if (mDatas.size() <= position) {
                 return null;
             }
-            View view = null;
-            if (mViewCache.isEmpty()) {
-                view = inflater.inflate(R.layout.adapter_photo_gallery_item, container, false);
-                photoView = view.findViewById(R.id.img_pv);
-            }else {
-                view = mViewCache.removeFirst();
-                photoView = view.findViewById(R.id.img_pv);
-            }
-
+            View view = inflater.inflate(R.layout.adapter_photo_gallery_item, container, false);
+            final PhotoView photoView = view.findViewById(R.id.img_pv);
+            FrameLayout parent = view.findViewById(R.id.parent);
             // 获取图片信息
             photoView.enable();
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.finish();
+                }
+            });
             photoView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mContext.finish();
                 }
             });
-
             String url = mDatas.get(position);
-            RequestOptions options = new RequestOptions().placeholder(R.drawable.home_default).error(R.drawable.home_default).centerCrop();
-			GlideUtils.getInstance().loadUserImage(DragPhotoActivity.this, url, photoView, options);
-            container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            final View mView = view;
+            Glide.with(DragPhotoActivity.this).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                    float bitmapWidth = resource.getWidth();
+                    float bitmapHeight = resource.getHeight();
+                    float radius = bitmapWidth / bitmapHeight;
+                    int height = (int) (SFApplication.screen_width / radius);
+
+                    photoView.setImageBitmap(resource);
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+                    params.gravity = Gravity.CENTER;
+                    photoView.setLayoutParams(params);
+                    container.addView(mView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+
+                @Override
+                public void onLoadStarted(@Nullable Drawable placeholder) {
+                    super.onLoadStarted(placeholder);
+                    photoView.setImageResource(R.drawable.home_default);
+                }
+                @Override
+                public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                    super.onLoadFailed(errorDrawable);
+                    photoView.setImageResource(R.drawable.home_default);
+                }
+            });
             return view;
         }
     }
