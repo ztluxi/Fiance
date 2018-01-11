@@ -22,6 +22,4 @@
         </ListView>
     </com.andview.refreshview.XRefreshView>
 
-    <include layout="@layout/layout_empty_view"></include>
-
 </LinearLayout>

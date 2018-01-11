@@ -121,12 +121,10 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
 
     private void updateView() {
         if (bean != null) {
+            if (PAGE == 1) {
+                mogulDataList.clear();
+            }
             if (bean.getSuccess() == 1 && bean.getData().getLists().size() != 0) {
-                empty_view.setVisibility(View.GONE);
-                mRefreshLayout.setVisibility(View.VISIBLE);
-                if (PAGE == 1) {
-                    mogulDataList.clear();
-                }
                 if (bean.getData().getLists().size() > 0) {
                     for (int i = 0; i < bean.getData().getLists().size(); i++) {
                         String user_image = bean.getData().getLists().get(i).getProfile_image_url();
@@ -165,15 +163,21 @@ public class FriendCircleFragment extends BaseFragment implements MogulAdapter.M
                             mogulData.setLike(false);
                         }
                         mogulDataList.add(mogulData);
-
                     }
                 }
+                if (mogulDataList.size()==0){
+                    empty_view.setVisibility(View.VISIBLE);
+                    mRefreshLayout.setVisibility(View.GONE);
+                }else {
+                    empty_view.setVisibility(View.GONE);
+                    mRefreshLayout.setVisibility(View.VISIBLE);
+                }
             } else {
-                if (PAGE != 1) {
+                if (PAGE == 1) {
+                    ToastManager.showShort(getActivity(), getString(R.string.load_no_data));
+                } else {
                     ToastManager.showShort(getActivity(), getString(R.string.nothing_more_data));
                 }
-                empty_view.setVisibility(View.VISIBLE);
-                mRefreshLayout.setVisibility(View.GONE);
             }
         }
         updateAdapter(mogulDataList.size());

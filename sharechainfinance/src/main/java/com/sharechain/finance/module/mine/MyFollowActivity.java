@@ -46,8 +46,6 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
     ImageView searchIV;
     @BindView(R.id.my_news_lv)
     ListView myNewslv;
-    @BindView(R.id.empty_view)
-    TextView empty_view;
     @BindView(R.id.xrefreshview_content)
     XRefreshView refreshView;
     private List<FollowData> followDataList = new ArrayList<>();
@@ -144,14 +142,12 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                     refreshView.stopRefresh();
                     refreshView.stopLoadMore();
                     Logger.d(result);
+                    if (PAGE == 1) {
+                        followDataList.clear();
+                    }
                     FollowBean myFollowBean = JSON.parseObject(result, FollowBean.class);
                     if (myFollowBean.getSuccess() == 1 && myFollowBean.getData().size() != 0) {
-                        empty_view.setVisibility(View.GONE);
-                        refreshView.setVisibility(View.VISIBLE);
-                        if (PAGE == 1) {
-                            followDataList.clear();
-                        }
-                        if (myFollowBean.getData().size() != 0) {
+                        if (myFollowBean.getData().size() > 0) {
                             for (int i = 0; i < myFollowBean.getData().size(); i++) {
                                 FollowData followData = new FollowData();
                                 followData.setPosition(myFollowBean.getData().get(i).getProfessional());
@@ -163,12 +159,17 @@ public class MyFollowActivity extends BaseActivity implements MyFollowAdapter.My
                                 followDataList.add(followData);
                             }
                         }
+                        if (followDataList.size()==0){
+                            refreshView.enableEmptyView(true);
+                        }else {
+                            refreshView.enableEmptyView(false);
+                        }
                     } else {
-                        if (PAGE != 1) {
+                        if (PAGE == 1) {
+                            ToastManager.showShort(MyFollowActivity.this, getString(R.string.load_no_data));
+                        } else {
                             ToastManager.showShort(MyFollowActivity.this, getString(R.string.nothing_more_data));
                         }
-                        empty_view.setVisibility(View.VISIBLE);
-                        refreshView.setVisibility(View.GONE);
                     }
                     updateAdapter(0);
                 }

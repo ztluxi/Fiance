@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -17,9 +21,11 @@ import com.orhanobut.logger.Logger;
 import com.sharechain.finance.bean.FastMsgData;
 import com.sharechain.finance.bean.LoginDataBean;
 import com.sharechain.finance.module.mine.UpgradeActivity;
+import com.sharechain.finance.utils.ToastManager;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.ui.UILifecycleListener;
 import com.tencent.bugly.beta.upgrade.UpgradeListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -34,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Administrator on 2017/12/12.
@@ -183,22 +191,23 @@ public class SFApplication extends MultiDexApplication {
 //         */
 //        Beta.upgradeDialogLayoutId = R.layout.dialog_update;
 
-        /**
-         * 自定义Activity参考，通过回调接口来跳转到你自定义的Actiivty中。
-         */
-        Beta.upgradeListener = new UpgradeListener() {
-            @Override
-            public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean isSilence) {
-                if (strategy != null) {
-                    Intent i = new Intent();
-                    i.setClass(getApplicationContext(), UpgradeActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getApplicationContext(), "没有更新", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+//        /**
+//         * 自定义Activity参考，通过回调接口来跳转到你自定义的Actiivty中。
+//         */
+//        Beta.upgradeListener = new UpgradeListener() {
+//            @Override
+//            public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean isSilence) {
+//                ToastManager.showShort(getApplicationContext(),strategy.title);
+//                if (strategy != null) {
+//                    Intent i = new Intent();
+//                    i.setClass(getApplicationContext(), UpgradeActivity.class);
+//                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(i);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "没有更新", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        };
 
     }
 
