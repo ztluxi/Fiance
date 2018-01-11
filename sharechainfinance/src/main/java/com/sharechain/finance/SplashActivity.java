@@ -16,7 +16,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_splash);
 //        if (SharedPreferenceManager.ifFristOpenSalonAPP(SplashActivity.this)) {
 //            BaseUtils.openActivity(SplashActivity.this, GuideActivity.class, null);
 //            finish();

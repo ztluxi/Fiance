@@ -16,8 +16,9 @@ public class UrlList {
     public static final String MOGUL_KEYWORD = "search_str";
     public static final String TOKEN = "token";
 
-//    private static String base_url = "http://pc.weilaicaijing.com";
-    private static String base_url = "http://www.weilaicaijing.com";    public static final String HOME_INDEX = base_url + "/api_app/Home/index";
+    //    private static String base_url = "http://pc.weilaicaijing.com";
+    private static String base_url = "http://www.weilaicaijing.com";
+    public static final String HOME_INDEX = base_url + "/api_app/Home/index";
     public static final String HOME_ARTICLE_LIST = base_url + "/api_app/Home/article_lists";
     public static final String HOME_ARTICLE_DETAIL = base_url + "/api_app/Home/article_detail";
     public static final String HOME_ARTICLE_PRAISE = base_url + "/api_app/Home/like";

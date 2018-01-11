@@ -247,6 +247,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<ArticleListsBean> {
 
     private void initPoints() {
         if (headerViewHolder != null) {
+            headerViewHolder.ll_point.removeAllViews();
             for (int i = 0; i < headerBean.getBanner().size(); i++) {
                 ImageView imageView = new ImageView(context);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(BaseUtils.dip2px(context, 7),

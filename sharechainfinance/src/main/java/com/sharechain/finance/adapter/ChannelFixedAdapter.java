@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.sharechain.finance.R;
 import com.sharechain.finance.bean.NewsChannelTable;
+import com.sharechain.finance.utils.BaseUtils;
 import com.sharechain.finance.view.helper.OnDragVHListener;
 import com.sharechain.finance.view.helper.OnItemMoveListener;
 
@@ -70,9 +71,12 @@ public class ChannelFixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         myHolder.text_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                if (BaseUtils.isFastClick()) {
+                    return;
+                }
                 int position = myHolder.getAdapterPosition();
                 if (isEditMode) {
-                    if (mMyChannelItems.get(position).getNewsChannelFixed()) {
+                    if (position > 0 && position < mMyChannelItems.size() - 1 && mMyChannelItems.get(position).getNewsChannelFixed()) {
                         return;
                     }
                     RecyclerView recyclerView = ((RecyclerView) parent);
