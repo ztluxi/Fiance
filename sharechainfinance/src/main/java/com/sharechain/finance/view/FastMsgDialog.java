@@ -23,6 +23,7 @@ import com.sharechain.finance.utils.ShareUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import github.nisrulz.screenshott.ScreenShott;
 
 /**
  * Created by Chu on 2017/12/18.
@@ -73,7 +74,8 @@ public class FastMsgDialog extends Dialog {
 
     @OnClick(R.id.image_download)
     void gotoDownload() {
-        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+//        Bitmap bitmap = BaseUtils.getViewBitmap(shareView, SFApplication.screen_width, SFApplication.screen_height);
+        Bitmap bitmap = ScreenShott.getInstance().takeScreenShotOfJustView(shareView);
         if (bitmap != null) {
             boolean isSuccess = BaseUtils.saveImageToGallery(context, bitmap);
             if (isSuccess) {
